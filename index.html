@@ -81,6 +81,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .tipo-btn.active{border-color:var(--green);color:var(--green);background:var(--green-bg);}
 #km-input-manual{display:none;}
 #km-input-manual.show{display:block;}
+.km-confirm-box{background:var(--green-bg);border:2px solid var(--green);border-radius:var(--radius);padding:20px;text-align:center;margin-bottom:4px;}
+.km-confirm-label{font-size:12px;font-weight:600;color:var(--green-text);text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px;}
+.km-confirm-input{width:100%;font-size:36px;font-weight:700;color:var(--green);background:transparent;border:none;border-bottom:2px solid var(--green);text-align:center;outline:none;padding:4px 0;font-family:inherit;}
+.km-confirm-sub{font-size:11px;color:var(--green-text);margin-top:8px;opacity:.7;}
 </style>
 </head>
 <body>
@@ -126,34 +130,41 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="field"><label>Hora</label><input type="time" id="km-hora"></div>
   </div>
 
-  <div class="field"><label>Tipo de registro</label></div>
-  <div class="tipo-btns">
-    <button class="tipo-btn active" id="btn-inicial" onclick="setTipo('inicial')">🌅 KM Inicial</button>
-    <button class="tipo-btn" id="btn-final" onclick="setTipo('final')">🌆 KM Final</button>
+  <!-- PASSO 1: FOTO -->
+  <div id="km-step1">
+    <div class="photo-area" onclick="document.getElementById('foto-input').click()">
+      <div class="photo-icon">📷</div>
+      <div class="photo-label">Tirar foto do velocímetro</div>
+      <div class="photo-sublabel">O app lê o KM automaticamente</div>
+    </div>
+    <input type="file" id="foto-input" accept="image/*" capture="environment" style="display:none" onchange="processarFoto(this)">
+    <div class="ai-loading" id="ai-loading"><span class="spinner"></span>Lendo velocímetro...</div>
+    <button class="btn-secondary" onclick="toggleManual()" style="margin-top:0">✏️ Inserir KM manualmente</button>
+    <div id="km-input-manual" style="display:none;margin-top:12px;">
+      <div class="field">
+        <label>KM do velocímetro</label>
+        <input type="number" id="km-manual" placeholder="ex: 62633" inputmode="numeric" min="0" oninput="kmManualChanged()">
+      </div>
+    </div>
   </div>
 
-  <div class="photo-area" onclick="document.getElementById('foto-input').click()">
-    <div class="photo-icon">📷</div>
-    <div class="photo-label">Tirar foto do velocímetro</div>
-    <div class="photo-sublabel">A IA lê o KM automaticamente</div>
-  </div>
-  <input type="file" id="foto-input" accept="image/*" capture="environment" style="display:none" onchange="processarFoto(this)">
-
-  <div class="ai-loading" id="ai-loading"><span class="spinner"></span>Lendo velocímetro com IA...</div>
-
-  <div class="km-preview" id="km-preview">
-    <div class="km-preview-label" id="km-preview-label">KM lido da foto</div>
-    <div class="km-preview-val" id="km-preview-val">—</div>
-  </div>
-
-  <div id="km-input-manual">
-    <div class="field"><label>Ou insira o KM manualmente</label><input type="number" id="km-manual" placeholder="ex: 62633" inputmode="numeric" min="0" oninput="kmManualChanged()"></div>
+  <!-- PASSO 2: CONFIRMAR (aparece após leitura) -->
+  <div id="km-step2" style="display:none">
+    <div class="km-confirm-box" id="km-confirm-box">
+      <div class="km-confirm-label">KM lido do velocímetro</div>
+      <input type="number" id="km-confirmado" class="km-confirm-input" inputmode="numeric" min="0">
+      <div class="km-confirm-sub">Corrija se necessário</div>
+    </div>
+    <div class="field" style="margin-top:16px;"><label>Este KM é:</label></div>
+    <div class="tipo-btns">
+      <button class="tipo-btn active" id="btn-inicial" onclick="setTipo('inicial')">🌅 Inicial (saída)</button>
+      <button class="tipo-btn" id="btn-final" onclick="setTipo('final')">🌆 Final (chegada)</button>
+    </div>
+    <button class="btn-primary" onclick="salvarKmDia()">✓ Confirmar e salvar</button>
+    <button class="btn-secondary" onclick="resetKmStep()" style="margin-top:8px;">↩ Tirar outra foto</button>
   </div>
 
-  <button class="btn-secondary" onclick="toggleManual()">✏️ Inserir KM manualmente</button>
-  <button class="btn-primary" onclick="salvarKmDia()" style="margin-top:10px;">✓ Registrar KM</button>
-
-  <br><br>
+  <br>
   <div class="section-label">Registros do mês atual</div>
   <div id="km-lista"></div>
   <button class="btn-secondary" onclick="exportarKmExcel()" style="margin-top:4px;">⬇ Exportar Excel KM</button>
@@ -250,28 +261,39 @@ function setTipo(t){
 
 function toggleManual(){
   const el=document.getElementById('km-input-manual');
-  el.classList.toggle('show');
-  if(el.classList.contains('show'))document.getElementById('km-manual').focus();
+  const visible=el.style.display!=='none';
+  el.style.display=visible?'none':'block';
+  if(!visible)document.getElementById('km-manual').focus();
 }
 
 function kmManualChanged(){
   const v=parseInt(document.getElementById('km-manual').value);
-  if(!isNaN(v)&&v>0){
-    kmLidoFoto=v;
-    document.getElementById('km-preview-label').textContent='KM inserido manualmente';
-    document.getElementById('km-preview-val').textContent=v.toLocaleString('pt-BR');
-    document.getElementById('km-preview').classList.add('show');
-  }
+  if(!isNaN(v)&&v>1000) mostrarStep2(v);
+}
+
+function mostrarStep2(km){
+  kmLidoFoto=km;
+  document.getElementById('km-confirmado').value=km;
+  document.getElementById('km-step1').style.display='none';
+  document.getElementById('km-step2').style.display='block';
+}
+
+function resetKmStep(){
+  kmLidoFoto=null;
+  document.getElementById('km-step1').style.display='block';
+  document.getElementById('km-step2').style.display='none';
+  document.getElementById('km-manual').value='';
+  document.getElementById('km-input-manual').style.display='none';
+  document.getElementById('foto-input').value='';
+  document.getElementById('ai-loading').classList.remove('show');
 }
 
 async function processarFoto(input){
   if(!input.files||!input.files[0])return;
   const file=input.files[0];
   document.getElementById('ai-loading').classList.add('show');
-  document.getElementById('km-preview').classList.remove('show');
   kmLidoFoto=null;
   try{
-    // Use Tesseract.js OCR - runs entirely in browser, no API key needed
     const imgUrl=URL.createObjectURL(file);
     const result=await Tesseract.recognize(imgUrl,'eng',{
       tessedit_char_whitelist:'0123456789',
@@ -279,51 +301,45 @@ async function processarFoto(input){
     });
     URL.revokeObjectURL(imgUrl);
     const txt=result.data.text.replace(/\s/g,'');
-    // Find the largest number in the text (likely the odometer)
     const nums=txt.match(/\d{4,6}/g);
     let best=null;
     if(nums){
-      // Pick number closest to last known km
       const lastKm=records.length?records[records.length-1].km:50000;
       best=nums.map(n=>parseInt(n)).filter(n=>n>1000&&n<999999)
         .sort((a,b)=>Math.abs(a-lastKm)-Math.abs(b-lastKm))[0]||null;
     }
+    document.getElementById('ai-loading').classList.remove('show');
     if(best){
-      kmLidoFoto=best;
-      document.getElementById('km-preview-label').textContent='KM lido da foto (OCR)';
-      document.getElementById('km-preview-val').textContent=best.toLocaleString('pt-BR');
-      document.getElementById('km-preview').classList.add('show');
-      showToast('✓ KM lido: '+best.toLocaleString('pt-BR'));
+      mostrarStep2(best);
+      showToast('✓ KM lido: '+best.toLocaleString('pt-BR')+' — confirme abaixo');
     } else {
-      showToast('⚠️ Não consegui ler o KM. Insira manualmente.');
-      document.getElementById('km-input-manual').classList.add('show');
+      showToast('⚠️ Não consegui ler. Insira manualmente.');
+      document.getElementById('km-input-manual').style.display='block';
+      document.getElementById('km-manual').focus();
     }
   }catch(err){
+    document.getElementById('ai-loading').classList.remove('show');
     showToast('⚠️ Erro na leitura. Insira manualmente.');
-    document.getElementById('km-input-manual').classList.add('show');
+    document.getElementById('km-input-manual').style.display='block';
   }
-  document.getElementById('ai-loading').classList.remove('show');
 }
 
 function salvarKmDia(){
   const data=document.getElementById('km-data').value;
   const hora=document.getElementById('km-hora').value||new Date().toTimeString().slice(0,5);
-  const km=kmLidoFoto||parseInt(document.getElementById('km-manual').value||'0');
-  if(!data||!km||km<1000){showToast('⚠️ Informe o KM (foto ou manual)');return;}
-  // remove entrada anterior do mesmo dia+tipo
+  // Pega o valor da caixa de confirmação (pode ter sido editado)
+  const kmFinal=parseInt(document.getElementById('km-confirmado').value||'0');
+  if(!data||!kmFinal||kmFinal<1000){showToast('⚠️ Informe o KM');return;}
   kmRecords=kmRecords.filter(r=>!(r.data===data&&r.tipo===tipoKm));
-  kmRecords.push({id:Date.now(),data,hora,km,tipo:tipoKm});
+  kmRecords.push({id:Date.now(),data,hora,km:kmFinal,tipo:tipoKm});
   kmRecords.sort((a,b)=>a.data.localeCompare(b.data)||a.tipo.localeCompare(b.tipo));
   saveKm();
-  showToast('✓ KM '+tipoKm+' salvo: '+km.toLocaleString('pt-BR'));
-  kmLidoFoto=null;
-  document.getElementById('km-preview').classList.remove('show');
-  document.getElementById('km-manual').value='';
-  document.getElementById('km-input-manual').classList.remove('show');
-  document.getElementById('foto-input').value='';
+  showToast('✓ KM '+tipoKm+' salvo: '+kmFinal.toLocaleString('pt-BR'));
+  resetKmStep();
   const nn=new Date();
   document.getElementById('km-data').value=nn.toISOString().split('T')[0];
   document.getElementById('km-hora').value=nn.toTimeString().slice(0,5);
+  setTipo('inicial');
   renderKmLista();
 }
 
