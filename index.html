@@ -122,7 +122,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 </head>
 <body>
 <div id="login-screen">
-  <div style="position:absolute;top:12px;right:16px;font-size:11px;color:var(--text3);font-weight:500;">v1.8</div>
+  <div style="position:absolute;top:12px;right:16px;font-size:11px;color:var(--text3);font-weight:500;">v2.0</div>
   <div class="login-sub">Controle de abastecimento, quilometragem e despesas.<br>Dados salvos na nuvem com segurança.</div>
   <div style="width:100%;max-width:320px;">
     <button class="btn-google" onclick="entrarComGoogle()">
@@ -765,10 +765,8 @@ window.exportarPDF=()=>{
     <div class="tot-item"><div class="label">Média consumo</div><div class="val">${avg.toFixed(2)} km/l</div></div>
     <div class="tot-item"><div class="label">Registros</div><div class="val">${filtered.length}</div></div>
   </div>
-  <table><thead><tr><th>Data</th><th>Valor</th><th>Litros</th><th>R$/L</th><th>KM</th><th>KM/L</th><th>Posto</th><th>Veículo</th></tr></thead><tbody>${linhas}</tbody></table>
-  <script>window.onload=()=>window.print();<\/script></body></html>`;
-  const blob=new Blob([html],{type:'text/html;charset=utf-8'});
-  window.open(URL.createObjectURL(blob),'_blank');
+  <table><thead><tr><th>Data</th><th>Valor</th><th>Litros</th><th>R$/L</th><th>KM</th><th>KM/L</th><th>Posto</th><th>Veículo</th></tr></thead><tbody>${linhas}</tbody></table></body></html>`;
+  printHTML(html);
 };
 
 function renderStats(){
@@ -896,8 +894,8 @@ window.abrirFormDespesa=(cat,docId)=>{
       <input type="file" id="d-foto-input" accept="image/*" style="display:none" onchange="previewFotoDespesa(this)">
       <img id="d-foto-preview" class="foto-preview ${existing&&existing.foto?'show':''}" src="${existing&&existing.foto?existing.foto:''}" alt="preview">
     </div>
-    <button class="btn-primary" onclick="salvarDespesa('${cat}','${docId||''}')">✓ Salvar</button>
-    <button class="btn-secondary" onclick="fecharDespOverlay()">Cancelar</button>
+    <button type="button" id="d-save-btn" class="btn-primary" onclick="salvarDespesa('${cat}','${docId||''}')">✓ Salvar</button>
+    <button type="button" class="btn-secondary" onclick="fecharDespOverlay()">Cancelar</button>
   </div>`;
   document.body.appendChild(overlay);
   overlay.addEventListener('click',e=>{if(e.target===overlay)fecharDespOverlay();});
@@ -905,13 +903,17 @@ window.abrirFormDespesa=(cat,docId)=>{
 
 window.previewFotoDespesa=input=>{
   if(!input.files||!input.files[0])return;
-  const reader=new FileReader();
-  reader.onload=e=>{
+  const img=document.getElementById('d-foto-preview');
+  img.classList.remove('show');
+  showToast('Preparando foto...');
+  fileToCompressedDataURL(input.files[0],1400,.74).then(src=>{
     const img=document.getElementById('d-foto-preview');
-    img.src=e.target.result;
+    img.src=src;
     img.classList.add('show');
-  };
-  reader.readAsDataURL(input.files[0]);
+    showToast('✓ Foto pronta');
+  }).catch(()=>{
+    showToast('⚠️ Não consegui carregar a foto');
+  });
 };
 
 window.fecharDespOverlay=()=>{const o=document.getElementById('desp-overlay');if(o)o.remove();};
@@ -921,17 +923,26 @@ window.salvarDespesa=async(cat,docId)=>{
   const valor=parseFloat(document.getElementById('d-valor').value);
   const desc=document.getElementById('d-desc').value;
   if(!data||isNaN(valor)||valor<=0){showToast('⚠️ Preencha data e valor');return;}
+  const btn=document.getElementById('d-save-btn');
+  if(btn){btn.disabled=true;btn.textContent='Salvando...';btn.style.opacity='.7';}
   const fotoImg=document.getElementById('d-foto-preview');
   const foto=fotoImg&&fotoImg.classList.contains('show')&&fotoImg.src?fotoImg.src:'';
   const dados={data,valor,desc,cat,foto,criadoEm:serverTimestamp()};
-  if(docId){
-    await updateDoc(doc(db,'users',currentUser.uid,'despesas',docId),dados);
-    showToast('✓ Despesa atualizada!');
-  }else{
-    await addDoc(despRef(),dados);
-    showToast('✓ Despesa salva!');
+  try{
+    if(docId){
+      await updateDoc(doc(db,'users',currentUser.uid,'despesas',docId),dados);
+      showToast('✓ Despesa atualizada!');
+    }else{
+      await addDoc(despRef(),dados);
+      showToast('✓ Despesa salva!');
+    }
+    fecharDespOverlay();
+    renderDespesas();
+  }catch(e){
+    if(btn){btn.disabled=false;btn.textContent='✓ Salvar';btn.style.opacity='1';}
+    if(e.code==='resource-exhausted'||String(e.message||'').includes('maximum size'))showToast('⚠️ Foto muito grande. Tente outra foto.');
+    else showToast('⚠️ Erro ao salvar despesa');
   }
-  fecharDespOverlay();
 };
 
 window.editarDespesa=id=>{
@@ -960,54 +971,109 @@ window.abrirFotoExistente=id=>{
   if(d)abrirFormDespesa(d.cat,id);
 };
 
-window.exportarDespesasPDF=()=>{
+window.exportarDespesasPDF=async()=>{
   const[y,m]=mesDespesaAtual.split('-').map(Number);
   const nomeMes=NOMES_MES[m-1]+' '+y;
   const doMes=despesas.filter(d=>d.data&&d.data.startsWith(mesDespesaAtual));
   const cats=[
-    {id:'pedagio',titulo:'GASTOS COM PEDÁGIO (REEMBOLSÁVEL)',cor:'#1a6e3c',label:'Destino',totalLabel:'TOTAL DE PEDÁGIOS'},
-    {id:'corp',titulo:'GASTOS CARTÃO CORPORATIVO',cor:'#1a4a8a',label:'Local',totalLabel:'TOTAL CORPORATIVO'},
-    {id:'part',titulo:'GASTOS CARTÃO PARTICULAR (REEMBOLSÁVEL)',cor:'#7a3a00',label:'Local',totalLabel:'TOTAL PARTICULAR'},
+    {id:'pedagio',titulo:'Pedágios',sub:'Reembolsável',cor:'#0F8A67',bg:'#E8F7F1',label:'Destino'},
+    {id:'corp',titulo:'Cartão corporativo',sub:'Empresa',cor:'#2563EB',bg:'#EAF1FF',label:'Local'},
+    {id:'part',titulo:'Cartão particular',sub:'Reembolsável',cor:'#B45309',bg:'#FFF3E4',label:'Local'},
   ];
-  let tabelasHTML='';
-  cats.forEach(cat=>{
-    const itens=doMes.filter(d=>d.cat===cat.id);
-    const total=itens.reduce((a,d)=>a+d.valor,0);
-    const linhas=itens.map(d=>{
-      const[yy,mm,dd]=d.data.split('-');
-      const fotoHtml=d.foto?`<td style="text-align:center;padding:4px;"><img src="${d.foto}" style="width:60px;height:60px;object-fit:cover;border-radius:4px;border:1px solid #ddd;"></td>`:'<td></td>';
-      return`<tr><td>${dd}/${mm}</td><td>R$ ${d.valor.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td><td>${escapeHTML(d.desc||'—')}</td>${fotoHtml}</tr>`;
-    }).join('');
-    const linhasVazias=Array(Math.max(0,8-itens.length)).fill('<tr><td>&nbsp;</td><td></td><td></td><td></td></tr>').join('');
-    tabelasHTML+=`
-      <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
-        <thead>
-          <tr><th colspan="4" style="background:${cat.cor};color:#fff;padding:8px 10px;text-align:center;font-size:12px;">${cat.titulo}</th></tr>
-          <tr style="background:#c8e6c9;">
-            <th style="padding:6px 8px;text-align:left;font-size:11px;border:1px solid #aaa;">DATA</th>
-            <th style="padding:6px 8px;text-align:left;font-size:11px;border:1px solid #aaa;">VALOR</th>
-            <th style="padding:6px 8px;text-align:left;font-size:11px;border:1px solid #aaa;">${cat.label}</th>
-            <th style="padding:6px 8px;text-align:center;font-size:11px;border:1px solid #aaa;">COMPROVANTE</th>
-          </tr>
-        </thead>
-        <tbody>${linhas}${linhasVazias}</tbody>
-        <tfoot>
-          <tr>
-            <td colspan="2" style="padding:6px 8px;font-weight:700;font-size:12px;border:1px solid #aaa;">${cat.totalLabel}</td>
-            <td colspan="2" style="padding:6px 8px;font-weight:700;background:#FFD600;border:1px solid #aaa;">R$ ${total.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td>
-          </tr>
-        </tfoot>
-      </table>`;
-  });
+  const totals=cats.reduce((acc,cat)=>{
+    acc[cat.id]=doMes.filter(d=>d.cat===cat.id).reduce((a,d)=>a+d.valor,0);
+    return acc;
+  },{});
   const totalGeral=doMes.reduce((a,d)=>a+d.valor,0);
-  const html=`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Despesas ${nomeMes}</title><style>body{font-family:Arial,sans-serif;font-size:11px;margin:20px;color:#111;}h2{font-size:16px;margin-bottom:4px;}.sub{color:#666;margin-bottom:20px;font-size:11px;}table{width:100%;border-collapse:collapse;}td{border:1px solid #ccc;padding:5px 8px;font-size:11px;}th{border:1px solid #aaa;}.total-geral{margin-top:16px;background:#e8f5e9;border:2px solid #1a6e3c;border-radius:6px;padding:10px 16px;display:flex;justify-content:space-between;font-size:14px;font-weight:700;}@media print{button{display:none!important;}}</style></head><body>
-  <h2>📋 Relatório de Despesas — ${nomeMes}</h2>
-  <div class="sub">${escapeHTML(currentUser.displayName||'')} · Gerado em ${new Date().toLocaleDateString('pt-BR')}</div>
-  ${tabelasHTML}
-  <div class="total-geral"><span>TOTAL GERAL DE DESPESAS</span><span>R$ ${totalGeral.toLocaleString('pt-BR',{minimumFractionDigits:2})}</span></div>
-  <script>window.onload=()=>window.print();<\/script></body></html>`;
-  const blob=new Blob([html],{type:'text/html;charset=utf-8'});
-  window.open(URL.createObjectURL(blob),'_blank');
+  const totalReembolso=(totals.pedagio||0)+(totals.part||0);
+  const totalCorp=totals.corp||0;
+  let blocosHTML='';
+  for(const cat of cats){
+    const itens=doMes.filter(d=>d.cat===cat.id);
+    const total=totals[cat.id]||0;
+    const linhas=await Promise.all(itens.map(async(d,idx)=>{
+      const[yy,mm,dd]=d.data.split('-');
+      const fotoRelatorio=d.foto?await resizeDataURL(d.foto,360,.66):'';
+      const fotoHtml=fotoRelatorio?`<img class="receipt-img" src="${fotoRelatorio}" alt="Comprovante">`:'<div class="receipt-empty">Sem foto</div>';
+      return`<div class="expense-row">
+        <div class="row-index">${String(idx+1).padStart(2,'0')}</div>
+        <div class="row-main">
+          <div class="row-desc">${escapeHTML(d.desc||'Sem descrição')}</div>
+          <div class="row-meta"><span>${dd}/${mm}/${yy}</span><span>${cat.label}</span></div>
+        </div>
+        <div class="row-value">R$ ${d.valor.toLocaleString('pt-BR',{minimumFractionDigits:2})}</div>
+        <div class="row-receipt">${fotoHtml}</div>
+      </div>`;
+    }));
+    blocosHTML+=`
+      <section class="category-card">
+        <div class="category-head" style="border-color:${cat.cor}">
+          <div>
+            <div class="category-kicker" style="color:${cat.cor}">${cat.sub}</div>
+            <h2>${cat.titulo}</h2>
+          </div>
+          <div class="category-total" style="background:${cat.bg};color:${cat.cor}">R$ ${total.toLocaleString('pt-BR',{minimumFractionDigits:2})}</div>
+        </div>
+        <div class="expense-list">${linhas.length?linhas.join(''):'<div class="empty-report">Nenhum lançamento nesta categoria.</div>'}</div>
+      </section>`;
+  }
+  const nomeUsuario=escapeHTML(currentUser.displayName||currentUser.email||'DRE Invicta');
+  const hoje=new Date().toLocaleDateString('pt-BR');
+  const html=`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Despesas ${nomeMes}</title>
+  <style>
+    @page{size:A4;margin:14mm;}
+    *{box-sizing:border-box;}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;margin:0;background:#f4f6f5;color:#17201c;font-size:12px;line-height:1.35;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .page{max-width:920px;margin:0 auto;background:#fff;min-height:100vh;padding:28px;}
+    .report-hero{background:#10231d;color:#fff;border-radius:18px;padding:26px 28px;margin-bottom:18px;display:flex;justify-content:space-between;gap:24px;align-items:flex-start;}
+    .brand{font-size:12px;text-transform:uppercase;letter-spacing:.16em;color:#94d8be;font-weight:800;margin-bottom:22px;}
+    h1{font-size:30px;line-height:1.05;margin:0 0 8px;font-weight:800;letter-spacing:0;}
+    .hero-sub{color:#c7d6d0;font-size:12px;}
+    .period-pill{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:8px 12px;font-size:12px;font-weight:700;white-space:nowrap;}
+    .summary-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:10px;margin-bottom:18px;}
+    .summary-card{border:1px solid #e3e8e5;border-radius:14px;padding:14px 14px;background:#fff;}
+    .summary-card.primary{background:#e8f7f1;border-color:#bfe6d7;}
+    .summary-label{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#6b756f;font-weight:800;margin-bottom:6px;}
+    .summary-value{font-size:18px;font-weight:850;color:#111b17;white-space:nowrap;}
+    .summary-card.primary .summary-value{font-size:22px;color:#0f6e56;}
+    .category-card{border:1px solid #e5e9e7;border-radius:16px;overflow:hidden;margin-bottom:16px;page-break-inside:avoid;background:#fff;}
+    .category-head{border-left:6px solid #1D9E75;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;background:#fbfcfb;gap:12px;}
+    .category-kicker{font-size:9px;text-transform:uppercase;letter-spacing:.12em;font-weight:850;margin-bottom:3px;}
+    .category-head h2{font-size:17px;margin:0;font-weight:800;color:#17201c;}
+    .category-total{border-radius:999px;padding:8px 12px;font-size:14px;font-weight:850;white-space:nowrap;}
+    .expense-list{padding:4px 12px 12px;}
+    .expense-row{display:grid;grid-template-columns:34px 1fr 118px 74px;gap:10px;align-items:center;border-bottom:1px solid #eef1ef;padding:10px 0;page-break-inside:avoid;}
+    .expense-row:last-child{border-bottom:none;}
+    .row-index{width:28px;height:28px;border-radius:8px;background:#f0f3f1;color:#65716b;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;}
+    .row-desc{font-size:13px;font-weight:750;color:#16201b;margin-bottom:3px;}
+    .row-meta{display:flex;gap:8px;flex-wrap:wrap;color:#7a847f;font-size:10px;text-transform:uppercase;letter-spacing:.04em;font-weight:700;}
+    .row-value{text-align:right;font-size:13px;font-weight:850;color:#17201c;}
+    .row-receipt{display:flex;justify-content:flex-end;}
+    .receipt-img{width:58px;height:58px;object-fit:cover;border-radius:10px;border:1px solid #d9dfdc;}
+    .receipt-empty{width:58px;height:58px;border-radius:10px;border:1px dashed #cbd3cf;color:#9aa39e;display:flex;align-items:center;justify-content:center;text-align:center;font-size:8px;text-transform:uppercase;font-weight:800;}
+    .empty-report{padding:20px 8px;color:#8a948f;font-size:12px;text-align:center;}
+    .footer-note{margin-top:18px;border-top:1px solid #e6ebe8;padding-top:12px;color:#7c8781;font-size:10px;display:flex;justify-content:space-between;gap:10px;}
+    @media print{body{background:#fff;}.page{padding:0;}.report-hero,.summary-card,.category-card{box-shadow:none;}.category-card{margin-bottom:12px;}}
+  </style></head><body>
+  <main class="page">
+    <section class="report-hero">
+      <div>
+        <div class="brand">DRE Invicta</div>
+        <h1>Relatório de despesas</h1>
+        <div class="hero-sub">${nomeUsuario} · Gerado em ${hoje}</div>
+      </div>
+      <div class="period-pill">${nomeMes}</div>
+    </section>
+    <section class="summary-grid">
+      <div class="summary-card primary"><div class="summary-label">Total geral</div><div class="summary-value">R$ ${totalGeral.toLocaleString('pt-BR',{minimumFractionDigits:2})}</div></div>
+      <div class="summary-card"><div class="summary-label">Reembolso</div><div class="summary-value">R$ ${totalReembolso.toLocaleString('pt-BR',{minimumFractionDigits:2})}</div></div>
+      <div class="summary-card"><div class="summary-label">Corporativo</div><div class="summary-value">R$ ${totalCorp.toLocaleString('pt-BR',{minimumFractionDigits:2})}</div></div>
+      <div class="summary-card"><div class="summary-label">Lançamentos</div><div class="summary-value">${doMes.length}</div></div>
+    </section>
+    ${blocosHTML}
+    <div class="footer-note"><span>Relatório gerado pelo app DRE Invicta</span><span>${nomeMes}</span></div>
+  </main></body></html>`;
+  printHTML(html);
 };
 
 function iniciarVeiculos(uid){
@@ -1140,6 +1206,54 @@ function downloadCSV(csv,fname){
   document.body.appendChild(a);
   a.click();
   setTimeout(()=>{document.body.removeChild(a);URL.revokeObjectURL(url);},1000);
+}
+
+function fileToCompressedDataURL(file,maxSide=1400,quality=.74){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onerror=reject;
+    reader.onload=()=>resizeDataURL(reader.result,maxSide,quality).then(resolve).catch(reject);
+    reader.readAsDataURL(file);
+  });
+}
+
+function resizeDataURL(dataURL,maxSide=1400,quality=.74){
+  return new Promise(resolve=>{
+    if(!dataURL||!String(dataURL).startsWith('data:image/')){resolve(dataURL||'');return;}
+    const img=new Image();
+    img.onload=()=>{
+      const scale=Math.min(1,maxSide/Math.max(img.width,img.height));
+      if(scale>=1&&dataURL.length<650000){resolve(dataURL);return;}
+      const canvas=document.createElement('canvas');
+      canvas.width=Math.max(1,Math.round(img.width*scale));
+      canvas.height=Math.max(1,Math.round(img.height*scale));
+      const ctx=canvas.getContext('2d');
+      ctx.drawImage(img,0,0,canvas.width,canvas.height);
+      resolve(canvas.toDataURL('image/jpeg',quality));
+    };
+    img.onerror=()=>resolve(dataURL);
+    img.src=dataURL;
+  });
+}
+
+function printHTML(html){
+  const old=document.getElementById('print-frame');
+  if(old)old.remove();
+  const iframe=document.createElement('iframe');
+  iframe.id='print-frame';
+  iframe.style.cssText='position:fixed;right:0;bottom:0;width:1px;height:1px;border:0;opacity:0;pointer-events:none;';
+  iframe.onload=()=>{
+    try{
+      iframe.contentWindow.focus();
+      iframe.contentWindow.print();
+      showToast('Relatório aberto para PDF');
+    }catch(e){
+      showToast('⚠️ Não consegui abrir a impressão');
+    }
+    setTimeout(()=>iframe.remove(),30000);
+  };
+  document.body.appendChild(iframe);
+  iframe.srcdoc=html;
 }
 
 function fmtDate(d){if(!d)return'';const[y,m,day]=d.split('-');return`${day}/${m}/${y}`;}
