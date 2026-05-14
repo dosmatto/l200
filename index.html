@@ -147,7 +147,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 <!-- TELA DE LOGIN -->
 <div id="login-screen">
-  <div style="position:absolute;top:12px;right:16px;font-size:11px;color:var(--text3);font-weight:500;">v1.4</div>
+  <div style="position:absolute;top:12px;right:16px;font-size:11px;color:var(--text3);font-weight:500;">v1.5</div>
   
   <div class="login-sub">Controle de abastecimento, quilometragem e despesas.<br>Dados salvos na nuvem com segurança.</div>
   <div style="width:100%;max-width:320px;">
@@ -475,8 +475,10 @@ window.salvarAbast=async()=>{
   const km=parseInt(document.getElementById('in-km').value);
   const posto=document.getElementById('in-posto').value;
   const veiculoSel=document.getElementById('in-veiculo').value;
-  // Pega combustível do veículo selecionado ou do campo tipo
-  const veicObj=veiculos.find(v=>(v.nome+(v.placa?' ('+v.placa+')'):'')===veiculoSel);
+  const veicObj=veiculos.find(v=>{
+    const label=v.nome+(v.placa?' ('+v.placa+')':'');
+    return label===veiculoSel;
+  });
   const tipo=document.getElementById('in-tipo').value||(veicObj?veicObj.combustivel:'Diesel');
   if(!data||isNaN(litros)||isNaN(preco)||isNaN(km)){showToast('⚠️ Preencha data, litros, preço e KM');return;}
   if(!veiculoSel){showToast('⚠️ Selecione um veículo');return;}
@@ -1117,7 +1119,7 @@ window.abrirFormVeiculo=(docId)=>{
 };
 
 window.selecionarVeiculoForm=val=>{
-  const v=veiculos.find(v=>(v.nome+(v.placa?' ('+v.placa+')'):'')===val);
+  const v=veiculos.find(v=>{const lb=v.nome+(v.placa?' ('+v.placa+')':'');return lb===val;});
   if(v&&v.combustivel)document.getElementById('in-tipo').value=v.combustivel;
 };
   document.getElementById('v-icone').value=ic;
