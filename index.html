@@ -147,7 +147,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 <!-- TELA DE LOGIN -->
 <div id="login-screen">
-  <div style="position:absolute;top:12px;right:16px;font-size:11px;color:var(--text3);font-weight:500;">v1.5</div>
+  <div style="position:absolute;top:12px;right:16px;font-size:11px;color:var(--text3);font-weight:500;">v1.6</div>
   
   <div class="login-sub">Controle de abastecimento, quilometragem e despesas.<br>Dados salvos na nuvem com segurança.</div>
   <div style="width:100%;max-width:320px;">
@@ -476,7 +476,8 @@ window.salvarAbast=async()=>{
   const posto=document.getElementById('in-posto').value;
   const veiculoSel=document.getElementById('in-veiculo').value;
   const veicObj=veiculos.find(v=>{
-    const label=v.nome+(v.placa?' ('+v.placa+')':'');
+    const placa=v.placa?String.fromCharCode(32,40)+v.placa+String.fromCharCode(41):'';
+    const label=v.nome+placa;
     return label===veiculoSel;
   });
   const tipo=document.getElementById('in-tipo').value||(veicObj?veicObj.combustivel:'Diesel');
@@ -1048,7 +1049,7 @@ function atualizarSelectVeiculo(){
   sel.innerHTML='<option value="">Selecione um veículo...</option>';
   veiculos.forEach(v=>{
     const op=document.createElement('option');
-    op.value=v.nome+(v.placa?' ('+v.placa+')':'');
+    const vp=v.placa?String.fromCharCode(32,40)+v.placa+String.fromCharCode(41):''; op.value=v.nome+vp;
     op.textContent=(v.icone||'🚗')+' '+v.nome+(v.placa?' · '+v.placa:'');
     sel.appendChild(op);
   });
@@ -1119,7 +1120,7 @@ window.abrirFormVeiculo=(docId)=>{
 };
 
 window.selecionarVeiculoForm=val=>{
-  const v=veiculos.find(v=>{const lb=v.nome+(v.placa?' ('+v.placa+')':'');return lb===val;});
+  const v=veiculos.find(v=>{const p=v.placa?String.fromCharCode(32,40)+v.placa+String.fromCharCode(41):'';return (v.nome+p)===val;});
   if(v&&v.combustivel)document.getElementById('in-tipo').value=v.combustivel;
 };
   document.getElementById('v-icone').value=ic;
