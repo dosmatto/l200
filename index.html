@@ -143,8 +143,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div id="km-input-manual" style="display:none;margin-top:12px;">
       <div class="field">
         <label>KM do odômetro</label>
-        <input type="number" id="km-manual" placeholder="ex: 62633" inputmode="numeric" min="0" oninput="kmManualChanged()">
+        <input type="number" id="km-manual" placeholder="ex: 62633" inputmode="numeric" min="0">
       </div>
+      <button class="btn-primary" onclick="confirmarManual()" style="margin-top:0">→ Usar este KM</button>
     </div>
   </div>
 
@@ -197,7 +198,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script>
 const IMPORTED=[{"id":20240813911,"data":"2024-08-13","km":12911,"litros":54.99,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.907},{"id":20240816141,"data":"2024-08-16","km":13141,"litros":25.821,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":11.769},{"id":20240819620,"data":"2024-08-19","km":13620,"litros":40.701,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.314},{"id":20240822056,"data":"2024-08-22","km":14056,"litros":52.44,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":9.06},{"id":20240826407,"data":"2024-08-26","km":14407,"litros":38.74,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":9.379},{"id":20240828883,"data":"2024-08-28","km":14883,"litros":50.75,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":7.917},{"id":20240902359,"data":"2024-09-02","km":15359,"litros":60.12,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.336},{"id":20240908859,"data":"2024-09-08","km":15859,"litros":59.98,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":7.719},{"id":20240911168,"data":"2024-09-11","km":16168,"litros":40.03,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":9.104},{"id":20240913758,"data":"2024-09-13","km":16758,"litros":64.81,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.637},{"id":20240920278,"data":"2024-09-20","km":17278,"litros":60.206,"preco":5.59,"tipo":"Diesel","posto":"Auto Posto Guarani","consumo":7.818},{"id":20240923686,"data":"2024-09-23","km":17686,"litros":52.19,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.272},{"id":20240926067,"data":"2024-09-26","km":18067,"litros":46.06,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.465},{"id":20241002452,"data":"2024-10-02","km":18452,"litros":45.48,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.745},{"id":20241007896,"data":"2024-10-07","km":18896,"litros":50.77,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.179},{"id":20241014364,"data":"2024-10-14","km":19364,"litros":57.22,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.154},{"id":20241016743,"data":"2024-10-16","km":19743,"litros":46.48,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":7.393},{"id":20241023223,"data":"2024-10-23","km":20223,"litros":64.93,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":7.898},{"id":20241030710,"data":"2024-10-30","km":20710,"litros":61.66,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.455},{"id":20241103165,"data":"2024-11-03","km":21165,"litros":53.815,"preco":5.69,"tipo":"Diesel","posto":"Auto Posto Guarani","consumo":8.166},{"id":20241106581,"data":"2024-11-06","km":21581,"litros":50.94,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.654},{"id":20241111979,"data":"2024-11-11","km":21979,"litros":45.99,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.228},{"id":20241118397,"data":"2024-11-18","km":22397,"litros":50.8,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.158},{"id":20241122839,"data":"2024-11-22","km":22839,"litros":54.18,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":7.753},{"id":20241130288,"data":"2024-11-30","km":23288,"litros":57.91,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":7.753},{"id":20241203593,"data":"2024-12-03","km":23593,"litros":39.341,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.482},{"id":20241209015,"data":"2024-12-09","km":24015,"litros":49.75,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":7.436},{"id":20241211312,"data":"2024-12-11","km":24312,"litros":39.94,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":7.828},{"id":20241218792,"data":"2024-12-18","km":24792,"litros":61.32,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":7.889},{"id":20241223076,"data":"2024-12-23","km":25076,"litros":36.0,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":7.982},{"id":20241226400,"data":"2024-12-26","km":25400,"litros":40.591,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.469},{"id":20250104867,"data":"2025-01-04","km":25867,"litros":55.14,"preco":6.04,"tipo":"Diesel","posto":"Auto Posto Ravanello Ltda","consumo":7.478},{"id":20250108305,"data":"2025-01-08","km":26305,"litros":58.57,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.059},{"id":20250119790,"data":"2025-01-19","km":26790,"litros":60.18,"preco":5.95,"tipo":"Diesel","posto":"Frisia","consumo":8.036},{"id":20250130290,"data":"2025-01-30","km":27290,"litros":62.22,"preco":5.99,"tipo":"Diesel","posto":"Frisia","consumo":7.486},{"id":20250208678,"data":"2025-02-08","km":27678,"litros":51.83,"preco":6.3,"tipo":"Diesel","posto":"Frisia","consumo":7.72},{"id":20250214044,"data":"2025-02-14","km":28044,"litros":47.41,"preco":6.3,"tipo":"Diesel","posto":"Frisia","consumo":8.942},{"id":20250218605,"data":"2025-02-18","km":28605,"litros":62.74,"preco":6.3,"tipo":"Diesel","posto":"Frisia","consumo":8.589},{"id":20250224003,"data":"2025-02-24","km":29003,"litros":46.34,"preco":6.3,"tipo":"Diesel","posto":"Frisia","consumo":8.258},{"id":20250228450,"data":"2025-02-28","km":29450,"litros":54.13,"preco":6.3,"tipo":"Diesel","posto":"Frisia","consumo":7.957},{"id":20250307889,"data":"2025-03-07","km":29889,"litros":55.17,"preco":6.3,"tipo":"Diesel","posto":"Frisia","consumo":8.226},{"id":20250314375,"data":"2025-03-14","km":30375,"litros":59.08,"preco":6.3,"tipo":"Diesel","posto":"Frisia","consumo":7.587},{"id":20250324779,"data":"2025-03-24","km":30779,"litros":53.25,"preco":6.09,"tipo":"Diesel","posto":"Frisia","consumo":8.312},{"id":20250328076,"data":"2025-03-28","km":31076,"litros":35.73,"preco":6.09,"tipo":"Diesel","posto":"Frisia","consumo":9.809},{"id":20250330657,"data":"2025-03-30","km":31657,"litros":59.23,"preco":6.48,"tipo":"Diesel","posto":"Auto Posto Bogo","consumo":9.632},{"id":20250404175,"data":"2025-04-04","km":32175,"litros":53.781,"preco":6.48,"tipo":"Diesel","posto":"Frisia","consumo":8.316},{"id":20250409686,"data":"2025-04-09","km":32686,"litros":61.45,"preco":5.99,"tipo":"Diesel","posto":"Frisia","consumo":8.101},{"id":20250417090,"data":"2025-04-17","km":33090,"litros":49.87,"preco":5.794,"tipo":"Diesel","posto":"Frisia","consumo":null},{"id":20250428854,"data":"2025-04-28","km":33854,"litros":40.61,"preco":5.79,"tipo":"Diesel","posto":"Frisia","consumo":8.211},{"id":20250501317,"data":"2025-05-01","km":34317,"litros":56.388,"preco":6.29,"tipo":"Diesel","posto":"Posto Contorno III","consumo":9.022},{"id":20250505733,"data":"2025-05-05","km":34733,"litros":46.11,"preco":5.79,"tipo":"Diesel","posto":"Frisia","consumo":8.104},{"id":20250512098,"data":"2025-05-12","km":35098,"litros":45.04,"preco":5.79,"tipo":"Diesel","posto":"Frisia","consumo":8.354},{"id":20250519530,"data":"2025-05-19","km":35530,"litros":51.71,"preco":5.59,"tipo":"Diesel","posto":"Frisia","consumo":8.69},{"id":20250523015,"data":"2025-05-23","km":36015,"litros":55.81,"preco":5.59,"tipo":"Diesel","posto":"Frisia","consumo":8.209},{"id":20250529511,"data":"2025-05-29","km":36511,"litros":60.419,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":8.19},{"id":20250606986,"data":"2025-06-06","km":36986,"litros":58.0,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":7.926},{"id":20250611461,"data":"2025-06-11","km":37461,"litros":59.93,"preco":5.59,"tipo":"Diesel","posto":"Frisia","consumo":8.187},{"id":20250618926,"data":"2025-06-18","km":37926,"litros":56.8,"preco":5.59,"tipo":"Diesel","posto":"Frisia","consumo":8.342},{"id":20250623239,"data":"2025-06-23","km":38239,"litros":37.519,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":7.764},{"id":20250630657,"data":"2025-06-30","km":38657,"litros":53.84,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":7.867},{"id":20250705104,"data":"2025-07-05","km":39104,"litros":56.82,"preco":5.59,"tipo":"Diesel","posto":"Frisia","consumo":null},{"id":20250720834,"data":"2025-07-20","km":39834,"litros":44.649,"preco":5.59,"tipo":"Diesel","posto":"Frisia","consumo":8.499},{"id":20250721146,"data":"2025-07-21","km":40146,"litros":36.71,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":8.738},{"id":20250723484,"data":"2025-07-23","km":40484,"litros":38.68,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":8.053},{"id":20250730955,"data":"2025-07-30","km":40955,"litros":58.49,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":8.046},{"id":20250805420,"data":"2025-08-05","km":41420,"litros":57.79,"preco":5.97,"tipo":"Diesel","posto":"Frisia","consumo":9.231},{"id":20250811948,"data":"2025-08-11","km":41948,"litros":57.2,"preco":5.97,"tipo":"Diesel","posto":"Frisia","consumo":8.096},{"id":20250815348,"data":"2025-08-15","km":42348,"litros":49.41,"preco":5.79,"tipo":"Diesel","posto":"Frisia","consumo":8.302},{"id":20250822787,"data":"2025-08-22","km":42787,"litros":52.88,"preco":5.75,"tipo":"Diesel","posto":"Frisia","consumo":9.091},{"id":20250826364,"data":"2025-08-26","km":43364,"litros":63.47,"preco":5.75,"tipo":"Diesel","posto":"Frisia","consumo":8.146},{"id":20250829669,"data":"2025-08-29","km":43669,"litros":37.44,"preco":5.75,"tipo":"Diesel","posto":"Frisia","consumo":7.851},{"id":20250903102,"data":"2025-09-03","km":44102,"litros":55.15,"preco":5.75,"tipo":"Diesel","posto":"Frisia","consumo":9.168},{"id":20250915537,"data":"2025-09-15","km":44537,"litros":47.45,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":8.375},{"id":20250919955,"data":"2025-09-19","km":44955,"litros":49.91,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":8.339},{"id":20251001331,"data":"2025-10-01","km":45331,"litros":45.09,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":7.464},{"id":20251002792,"data":"2025-10-02","km":45792,"litros":61.76,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":7.55},{"id":20251008229,"data":"2025-10-08","km":46229,"litros":57.88,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":7.901},{"id":20251015660,"data":"2025-10-15","km":46660,"litros":54.55,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":8.418},{"id":20251018142,"data":"2025-10-18","km":47142,"litros":57.26,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":7.976},{"id":20251022523,"data":"2025-10-22","km":47523,"litros":47.77,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":8.119},{"id":20251024782,"data":"2025-10-24","km":47782,"litros":31.9,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":8.967},{"id":20251026370,"data":"2025-10-26","km":48370,"litros":65.577,"preco":5.49,"tipo":"Diesel","posto":"Auto Posto Guarani","consumo":8.827},{"id":20251029817,"data":"2025-10-29","km":48817,"litros":50.64,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":7.832},{"id":20251108295,"data":"2025-11-08","km":49295,"litros":61.03,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":7.89},{"id":20251110759,"data":"2025-11-10","km":49759,"litros":58.81,"preco":5.91,"tipo":"Diesel","posto":"Frisia","consumo":8.206},{"id":20251118294,"data":"2025-11-18","km":50294,"litros":65.2,"preco":5.75,"tipo":"Diesel","posto":"Frisia","consumo":8.364},{"id":20251123772,"data":"2025-11-23","km":50772,"litros":57.15,"preco":5.79,"tipo":"Diesel","posto":"Frisia","consumo":8.041},{"id":20251128281,"data":"2025-11-28","km":51281,"litros":63.3,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":7.787},{"id":20251203622,"data":"2025-12-03","km":51622,"litros":43.79,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":null},{"id":20251206088,"data":"2025-12-06","km":52088,"litros":39.87,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":null},{"id":20251208464,"data":"2025-12-08","km":52464,"litros":66.389,"preco":5.89,"tipo":"Diesel","posto":"Posto Contorno III","consumo":7.565},{"id":20251215803,"data":"2025-12-15","km":52803,"litros":44.81,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":8.696},{"id":20251219290,"data":"2025-12-19","km":53290,"litros":56.0,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":7.596},{"id":20251226701,"data":"2025-12-26","km":53701,"litros":54.11,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":7.383},{"id":20260105166,"data":"2026-01-05","km":54166,"litros":62.98,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":7.566},{"id":20260113604,"data":"2026-01-13","km":54604,"litros":57.89,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":9.072},{"id":20260119125,"data":"2026-01-19","km":55125,"litros":57.431,"preco":5.99,"tipo":"Diesel","posto":"Frisia","consumo":7.894},{"id":20260121616,"data":"2026-01-21","km":55616,"litros":62.2,"preco":5.59,"tipo":"Diesel","posto":"Frisia","consumo":7.477},{"id":20260130035,"data":"2026-01-30","km":56035,"litros":56.04,"preco":5.59,"tipo":"Diesel","posto":"Frisia","consumo":9.608},{"id":20260201594,"data":"2026-02-01","km":56594,"litros":58.182,"preco":6.53,"tipo":"Diesel","posto":"Frisia","consumo":7.712},{"id":20260209040,"data":"2026-02-09","km":57040,"litros":57.83,"preco":5.59,"tipo":"Diesel","posto":"Frisia","consumo":8.051},{"id":20260211370,"data":"2026-02-11","km":57370,"litros":40.99,"preco":5.59,"tipo":"Diesel","posto":"Frisia","consumo":8.809},{"id":20260220935,"data":"2026-02-20","km":57935,"litros":64.14,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":10.848},{"id":20260302435,"data":"2026-03-02","km":58435,"litros":46.09,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":5.376},{"id":20260308743,"data":"2026-03-08","km":58743,"litros":57.29,"preco":6.94,"tipo":"Diesel","posto":"Frisia","consumo":7.453},{"id":20260312091,"data":"2026-03-12","km":59091,"litros":46.69,"preco":7.69,"tipo":"Diesel","posto":"Frisia","consumo":7.99},{"id":20260319461,"data":"2026-03-19","km":59461,"litros":46.31,"preco":7.47,"tipo":"Diesel","posto":"Frisia","consumo":7.202},{"id":20260325852,"data":"2026-03-25","km":59852,"litros":54.29,"preco":7.6,"tipo":"Diesel","posto":"Frisia","consumo":6.81},{"id":20260330099,"data":"2026-03-30","km":60099,"litros":36.27,"preco":7.37,"tipo":"Diesel","posto":"Frisia","consumo":7.925},{"id":20260406545,"data":"2026-04-06","km":60545,"litros":56.28,"preco":7.37,"tipo":"Diesel","posto":"Frisia","consumo":7.574},{"id":20260411977,"data":"2026-04-11","km":60977,"litros":57.04,"preco":7.37,"tipo":"Diesel","posto":"Frisia","consumo":7.691},{"id":20260417425,"data":"2026-04-17","km":61425,"litros":58.251,"preco":6.99,"tipo":"Diesel","posto":"Frisia","consumo":7.821},{"id":20260427837,"data":"2026-04-27","km":61837,"litros":52.68,"preco":6.76,"tipo":"Diesel","posto":"Frisia","consumo":7.713},{"id":20260430160,"data":"2026-04-30","km":62160,"litros":41.88,"preco":6.76,"tipo":"Diesel","posto":"Frisia","consumo":8.442},{"id":20260503633,"data":"2026-05-03","km":62633,"litros":56.03,"preco":7.79,"tipo":"Diesel","posto":"Frisia","consumo":null}];
 
@@ -266,9 +266,12 @@ function toggleManual(){
   if(!visible)document.getElementById('km-manual').focus();
 }
 
-function kmManualChanged(){
+function kmManualChanged(){} // não usado mais
+
+function confirmarManual(){
   const v=parseInt(document.getElementById('km-manual').value);
-  if(!isNaN(v)&&v>1000) mostrarStep2(v);
+  if(!v||v<1000){showToast('⚠️ Digite um KM válido');return;}
+  mostrarStep2(v);
 }
 
 function mostrarStep2(km){
@@ -294,24 +297,38 @@ async function processarFoto(input){
   document.getElementById('ai-loading').classList.add('show');
   kmLidoFoto=null;
   try{
-    const imgUrl=URL.createObjectURL(file);
-    const result=await Tesseract.recognize(imgUrl,'eng',{
-      tessedit_char_whitelist:'0123456789',
-      tessedit_pageseg_mode:'6'
+    // Convert image to base64
+    const b64=await new Promise((res,rej)=>{
+      const r=new FileReader();
+      r.onload=()=>res(r.result.split(',')[1]);
+      r.onerror=rej;
+      r.readAsDataURL(file);
     });
-    URL.revokeObjectURL(imgUrl);
-    const txt=result.data.text.replace(/\s/g,'');
-    const nums=txt.match(/\d{4,6}/g);
-    let best=null;
-    if(nums){
-      const lastKm=records.length?records[records.length-1].km:50000;
-      best=nums.map(n=>parseInt(n)).filter(n=>n>1000&&n<999999)
-        .sort((a,b)=>Math.abs(a-lastKm)-Math.abs(b-lastKm))[0]||null;
-    }
+    const mtype=file.type||'image/jpeg';
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key': await getApiKey(),
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body:JSON.stringify({
+        model:'claude-haiku-4-5-20251001',
+        max_tokens:100,
+        messages:[{role:'user',content:[
+          {type:'image',source:{type:'base64',media_type:mtype,data:b64}},
+          {type:'text',text:'Esta é uma foto do odômetro de um veículo. Leia o número de quilômetros exibido. Responda APENAS com o número inteiro sem pontos, vírgulas ou espaços. Exemplo: 62633'}
+        ]}]
+      })
+    });
+    const data=await resp.json();
+    const txt=data.content&&data.content[0]?data.content[0].text.trim():'';
+    const num=parseInt(txt.replace(/\D/g,''));
     document.getElementById('ai-loading').classList.remove('show');
-    if(best){
-      mostrarStep2(best);
-      showToast('✓ KM lido: '+best.toLocaleString('pt-BR')+' — confirme abaixo');
+    if(!isNaN(num)&&num>1000){
+      mostrarStep2(num);
+      showToast('✓ KM lido: '+num.toLocaleString('pt-BR')+' — confirme abaixo');
     } else {
       showToast('⚠️ Não consegui ler. Insira manualmente.');
       document.getElementById('km-input-manual').style.display='block';
@@ -322,6 +339,14 @@ async function processarFoto(input){
     showToast('⚠️ Erro na leitura. Insira manualmente.');
     document.getElementById('km-input-manual').style.display='block';
   }
+}
+
+let _apiKey=localStorage.getItem('l200apikey')||'';
+async function getApiKey(){
+  if(_apiKey)return _apiKey;
+  const k=prompt('Para ler o odômetro pela foto, informe sua chave da API Anthropic (começa com sk-ant-).\n\nObtendo em: console.anthropic.com\n\nA chave fica salva apenas no seu dispositivo.');
+  if(k&&k.startsWith('sk-')){_apiKey=k;localStorage.setItem('l200apikey',k);}
+  return _apiKey||'';
 }
 
 function salvarKmDia(){
@@ -362,8 +387,20 @@ function renderKmLista(){
     const [y,m,day]=d.split('-');
     html+=`<div class="km-box">
       <div class="km-box-title">${day}/${m}/${y}</div>
-      <div class="km-row"><span class="km-row-label">KM Inicial</span><span class="km-row-val">${ini?ini.toLocaleString('pt-BR'):'—'}</span></div>
-      <div class="km-row"><span class="km-row-label">KM Final</span><span class="km-row-val">${fin?fin.toLocaleString('pt-BR'):'—'}</span></div>
+      <div class="km-row">
+        <span class="km-row-label">KM Inicial</span>
+        <span style="display:flex;align-items:center;gap:8px;">
+          <span class="km-row-val">${ini?ini.toLocaleString('pt-BR'):'—'}</span>
+          <button onclick="editarKm('${d}','inicial',${ini||0})" style="font-size:12px;padding:3px 8px;border-radius:6px;border:0.5px solid var(--border2);background:var(--surface);color:var(--text2);cursor:pointer;">✏️</button>
+        </span>
+      </div>
+      <div class="km-row">
+        <span class="km-row-label">KM Final</span>
+        <span style="display:flex;align-items:center;gap:8px;">
+          <span class="km-row-val">${fin?fin.toLocaleString('pt-BR'):'—'}</span>
+          <button onclick="editarKm('${d}','final',${fin||0})" style="font-size:12px;padding:3px 8px;border-radius:6px;border:0.5px solid var(--border2);background:var(--surface);color:var(--text2);cursor:pointer;">✏️</button>
+        </span>
+      </div>
       <div class="km-row"><span class="km-row-label">Rodados</span><span class="km-row-val ${rod?'cons-good':''}">${rod?rod+' km':'—'}</span></div>
       <button class="del-btn" style="margin-top:8px;font-size:13px;color:var(--text3);" onclick="delKmDia('${d}')">× excluir dia</button>
     </div>`;
@@ -378,6 +415,20 @@ function delKmDia(data){
   if(!confirm('Excluir registros de KM do dia '+data+'?'))return;
   kmRecords=kmRecords.filter(r=>r.data!==data);
   saveKm();renderKmLista();
+}
+
+function editarKm(data,tipo,valorAtual){
+  const novo=prompt('Editar KM '+tipo+' de '+data+':\nValor atual: '+(valorAtual||'não registrado')+'\n\nDigite o novo KM:',valorAtual||'');
+  if(novo===null)return;
+  const v=parseInt(novo);
+  if(!v||v<1000){showToast('⚠️ KM inválido');return;}
+  // remove entrada existente e insere nova
+  kmRecords=kmRecords.filter(r=>!(r.data===data&&r.tipo===tipo));
+  kmRecords.push({id:Date.now(),data,hora:new Date().toTimeString().slice(0,5),km:v,tipo});
+  kmRecords.sort((a,b)=>a.data.localeCompare(b.data)||a.tipo.localeCompare(b.tipo));
+  saveKm();
+  showToast('✓ KM '+tipo+' atualizado: '+v.toLocaleString('pt-BR'));
+  renderKmLista();
 }
 
 function exportarKmExcel(){
