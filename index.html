@@ -316,7 +316,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <!-- Firebase SDK -->
 <script type="module">
 import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import{getAuth,GoogleAuthProvider,signInWithPopup,signInWithRedirect,getRedirectResult,signOut,onAuthStateChanged,indexedDBLocalPersistence,initializeAuth}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import{getAuth,GoogleAuthProvider,signInWithPopup,signInWithRedirect,getRedirectResult,signOut,onAuthStateChanged}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 import{getFirestore,collection,doc,addDoc,setDoc,updateDoc,deleteDoc,getDocs,query,orderBy,onSnapshot,writeBatch,serverTimestamp}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 const firebaseConfig={
@@ -329,8 +329,9 @@ const firebaseConfig={
 };
 
 const app=initializeApp(firebaseConfig);
-// Usa indexedDB para persistência — funciona no Safari iOS (não usa sessionStorage)
-const auth=initializeAuth(app,{persistence:indexedDBLocalPersistence});
+// Força o uso do authDomain correto para evitar loop no Safari
+const auth=getAuth(app);
+auth.config.authDomain='abastecimento-61a4f.firebaseapp.com';
 const db=getFirestore(app);
 
 let currentUser=null;
