@@ -12,18 +12,9 @@
 @media(prefers-color-scheme:dark){:root{--bg:#111;--surface:#1e1e1e;--text:#f0f0f0;--text2:#aaa;--text3:#666;--border:rgba(255,255,255,0.1);--border2:rgba(255,255,255,0.18);--green-bg:#04342c;--green-text:#5dcaa5;}}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:90px;}
-
-/* LOGIN */
 #login-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:32px;text-align:center;}
-.login-icon{font-size:64px;margin-bottom:16px;}
-.login-title{font-size:24px;font-weight:700;margin-bottom:8px;}
 .login-sub{font-size:14px;color:var(--text2);margin-bottom:40px;line-height:1.5;}
-.btn-google{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;max-width:320px;padding:16px;background:#fff;border:1.5px solid #ddd;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;color:#333;font-family:inherit;box-shadow:0 2px 8px rgba(0,0,0,.1);}
-.btn-google:active{opacity:.8;}
-.btn-google svg{width:22px;height:22px;flex-shrink:0;}
 .login-loading{margin-top:20px;color:var(--text2);font-size:14px;display:none;}
-
-/* APP */
 #app-screen{display:none;}
 .header{background:var(--surface);border-bottom:0.5px solid var(--border);padding:16px 16px 0;position:sticky;top:0;z-index:100;}
 .header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
@@ -33,36 +24,29 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .user-avatar{width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid var(--green);}
 .user-avatar-placeholder{width:32px;height:32px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700;}
 .btn-logout{background:none;border:none;color:var(--text3);font-size:12px;cursor:pointer;padding:4px 8px;border-radius:6px;font-family:inherit;}
-.tab-bar{display:flex;}
-.tab{flex:1;padding:10px 4px;text-align:center;font-size:12px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--text2);border-bottom:2.5px solid transparent;font-family:inherit;transition:all .2s;}
+.tab-bar{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.tab-bar::-webkit-scrollbar{display:none;}
+.tab{flex:1 0 auto;min-width:70px;padding:10px 4px;text-align:center;font-size:12px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--text2);border-bottom:2.5px solid transparent;font-family:inherit;transition:all .2s;}
 .tab.active{color:var(--green);border-bottom-color:var(--green);}
 .content{padding:16px;max-width:480px;margin:0 auto;}
-
-/* LOADING */
 .app-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;color:var(--text2);font-size:14px;gap:12px;}
 .spinner{display:inline-block;width:24px;height:24px;border:2.5px solid var(--border2);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
-
-/* FORMS */
 .field{margin-bottom:14px;}
 .field label{display:block;font-size:11px;color:var(--text2);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;}
 .field input,.field select{width:100%;padding:13px 14px;background:var(--surface);border:0.5px solid var(--border2);border-radius:var(--rsm);font-size:16px;color:var(--text);font-family:inherit;outline:none;-webkit-appearance:none;}
-.field input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(29,158,117,.12);}
+.field input:focus,.field select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(29,158,117,.12);}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .btn-primary{width:100%;padding:15px;background:var(--green);color:#fff;border:none;border-radius:var(--rsm);font-size:16px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:6px;}
 .btn-primary:active{opacity:.8;}
 .btn-secondary{width:100%;padding:13px;background:transparent;color:var(--green);border:1.5px solid var(--green);border-radius:var(--rsm);font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:8px;}
 .btn-secondary:active{opacity:.7;}
 .section-label{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;}
-
-/* METRICS */
 .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
 .metric{background:var(--surface);border-radius:var(--rsm);padding:14px;border:0.5px solid var(--border);}
 .metric .mlabel{font-size:10px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;}
 .metric .mvalue{font-size:20px;font-weight:600;color:var(--text);line-height:1.1;}
 .metric .munit{font-size:11px;color:var(--text2);font-weight:400;}
-
-/* CARDS */
 .card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;}
 .card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
 .card-date{font-size:13px;font-weight:600;color:var(--text);}
@@ -74,17 +58,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .card-row span:last-child{color:var(--text);font-weight:500;}
 .cons-good{color:var(--green)!important;}
 .cons-bad{color:#e24b4a!important;}
-
-/* FILTERS */
 .filter-row{display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;}
 .filter-row::-webkit-scrollbar{display:none;}
 .fbtn{flex-shrink:0;padding:6px 14px;border-radius:99px;font-size:13px;border:0.5px solid var(--border2);background:var(--surface);color:var(--text2);cursor:pointer;font-family:inherit;font-weight:500;}
 .fbtn.active{background:var(--green);color:#fff;border-color:var(--green);}
-
-/* CHARTS */
 .chart-wrap{position:relative;width:100%;height:180px;margin-bottom:20px;}
-
-/* KM */
 .km-box{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;}
 .km-box-title{font-size:13px;font-weight:600;margin-bottom:12px;color:var(--text);}
 .km-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:0.5px solid var(--border);font-size:13px;}
@@ -105,18 +83,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .tipo-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
 .tipo-btn{padding:12px;border-radius:var(--rsm);border:1.5px solid var(--border2);background:var(--surface);color:var(--text2);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;text-align:center;}
 .tipo-btn.active{border-color:var(--green);color:var(--green);background:var(--green-bg);}
-
-/* TOAST */
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a1a;color:#fff;padding:11px 22px;border-radius:99px;font-size:14px;font-weight:500;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;z-index:999;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .empty{text-align:center;padding:48px 20px;color:var(--text3);font-size:14px;}
-
-/* VEICULO TAG */
-.veiculo-tag{display:inline-flex;align-items:center;gap:6px;background:var(--green-bg);color:var(--green-text);font-size:12px;font-weight:600;padding:4px 10px;border-radius:99px;margin-bottom:4px;}
-
-/* DESPESAS */
+.veiculo-card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:12px;}
+.veiculo-icon{font-size:28px;flex-shrink:0;}
+.veiculo-info{flex:1;}
+.veiculo-nome{font-size:15px;font-weight:600;color:var(--text);}
+.veiculo-detalhe{font-size:12px;color:var(--text2);margin-top:2px;}
+.veiculo-actions{display:flex;gap:6px;}
 .desp-cat{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);margin-bottom:16px;overflow:hidden;}
-.desp-cat-header{background:#1a6e3c;color:#fff;padding:10px 14px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;display:flex;justify-content:space-between;align-items:center;}
+.desp-cat-header{background:#1a6e3c;color:#fff;padding:10px 14px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;display:flex;justify-content:space-between;align-items:center;gap:8px;}
 .desp-cat-header.corp{background:#1a4a8a;}
 .desp-cat-header.part{background:#7a3a00;}
 .desp-item{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:0.5px solid var(--border);gap:8px;}
@@ -135,26 +112,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .mes-selector span{font-size:15px;font-weight:600;color:var(--text);}
 .foto-preview{width:100%;max-height:200px;object-fit:cover;border-radius:var(--rsm);margin-top:8px;display:none;}
 .foto-preview.show{display:block;}
+@media(max-width:360px){.row2{grid-template-columns:1fr}.desp-cat-header{font-size:11px}.tab{min-width:66px;font-size:11px}}
 </style>
 </head>
 <body>
-
-<!-- TELA DE LOGIN -->
 <div id="login-screen">
-  <div class="login-icon">🚛</div>
-  <div class="login-title">DRE Invicta</div>
+  <div style="position:absolute;top:12px;right:16px;font-size:11px;color:var(--text3);font-weight:500;">v1.7</div>
   <div class="login-sub">Controle de abastecimento, quilometragem e despesas.<br>Dados salvos na nuvem com segurança.</div>
-  <button class="btn-google" onclick="fazerLogin()">
-    <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-    Entrar com Google
-  </button>
-  <div style="margin-top:12px;font-size:12px;color:var(--text3);text-align:center;">Se travar no login, acesse via:<br>
-    <a href="https://abastecimento-61a4f.firebaseapp.com" style="color:var(--green);text-decoration:none;font-weight:500;">abastecimento-61a4f.firebaseapp.com</a>
+  <div style="width:100%;max-width:320px;">
+    <div class="field"><label>E-mail</label><input type="email" id="login-email" placeholder="seu@email.com" inputmode="email" autocomplete="email"></div>
+    <div class="field"><label>Senha</label><input type="password" id="login-senha" placeholder="sua senha" autocomplete="current-password"></div>
+    <button class="btn-primary" onclick="fazerLogin()" style="margin-top:4px;">Entrar</button>
+    <button class="btn-secondary" onclick="criarConta()" style="margin-top:8px;font-size:14px;">Criar conta nova</button>
   </div>
   <div class="login-loading" id="login-loading"><span class="spinner"></span> Entrando...</div>
 </div>
 
-<!-- APP PRINCIPAL -->
 <div id="app-screen">
   <div class="header">
     <div class="header-top">
@@ -174,18 +147,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <button class="tab" onclick="showTab('despesas')">Despesas</button>
       <button class="tab" onclick="showTab('historico')">Histórico</button>
       <button class="tab" onclick="showTab('stats')">Resumo</button>
+      <button class="tab" onclick="showTab('veiculos')">Veículos</button>
     </div>
   </div>
 
   <div class="content">
-
-    <!-- ABA ABASTECER -->
     <div id="sec-novo" class="section">
       <br>
-      <div id="reimport-banner" style="background:var(--green-bg);border:1.5px solid var(--green);border-radius:var(--rsm);padding:14px;margin-bottom:16px;text-align:center;">
-        <div style="font-size:14px;font-weight:600;color:var(--green-text);margin-bottom:6px;">📦 Restaurar histórico</div>
-        <button onclick="reimportarHistorico()" style="width:100%;padding:12px;background:var(--green);color:#fff;border:none;border-radius:6px;font-size:15px;font-weight:700;cursor:pointer;">↩ Importar 117 registros agora</button>
-      </div>
       <div class="row2">
         <div class="field"><label>Data</label><input type="date" id="in-data"></div>
         <div class="field"><label>Hora</label><input type="time" id="in-hora"></div>
@@ -199,11 +167,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <div class="field"><label>Combustível</label><input type="text" id="in-tipo" value="Diesel"></div>
       </div>
       <div class="field"><label>Posto (opcional)</label><input type="text" id="in-posto" placeholder="ex: Frisia"></div>
-      <div class="field"><label>Veículo (opcional)</label><input type="text" id="in-veiculo" placeholder="ex: L200 SSF1I63"></div>
+      <div class="field">
+        <label>Veículo</label>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <select id="in-veiculo" onchange="selecionarVeiculoForm(this.value)" style="flex:1;padding:13px 14px;background:var(--surface);border:0.5px solid var(--border2);border-radius:var(--rsm);font-size:15px;color:var(--text);font-family:inherit;outline:none;-webkit-appearance:none;">
+            <option value="">Selecione um veículo...</option>
+          </select>
+          <button onclick="showTab('veiculos')" style="flex-shrink:0;padding:13px 12px;background:var(--green-bg);color:var(--green-text);border:1px solid var(--green);border-radius:var(--rsm);font-size:20px;cursor:pointer;">+</button>
+        </div>
+      </div>
       <button class="btn-primary" onclick="salvarAbast()">✓ Registrar abastecimento</button>
     </div>
 
-    <!-- ABA KM DIÁRIO -->
     <div id="sec-km" class="section" style="display:none">
       <br>
       <div class="row2">
@@ -247,7 +222,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <button class="btn-secondary" onclick="exportarKmCSV()" style="margin-top:4px;">⬇ Exportar CSV KM</button>
     </div>
 
-    <!-- ABA DESPESAS -->
     <div id="sec-despesas" class="section" style="display:none">
       <br>
       <div class="mes-selector">
@@ -255,35 +229,27 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <span id="despesa-mes-label">—</span>
         <button onclick="mudarMesDespesa(1)">›</button>
       </div>
-
-      <!-- PEDÁGIOS -->
       <div class="desp-cat">
         <div class="desp-cat-header">🚧 Gastos com Pedágio (Reembolsável)<span id="total-pedagio">R$ 0,00</span></div>
         <div id="lista-pedagio"></div>
         <button class="desp-add-btn" onclick="abrirFormDespesa('pedagio')">+ Adicionar pedágio</button>
         <div class="desp-total"><span>TOTAL DE PEDÁGIOS</span><span id="total-pedagio-footer">R$ 0,00</span></div>
       </div>
-
-      <!-- CARTÃO CORPORATIVO -->
       <div class="desp-cat">
         <div class="desp-cat-header corp">💳 Gastos Cartão Corporativo<span id="total-corp">R$ 0,00</span></div>
         <div id="lista-corp"></div>
         <button class="desp-add-btn" onclick="abrirFormDespesa('corp')">+ Adicionar gasto corporativo</button>
         <div class="desp-total"><span>TOTAL CORPORATIVO</span><span id="total-corp-footer">R$ 0,00</span></div>
       </div>
-
-      <!-- CARTÃO PARTICULAR -->
       <div class="desp-cat">
         <div class="desp-cat-header part">💳 Gastos Cartão Particular (Reembolsável)<span id="total-part">R$ 0,00</span></div>
         <div id="lista-part"></div>
         <button class="desp-add-btn" onclick="abrirFormDespesa('part')">+ Adicionar gasto particular</button>
         <div class="desp-total"><span>TOTAL PARTICULAR</span><span id="total-part-footer">R$ 0,00</span></div>
       </div>
-
       <button class="btn-secondary" onclick="exportarDespesasPDF()" style="margin-top:4px;">📄 Exportar Relatório PDF</button>
     </div>
 
-    <!-- ABA HISTÓRICO -->
     <div id="sec-historico" class="section" style="display:none">
       <br>
       <div class="filter-row" id="filter-row"></div>
@@ -294,7 +260,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       </div>
     </div>
 
-    <!-- ABA RESUMO -->
     <div id="sec-stats" class="section" style="display:none">
       <br>
       <div class="metric-grid" id="metrics-grid"><div class="app-loading" style="grid-column:1/-1"><div class="spinner"></div>Carregando...</div></div>
@@ -308,16 +273,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       </div>
     </div>
 
+    <div id="sec-veiculos" class="section" style="display:none">
+      <br>
+      <div class="section-label">Meus veículos</div>
+      <div id="lista-veiculos"><div class="app-loading"><div class="spinner"></div>Carregando...</div></div>
+      <button class="btn-primary" onclick="abrirFormVeiculo()" style="margin-top:8px;">+ Adicionar veículo</button>
+    </div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
-<!-- Firebase SDK -->
 <script type="module">
 import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import{getAuth,GoogleAuthProvider,signInWithPopup,signInWithRedirect,getRedirectResult,signOut,onAuthStateChanged}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-import{getFirestore,collection,doc,addDoc,setDoc,updateDoc,deleteDoc,getDocs,query,orderBy,onSnapshot,writeBatch,serverTimestamp}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import{createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged,indexedDBLocalPersistence,initializeAuth}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import{getFirestore,collection,doc,addDoc,updateDoc,deleteDoc,query,orderBy,onSnapshot,serverTimestamp}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 const firebaseConfig={
   apiKey:"AIzaSyAbNZRwLwik2ZmWGE_KLgU5t5atIuUVzmU",
@@ -329,83 +299,85 @@ const firebaseConfig={
 };
 
 const app=initializeApp(firebaseConfig);
-// Força o uso do authDomain correto para evitar loop no Safari
-const auth=getAuth(app);
-auth.config.authDomain='abastecimento-61a4f.firebaseapp.com';
+const auth=initializeAuth(app,{persistence:indexedDBLocalPersistence});
 const db=getFirestore(app);
+const AVG_CONS=8.2;
+const NOMES_MES=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 
 let currentUser=null;
 let records=[];
 let kmRecords=[];
+let despesas=[];
+let veiculos=[];
 let activeFilter='Todos';
 let tipoKm='inicial';
 let kmLidoFoto=null;
 let c1=null,c2=null,c3=null;
-let unsubAbast=null,unsubKm=null;
-const AVG_CONS=8.2;
+let unsubAbast=null,unsubKm=null,unsubDesp=null,unsubVeic=null;
+let mesDespesaAtual=new Date().toISOString().slice(0,7);
 
-const IMPORTED=[{"id":20240813911,"data":"2024-08-13","km":12911,"litros":54.99,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.907},{"id":20240816141,"data":"2024-08-16","km":13141,"litros":25.821,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":11.769},{"id":20240819620,"data":"2024-08-19","km":13620,"litros":40.701,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.314},{"id":20240822056,"data":"2024-08-22","km":14056,"litros":52.44,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":9.06},{"id":20240826407,"data":"2024-08-26","km":14407,"litros":38.74,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":9.379},{"id":20240828883,"data":"2024-08-28","km":14883,"litros":50.75,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.917},{"id":20240902359,"data":"2024-09-02","km":15359,"litros":60.12,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.336},{"id":20240908859,"data":"2024-09-08","km":15859,"litros":59.98,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.719},{"id":20240911168,"data":"2024-09-11","km":16168,"litros":40.03,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":9.104},{"id":20240913758,"data":"2024-09-13","km":16758,"litros":64.81,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.637},{"id":20240920278,"data":"2024-09-20","km":17278,"litros":60.206,"preco":5.59,"tipo":"Diesel","posto":"Auto Posto Guarani","veiculo":"L200 SSF1I63","consumo":7.818},{"id":20240923686,"data":"2024-09-23","km":17686,"litros":52.19,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.272},{"id":20240926067,"data":"2024-09-26","km":18067,"litros":46.06,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.465},{"id":20241002452,"data":"2024-10-02","km":18452,"litros":45.48,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.745},{"id":20241007896,"data":"2024-10-07","km":18896,"litros":50.77,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.179},{"id":20241014364,"data":"2024-10-14","km":19364,"litros":57.22,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.154},{"id":20241016743,"data":"2024-10-16","km":19743,"litros":46.48,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.393},{"id":20241023223,"data":"2024-10-23","km":20223,"litros":64.93,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.898},{"id":20241030710,"data":"2024-10-30","km":20710,"litros":61.66,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.455},{"id":20241103165,"data":"2024-11-03","km":21165,"litros":53.815,"preco":5.69,"tipo":"Diesel","posto":"Auto Posto Guarani","veiculo":"L200 SSF1I63","consumo":8.166},{"id":20241106581,"data":"2024-11-06","km":21581,"litros":50.94,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.654},{"id":20241111979,"data":"2024-11-11","km":21979,"litros":45.99,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.228},{"id":20241118397,"data":"2024-11-18","km":22397,"litros":50.8,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.158},{"id":20241122839,"data":"2024-11-22","km":22839,"litros":54.18,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.753},{"id":20241130288,"data":"2024-11-30","km":23288,"litros":57.91,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.753},{"id":20241203593,"data":"2024-12-03","km":23593,"litros":39.341,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.482},{"id":20241209015,"data":"2024-12-09","km":24015,"litros":49.75,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.436},{"id":20241211312,"data":"2024-12-11","km":24312,"litros":39.94,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.828},{"id":20241218792,"data":"2024-12-18","km":24792,"litros":61.32,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.889},{"id":20241223076,"data":"2024-12-23","km":25076,"litros":36.0,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.982},{"id":20241226400,"data":"2024-12-26","km":25400,"litros":40.591,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.469},{"id":20250104867,"data":"2025-01-04","km":25867,"litros":55.14,"preco":6.04,"tipo":"Diesel","posto":"Auto Posto Ravanello Ltda","veiculo":"L200 SSF1I63","consumo":7.478},{"id":20250108305,"data":"2025-01-08","km":26305,"litros":58.57,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.059},{"id":20250119790,"data":"2025-01-19","km":26790,"litros":60.18,"preco":5.95,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.036},{"id":20250130290,"data":"2025-01-30","km":27290,"litros":62.22,"preco":5.99,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.486},{"id":20250208678,"data":"2025-02-08","km":27678,"litros":51.83,"preco":6.3,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.72},{"id":20250214044,"data":"2025-02-14","km":28044,"litros":47.41,"preco":6.3,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.942},{"id":20250218605,"data":"2025-02-18","km":28605,"litros":62.74,"preco":6.3,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.589},{"id":20250224003,"data":"2025-02-24","km":29003,"litros":46.34,"preco":6.3,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.258},{"id":20250228450,"data":"2025-02-28","km":29450,"litros":54.13,"preco":6.3,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.957},{"id":20250307889,"data":"2025-03-07","km":29889,"litros":55.17,"preco":6.3,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.226},{"id":20250314375,"data":"2025-03-14","km":30375,"litros":59.08,"preco":6.3,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.587},{"id":20250324779,"data":"2025-03-24","km":30779,"litros":53.25,"preco":6.09,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.312},{"id":20250328076,"data":"2025-03-28","km":31076,"litros":35.73,"preco":6.09,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":9.809},{"id":20250330657,"data":"2025-03-30","km":31657,"litros":59.23,"preco":6.48,"tipo":"Diesel","posto":"Auto Posto Bogo","veiculo":"L200 SSF1I63","consumo":9.632},{"id":20250404175,"data":"2025-04-04","km":32175,"litros":53.781,"preco":6.48,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.316},{"id":20250409686,"data":"2025-04-09","km":32686,"litros":61.45,"preco":5.99,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.101},{"id":20250417090,"data":"2025-04-17","km":33090,"litros":49.87,"preco":5.794,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":null},{"id":20250428854,"data":"2025-04-28","km":33854,"litros":40.61,"preco":5.79,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.211},{"id":20250501317,"data":"2025-05-01","km":34317,"litros":56.388,"preco":6.29,"tipo":"Diesel","posto":"Posto Contorno III","veiculo":"L200 SSF1I63","consumo":9.022},{"id":20250505733,"data":"2025-05-05","km":34733,"litros":46.11,"preco":5.79,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.104},{"id":20250512098,"data":"2025-05-12","km":35098,"litros":45.04,"preco":5.79,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.354},{"id":20250519530,"data":"2025-05-19","km":35530,"litros":51.71,"preco":5.59,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.69},{"id":20250523015,"data":"2025-05-23","km":36015,"litros":55.81,"preco":5.59,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.209},{"id":20250529511,"data":"2025-05-29","km":36511,"litros":60.419,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.19},{"id":20250606986,"data":"2025-06-06","km":36986,"litros":58.0,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.926},{"id":20250611461,"data":"2025-06-11","km":37461,"litros":59.93,"preco":5.59,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.187},{"id":20250618926,"data":"2025-06-18","km":37926,"litros":56.8,"preco":5.59,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.342},{"id":20250623239,"data":"2025-06-23","km":38239,"litros":37.519,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.764},{"id":20250630657,"data":"2025-06-30","km":38657,"litros":53.84,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.867},{"id":20250705104,"data":"2025-07-05","km":39104,"litros":56.82,"preco":5.59,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":null},{"id":20250720834,"data":"2025-07-20","km":39834,"litros":44.649,"preco":5.59,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.499},{"id":20250721146,"data":"2025-07-21","km":40146,"litros":36.71,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.738},{"id":20250723484,"data":"2025-07-23","km":40484,"litros":38.68,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.053},{"id":20250730955,"data":"2025-07-30","km":40955,"litros":58.49,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.046},{"id":20250805420,"data":"2025-08-05","km":41420,"litros":57.79,"preco":5.97,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":9.231},{"id":20250811948,"data":"2025-08-11","km":41948,"litros":57.2,"preco":5.97,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.096},{"id":20250815348,"data":"2025-08-15","km":42348,"litros":49.41,"preco":5.79,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.302},{"id":20250822787,"data":"2025-08-22","km":42787,"litros":52.88,"preco":5.75,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":9.091},{"id":20250826364,"data":"2025-08-26","km":43364,"litros":63.47,"preco":5.75,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.146},{"id":20250829669,"data":"2025-08-29","km":43669,"litros":37.44,"preco":5.75,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.851},{"id":20250903102,"data":"2025-09-03","km":44102,"litros":55.15,"preco":5.75,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":9.168},{"id":20250915537,"data":"2025-09-15","km":44537,"litros":47.45,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.375},{"id":20250919955,"data":"2025-09-19","km":44955,"litros":49.91,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.339},{"id":20251001331,"data":"2025-10-01","km":45331,"litros":45.09,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.464},{"id":20251002792,"data":"2025-10-02","km":45792,"litros":61.76,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.55},{"id":20251008229,"data":"2025-10-08","km":46229,"litros":57.88,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.901},{"id":20251015660,"data":"2025-10-15","km":46660,"litros":54.55,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.418},{"id":20251018142,"data":"2025-10-18","km":47142,"litros":57.26,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.976},{"id":20251022523,"data":"2025-10-22","km":47523,"litros":47.77,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.119},{"id":20251024782,"data":"2025-10-24","km":47782,"litros":31.9,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.967},{"id":20251026370,"data":"2025-10-26","km":48370,"litros":65.577,"preco":5.49,"tipo":"Diesel","posto":"Auto Posto Guarani","veiculo":"L200 SSF1I63","consumo":8.827},{"id":20251029817,"data":"2025-10-29","km":48817,"litros":50.64,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.832},{"id":20251108295,"data":"2025-11-08","km":49295,"litros":61.03,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.89},{"id":20251110759,"data":"2025-11-10","km":49759,"litros":58.81,"preco":5.91,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.206},{"id":20251118294,"data":"2025-11-18","km":50294,"litros":65.2,"preco":5.75,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.364},{"id":20251123772,"data":"2025-11-23","km":50772,"litros":57.15,"preco":5.79,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.041},{"id":20251128281,"data":"2025-11-28","km":51281,"litros":63.3,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.787},{"id":20251203622,"data":"2025-12-03","km":51622,"litros":43.79,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":11.688},{"id":20251206088,"data":"2025-12-06","km":52088,"litros":39.87,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":5.664},{"id":20251208464,"data":"2025-12-08","km":52464,"litros":66.389,"preco":5.89,"tipo":"Diesel","posto":"Posto Contorno III","veiculo":"L200 SSF1I63","consumo":7.565},{"id":20251215803,"data":"2025-12-15","km":52803,"litros":44.81,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.696},{"id":20251219290,"data":"2025-12-19","km":53290,"litros":56.0,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.596},{"id":20251226701,"data":"2025-12-26","km":53701,"litros":54.11,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.383},{"id":20260105166,"data":"2026-01-05","km":54166,"litros":62.98,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.566},{"id":20260113604,"data":"2026-01-13","km":54604,"litros":57.89,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":9.072},{"id":20260119125,"data":"2026-01-19","km":55125,"litros":57.431,"preco":5.99,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.894},{"id":20260121616,"data":"2026-01-21","km":55616,"litros":62.2,"preco":5.59,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.477},{"id":20260130035,"data":"2026-01-30","km":56035,"litros":56.04,"preco":5.59,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":9.608},{"id":20260201594,"data":"2026-02-01","km":56594,"litros":58.182,"preco":6.53,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.712},{"id":20260209040,"data":"2026-02-09","km":57040,"litros":57.83,"preco":5.59,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.051},{"id":20260211370,"data":"2026-02-11","km":57370,"litros":40.99,"preco":5.59,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.809},{"id":20260220935,"data":"2026-02-20","km":57935,"litros":64.14,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":10.848},{"id":20260302435,"data":"2026-03-02","km":58435,"litros":46.09,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":5.376},{"id":20260308743,"data":"2026-03-08","km":58743,"litros":57.29,"preco":6.94,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.453},{"id":20260312091,"data":"2026-03-12","km":59091,"litros":46.69,"preco":7.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.99},{"id":20260319461,"data":"2026-03-19","km":59461,"litros":46.31,"preco":7.47,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.202},{"id":20260325852,"data":"2026-03-25","km":59852,"litros":54.29,"preco":7.6,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":6.81},{"id":20260330099,"data":"2026-03-30","km":60099,"litros":36.27,"preco":7.37,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.925},{"id":20260406545,"data":"2026-04-06","km":60545,"litros":56.28,"preco":7.37,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.574},{"id":20260411977,"data":"2026-04-11","km":60977,"litros":57.04,"preco":7.37,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.691},{"id":20260417425,"data":"2026-04-17","km":61425,"litros":58.251,"preco":6.99,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.821},{"id":20260427837,"data":"2026-04-27","km":61837,"litros":52.68,"preco":6.76,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.713},{"id":20260430160,"data":"2026-04-30","km":62160,"litros":41.88,"preco":6.76,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.442},{"id":20260503633,"data":"2026-05-03","km":62633,"litros":56.03,"preco":7.79,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.546},{"id":20260506049,"data":"2026-05-06","km":63049,"litros":55.13,"preco":6.74,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.664},{"id":20260513469,"data":"2026-05-13","km":63469,"litros":54.8,"preco":6.74,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":null}];
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
 
-// ======= AUTH =======
-const isSafariIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||
-  (/^((?!chrome|android).)*safari/i.test(navigator.userAgent)&&!navigator.userAgent.includes('Chrome'));
+function stopListeners(){
+  [unsubAbast,unsubKm,unsubDesp,unsubVeic].forEach(fn=>{if(fn)fn();});
+  unsubAbast=null;unsubKm=null;unsubDesp=null;unsubVeic=null;
+}
 
 window.fazerLogin=async()=>{
+  const email=document.getElementById('login-email').value.trim();
+  const senha=document.getElementById('login-senha').value;
+  if(!email||!senha){showToast('⚠️ Informe e-mail e senha');return;}
   document.getElementById('login-loading').style.display='block';
-  const provider=new GoogleAuthProvider();
-  provider.setCustomParameters({prompt:'select_account'});
   try{
-    // Tenta popup primeiro (funciona em Chrome/desktop)
-    await signInWithPopup(auth,provider);
+    await signInWithEmailAndPassword(auth,email,senha);
   }catch(e){
-    // Se popup falhar (Safari iOS), tenta redirect
-    if(e.code==='auth/popup-blocked'||e.code==='auth/cancelled-popup-request'||isSafariIOS){
-      try{
-        await signInWithRedirect(auth,provider);
-      }catch(e2){
-        document.getElementById('login-loading').style.display='none';
-        showToast('⚠️ Erro ao entrar. Tente novamente.');
-      }
-    } else {
-      document.getElementById('login-loading').style.display='none';
-      showToast('⚠️ Erro ao entrar. Tente novamente.');
-    }
+    document.getElementById('login-loading').style.display='none';
+    if(e.code==='auth/user-not-found'||e.code==='auth/wrong-password'||e.code==='auth/invalid-credential')showToast('⚠️ E-mail ou senha incorretos');
+    else showToast('⚠️ Erro: '+e.code);
   }
 };
 
-// Captura resultado do redirect
-getRedirectResult(auth).then(result=>{
-  if(result&&result.user){
+window.criarConta=async()=>{
+  const email=document.getElementById('login-email').value.trim();
+  const senha=document.getElementById('login-senha').value;
+  if(!email||!senha){showToast('⚠️ Informe e-mail e senha');return;}
+  if(senha.length<6){showToast('⚠️ Senha deve ter ao menos 6 caracteres');return;}
+  document.getElementById('login-loading').style.display='block';
+  try{
+    await createUserWithEmailAndPassword(auth,email,senha);
+    showToast('✓ Conta criada!');
+  }catch(e){
     document.getElementById('login-loading').style.display='none';
+    if(e.code==='auth/email-already-in-use')showToast('⚠️ E-mail já cadastrado. Faça login.');
+    else if(e.code==='auth/operation-not-allowed')showToast('⚠️ Ative Email/Senha no Firebase Console');
+    else showToast('⚠️ Erro: '+e.code);
   }
-}).catch(()=>{
-  document.getElementById('login-loading').style.display='none';
-});
+};
 
 window.fazerLogout=async()=>{
   if(!confirm('Deseja sair da conta?'))return;
-  if(unsubAbast)unsubAbast();
-  if(unsubKm)unsubKm();
+  stopListeners();
   await signOut(auth);
 };
 
 onAuthStateChanged(auth,async user=>{
+  document.getElementById('login-loading').style.display='none';
   if(user){
     currentUser=user;
     document.getElementById('login-screen').style.display='none';
     document.getElementById('app-screen').style.display='block';
-    // Avatar
-    if(user.photoURL){
-      document.getElementById('user-photo').src=user.photoURL;
-      document.getElementById('user-photo').style.display='block';
-    } else {
-      const ini=document.getElementById('user-initials');
-      ini.textContent=user.displayName?user.displayName[0].toUpperCase():'U';
-      ini.style.display='flex';
-    }
+    const ini=document.getElementById('user-initials');
+    ini.textContent=user.email?user.email[0].toUpperCase():'U';
+    ini.style.display='flex';
     await iniciarApp(user);
-  } else {
+  }else{
     currentUser=null;
+    stopListeners();
     document.getElementById('login-screen').style.display='flex';
     document.getElementById('app-screen').style.display='none';
   }
@@ -419,83 +391,44 @@ async function iniciarApp(user){
   document.getElementById('km-data').value=now.toISOString().split('T')[0];
   document.getElementById('km-hora').value=now.toTimeString().slice(0,5);
 
-  // Verifica se precisa importar dados
-  const abastRef=collection(db,'users',uid,'abastecimentos');
-  const snap=await getDocs(query(abastRef,orderBy('km')));
-  if(snap.empty){
-    await importarHistorico(uid);
-  }
-
-  // Listener tempo real — abastecimentos
-  unsubAbast=onSnapshot(query(abastRef,orderBy('km')),snap=>{
+  unsubAbast=onSnapshot(query(collection(db,'users',uid,'abastecimentos'),orderBy('km')),snap=>{
     records=snap.docs.map(d=>({...d.data(),_docId:d.id}));
-    const banner=document.getElementById('reimport-banner');
-    if(banner)banner.style.display=records.length>0?'none':'block';
     if(document.getElementById('sec-historico').style.display!=='none'){buildFilters();renderHist();}
     if(document.getElementById('sec-stats').style.display!=='none')renderStats();
   });
 
-  // Listener tempo real — km
-  const kmRef=collection(db,'users',uid,'kmdiario');
-  unsubKm=onSnapshot(query(kmRef,orderBy('data')),snap=>{
+  unsubKm=onSnapshot(query(collection(db,'users',uid,'kmdiario'),orderBy('data')),snap=>{
     kmRecords=snap.docs.map(d=>({...d.data(),_docId:d.id}));
     if(document.getElementById('sec-km').style.display!=='none')renderKmLista();
   });
 
-  // Inicia despesas
   iniciarDespesas(uid);
+  iniciarVeiculos(uid);
 }
 
-async function importarHistorico(uid){
-  try{
-    showToast('⏳ Importando histórico...');
-    const abastRef=collection(db,'users',uid,'abastecimentos');
-    // Importa em lotes de 20 para evitar limite do Firestore
-    const tamanhoLote=20;
-    for(let i=0;i<IMPORTED.length;i+=tamanhoLote){
-      const lote=IMPORTED.slice(i,i+tamanhoLote);
-      const batch=writeBatch(db);
-      lote.forEach(r=>{
-        const ref=doc(abastRef,String(r.id));
-        const{id,...data}=r;
-        batch.set(ref,{...data,importado:true,criadoEm:serverTimestamp()});
-      });
-      await batch.commit();
-    }
-    showToast('✓ '+IMPORTED.length+' registros importados com sucesso!');
-  }catch(e){
-    showToast('⚠️ Erro na importação. Use o botão Reimportar.');
-    console.error(e);
-  }
-}
-
-// Função global para reimportar manualmente
-window.reimportarHistorico=async()=>{
-  if(!currentUser){showToast('⚠️ Faça login primeiro');return;}
-  if(!confirm('Importar os 117 registros do Drivvo para o Firebase?\n\nRegistros já existentes não serão duplicados.'))return;
-  await importarHistorico(currentUser.uid);
-  const banner=document.getElementById('reimport-banner');
-  if(banner)banner.style.display='none';
-};
-
-// ======= HELPERS FIRESTORE =======
 function abastRef(){return collection(db,'users',currentUser.uid,'abastecimentos');}
 function kmRef(){return collection(db,'users',currentUser.uid,'kmdiario');}
+function despRef(){return collection(db,'users',currentUser.uid,'despesas');}
+function veicRef(){return collection(db,'users',currentUser.uid,'veiculos');}
 
-// ======= ABASTECER =======
 window.salvarAbast=async()=>{
   const data=document.getElementById('in-data').value;
   const hora=document.getElementById('in-hora').value||new Date().toTimeString().slice(0,5);
   const litros=parseFloat(document.getElementById('in-litros').value);
   const preco=parseFloat(document.getElementById('in-preco').value);
-  const km=parseInt(document.getElementById('in-km').value);
-  const tipo=document.getElementById('in-tipo').value||'Diesel';
+  const km=parseInt(document.getElementById('in-km').value,10);
   const posto=document.getElementById('in-posto').value;
-  const veiculo=document.getElementById('in-veiculo').value||'L200 SSF1I63';
+  const veiculoSel=document.getElementById('in-veiculo').value;
+  const veicObj=veiculos.find(v=>{
+    const placa=v.placa?String.fromCharCode(32,40)+v.placa+String.fromCharCode(41):'';
+    return v.nome+placa===veiculoSel;
+  });
+  const tipo=document.getElementById('in-tipo').value||(veicObj?veicObj.combustivel:'Diesel');
   if(!data||isNaN(litros)||isNaN(preco)||isNaN(km)){showToast('⚠️ Preencha data, litros, preço e KM');return;}
-  const prev=[...records].filter(r=>r.km<km).pop();
+  if(!veiculoSel){showToast('⚠️ Selecione um veículo');return;}
+  const prev=[...records].filter(r=>r.veiculo===veiculoSel&&r.km<km).pop();
   const consumo=prev?(km-prev.km)/litros:null;
-  await addDoc(abastRef(),{data,hora,litros,preco,km,tipo,posto,veiculo,consumo,criadoEm:serverTimestamp()});
+  await addDoc(abastRef(),{data,hora,litros,preco,km,tipo,posto,veiculo:veiculoSel,consumo,criadoEm:serverTimestamp()});
   showToast('✓ Abastecimento salvo!');
   ['in-litros','in-preco','in-km','in-posto'].forEach(id=>document.getElementById(id).value='');
   const nn=new Date();
@@ -503,28 +436,31 @@ window.salvarAbast=async()=>{
   document.getElementById('in-hora').value=nn.toTimeString().slice(0,5);
 };
 
-// ======= KM DIÁRIO =======
 window.setTipo=t=>{
   tipoKm=t;
   document.getElementById('btn-inicial').classList.toggle('active',t==='inicial');
   document.getElementById('btn-final').classList.toggle('active',t==='final');
 };
+
 window.toggleManual=()=>{
   const el=document.getElementById('km-input-manual');
   el.style.display=el.style.display==='none'?'block':'none';
   if(el.style.display==='block')document.getElementById('km-manual').focus();
 };
+
 window.confirmarManual=()=>{
-  const v=parseInt(document.getElementById('km-manual').value);
+  const v=parseInt(document.getElementById('km-manual').value,10);
   if(!v||v<1000){showToast('⚠️ Digite um KM válido');return;}
   mostrarStep2(v);
 };
+
 function mostrarStep2(km){
   kmLidoFoto=km;
   document.getElementById('km-confirmado').value=km;
   document.getElementById('km-step1').style.display='none';
   document.getElementById('km-step2').style.display='block';
 }
+
 window.resetKmStep=()=>{
   kmLidoFoto=null;
   document.getElementById('km-step1').style.display='block';
@@ -533,6 +469,7 @@ window.resetKmStep=()=>{
   document.getElementById('km-input-manual').style.display='none';
   document.getElementById('foto-input').value='';
 };
+
 window.processarFoto=async input=>{
   if(!input.files||!input.files[0])return;
   document.getElementById('ai-loading').classList.add('show');
@@ -545,18 +482,22 @@ window.processarFoto=async input=>{
     if(!key){document.getElementById('ai-loading').classList.remove('show');showToast('⚠️ Chave não informada');return;}
     const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:100,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mtype,data:b64}},{type:'text',text:'Leia o número do odômetro nesta foto. Responda APENAS com o número inteiro sem pontos ou espaços. Ex: 62633'}]}]})});
     const data=await resp.json();
-    const num=parseInt((data.content&&data.content[0]?data.content[0].text:'').replace(/\D/g,''));
+    const num=parseInt((data.content&&data.content[0]?data.content[0].text:'').replace(/\D/g,''),10);
     document.getElementById('ai-loading').classList.remove('show');
     if(!isNaN(num)&&num>1000){mostrarStep2(num);showToast('✓ KM lido: '+num.toLocaleString('pt-BR'));}
     else{showToast('⚠️ Não consegui ler. Insira manualmente.');document.getElementById('km-input-manual').style.display='block';}
-  }catch(e){document.getElementById('ai-loading').classList.remove('show');showToast('⚠️ Erro. Insira manualmente.');document.getElementById('km-input-manual').style.display='block';}
+  }catch(e){
+    document.getElementById('ai-loading').classList.remove('show');
+    showToast('⚠️ Erro. Insira manualmente.');
+    document.getElementById('km-input-manual').style.display='block';
+  }
 };
+
 window.salvarKmDia=async()=>{
   const data=document.getElementById('km-data').value;
   const hora=document.getElementById('km-hora').value||new Date().toTimeString().slice(0,5);
-  const km=parseInt(document.getElementById('km-confirmado').value||'0');
+  const km=parseInt(document.getElementById('km-confirmado').value||'0',10);
   if(!data||!km||km<1000){showToast('⚠️ Informe o KM');return;}
-  // remove duplicata do mesmo dia+tipo
   const existente=kmRecords.find(r=>r.data===data&&r.tipo===tipoKm);
   if(existente)await deleteDoc(doc(db,'users',currentUser.uid,'kmdiario',existente._docId));
   await addDoc(kmRef(),{data,hora,km,tipo:tipoKm,criadoEm:serverTimestamp()});
@@ -610,13 +551,14 @@ function renderKmLista(){
 window.editarKmDia=async(data,tipo,valorAtual)=>{
   const novo=prompt('Editar KM '+tipo+' de '+data+':\nAtual: '+(valorAtual||'não registrado')+'\nNovo KM:',valorAtual||'');
   if(novo===null)return;
-  const v=parseInt(novo);
+  const v=parseInt(novo,10);
   if(!v||v<1000){showToast('⚠️ KM inválido');return;}
   const existente=kmRecords.find(r=>r.data===data&&r.tipo===tipo);
-  if(existente){await updateDoc(doc(db,'users',currentUser.uid,'kmdiario',existente._docId),{km:v});}
-  else{await addDoc(kmRef(),{data,hora:new Date().toTimeString().slice(0,5),km:v,tipo,criadoEm:serverTimestamp()});}
+  if(existente)await updateDoc(doc(db,'users',currentUser.uid,'kmdiario',existente._docId),{km:v});
+  else await addDoc(kmRef(),{data,hora:new Date().toTimeString().slice(0,5),km:v,tipo,criadoEm:serverTimestamp()});
   showToast('✓ KM atualizado');
 };
+
 window.delKmDia=async data=>{
   if(!confirm('Excluir registros de KM do dia '+data+'?'))return;
   const doMes=kmRecords.filter(r=>r.data===data);
@@ -633,7 +575,8 @@ window.exportarKmCSV=()=>{
   let total=0;
   let csv='DATA;KM INICIAL;KM FINAL;KM RODADOS\n';
   dias.forEach(d=>{
-    const ini=byDay[d].inicial||'';const fin=byDay[d].final||'';
+    const ini=byDay[d].inicial||'';
+    const fin=byDay[d].final||'';
     const rod=(byDay[d].inicial&&byDay[d].final)?byDay[d].final-byDay[d].inicial:0;
     if(rod)total+=rod;
     const[y,m,day]=d.split('-');
@@ -643,13 +586,11 @@ window.exportarKmCSV=()=>{
   downloadCSV(csv,'KM_'+mesAtual+'.csv');
 };
 
-// ======= HISTÓRICO =======
 function buildFilters(){
   const years=[...new Set(records.map(r=>r.data&&r.data.slice(0,4)).filter(Boolean))].sort().reverse();
-  document.getElementById('filter-row').innerHTML=['Todos',...years].map(y=>
-    `<button class="fbtn${activeFilter===y?' active':''}" onclick="setFilter('${y}')">${y}</button>`
-  ).join('');
+  document.getElementById('filter-row').innerHTML=['Todos',...years].map(y=>`<button class="fbtn${activeFilter===y?' active':''}" onclick="setFilter('${y}')">${y}</button>`).join('');
 }
+
 window.setFilter=y=>{activeFilter=y;buildFilters();renderHist();};
 
 function renderHist(){
@@ -670,7 +611,7 @@ function renderHist(){
           <button class="del-btn" onclick="delAbast('${r._docId}')">×</button>
         </div>
       </div>
-      <span class="badge">${r.tipo}${r.posto?' · '+r.posto:''}</span>
+      <span class="badge">${escapeHTML(r.tipo||'')}${r.posto?' · '+escapeHTML(r.posto):''}</span>
       <div class="card-row"><span>Litros</span><span>${r.litros.toFixed(2)} l</span></div>
       <div class="card-row"><span>Preço/litro</span><span>R$ ${r.preco.toFixed(2)}</span></div>
       <div class="card-row"><span>Total pago</span><span>R$ ${total}</span></div>
@@ -703,31 +644,34 @@ window.editAbast=id=>{
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
       <div class="field"><label>KM</label><input type="number" id="e-km" value="${r.km}" inputmode="numeric"></div>
-      <div class="field"><label>Combustível</label><input type="text" id="e-tipo" value="${r.tipo||'Diesel'}"></div>
+      <div class="field"><label>Combustível</label><input type="text" id="e-tipo" value="${escapeAttr(r.tipo||'Diesel')}"></div>
     </div>
-    <div class="field"><label>Posto</label><input type="text" id="e-posto" value="${r.posto||''}"></div>
-    <div class="field"><label>Veículo</label><input type="text" id="e-veiculo" value="${r.veiculo||'L200 SSF1I63'}"></div>
+    <div class="field"><label>Posto</label><input type="text" id="e-posto" value="${escapeAttr(r.posto||'')}"></div>
+    <div class="field"><label>Veículo</label><input type="text" id="e-veiculo" value="${escapeAttr(r.veiculo||'')}"></div>
     <button class="btn-primary" onclick="salvarEdicao('${id}')" style="margin-top:4px;">✓ Salvar</button>
     <button class="btn-secondary" onclick="fecharEdit()" style="margin-top:8px;">Cancelar</button>
   </div>`;
   document.body.appendChild(overlay);
   overlay.addEventListener('click',e=>{if(e.target===overlay)fecharEdit();});
 };
+
 window.fecharEdit=()=>{const o=document.getElementById('edit-overlay');if(o)o.remove();};
+
 window.salvarEdicao=async docId=>{
   const data=document.getElementById('e-data').value;
   const hora=document.getElementById('e-hora').value;
   const litros=parseFloat(document.getElementById('e-litros').value);
   const preco=parseFloat(document.getElementById('e-preco').value);
-  const km=parseInt(document.getElementById('e-km').value);
+  const km=parseInt(document.getElementById('e-km').value,10);
   const tipo=document.getElementById('e-tipo').value||'Diesel';
   const posto=document.getElementById('e-posto').value;
-  const veiculo=document.getElementById('e-veiculo').value||'L200 SSF1I63';
+  const veiculo=document.getElementById('e-veiculo').value;
   if(!data||isNaN(litros)||isNaN(preco)||isNaN(km)){showToast('⚠️ Preencha todos os campos');return;}
-  const prev=[...records].filter(r=>r.km<km&&r._docId!==docId).pop();
+  const prev=[...records].filter(r=>r.veiculo===veiculo&&r.km<km&&r._docId!==docId).pop();
   const consumo=prev?(km-prev.km)/litros:null;
   await updateDoc(doc(db,'users',currentUser.uid,'abastecimentos',docId),{data,hora,litros,preco,km,tipo,posto,veiculo,consumo});
-  fecharEdit();showToast('✓ Atualizado!');
+  fecharEdit();
+  showToast('✓ Atualizado!');
 };
 
 window.exportarCSV=()=>{
@@ -754,9 +698,9 @@ window.exportarPDF=()=>{
   const wC=filtered.filter(r=>r.consumo&&r.consumo<15);
   const avg=wC.length?wC.reduce((a,r)=>a+r.consumo,0)/wC.length:0;
   const periodo=activeFilter==='Todos'?'Histórico completo':activeFilter;
-  const linhas=filtered.map(r=>{const[y,m,d]=r.data.split('-');return`<tr><td>${d}/${m}/${y}</td><td>R$ ${(r.litros*r.preco).toFixed(2)}</td><td>${r.litros.toFixed(2)} l</td><td>R$ ${r.preco.toFixed(2)}</td><td>${r.km.toLocaleString('pt-BR')}</td><td>${r.consumo?r.consumo.toFixed(2):'—'}</td><td>${r.posto||'—'}</td><td>${r.veiculo||'—'}</td></tr>`;}).join('');
+  const linhas=filtered.map(r=>{const[y,m,d]=r.data.split('-');return`<tr><td>${d}/${m}/${y}</td><td>R$ ${(r.litros*r.preco).toFixed(2)}</td><td>${r.litros.toFixed(2)} l</td><td>R$ ${r.preco.toFixed(2)}</td><td>${r.km.toLocaleString('pt-BR')}</td><td>${r.consumo?r.consumo.toFixed(2):'—'}</td><td>${escapeHTML(r.posto||'—')}</td><td>${escapeHTML(r.veiculo||'—')}</td></tr>`;}).join('');
   const html=`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>DRE Invicta — Abastecimentos</title><style>body{font-family:Arial,sans-serif;font-size:11px;margin:20px;}h2{font-size:15px;margin-bottom:4px;}.sub{color:#666;font-size:11px;margin-bottom:16px;}table{width:100%;border-collapse:collapse;margin-bottom:16px;}th{background:#1D9E75;color:#fff;padding:6px 8px;text-align:left;font-size:10px;}td{padding:5px 8px;border-bottom:0.5px solid #ddd;}tr:nth-child(even) td{background:#f9f9f9;}.totais{display:flex;gap:24px;background:#f0f9f5;border:1px solid #c0e8d8;border-radius:8px;padding:12px 16px;margin-bottom:20px;}.tot-item .label{font-size:10px;color:#666;text-transform:uppercase;}.tot-item .val{font-size:15px;font-weight:700;color:#1D9E75;}@media print{button{display:none!important;}}</style></head><body>
-  <h2>🚛 DRE Invicta — ${currentUser.displayName||''}</h2>
+  <h2>🚛 DRE Invicta — ${escapeHTML(currentUser.displayName||'')}</h2>
   <div class="sub">Abastecimentos · ${periodo} · ${new Date().toLocaleDateString('pt-BR')}</div>
   <div class="totais">
     <div class="tot-item"><div class="label">Total gasto</div><div class="val">R$ ${tG.toLocaleString('pt-BR',{minimumFractionDigits:2})}</div></div>
@@ -770,12 +714,11 @@ window.exportarPDF=()=>{
   window.open(URL.createObjectURL(blob),'_blank');
 };
 
-// ======= RESUMO =======
 function renderStats(){
   const grid=document.getElementById('metrics-grid');
   const chartSec=document.getElementById('chart-section');
   const wC=records.filter(r=>r.consumo&&r.consumo<15);
-  if(records.length<2){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:32px;color:var(--text3);font-size:14px;">Poucos registros.</div>';chartSec.style.display='none';return;}
+  if(records.length<2||!wC.length){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:32px;color:var(--text3);font-size:14px;">Poucos registros.</div>';chartSec.style.display='none';return;}
   chartSec.style.display='block';
   const tL=records.reduce((a,r)=>a+r.litros,0);
   const tG=records.reduce((a,r)=>a+r.litros*r.preco,0);
@@ -800,10 +743,14 @@ function renderStats(){
 }
 
 function drawCharts(wc,all){
+  if(!window.Chart)return;
   const isDark=matchMedia('(prefers-color-scheme:dark)').matches;
-  const tc=isDark?'#888':'#999';const gc=isDark?'rgba(255,255,255,.07)':'rgba(0,0,0,.06)';
-  const step=Math.ceil(wc.length/30);
-  const sc=wc.filter((_,i)=>i%step===0);const sa=all.filter((_,i)=>i%step===0);
+  const tc=isDark?'#888':'#999';
+  const gc=isDark?'rgba(255,255,255,.07)':'rgba(0,0,0,.06)';
+  const step=Math.max(1,Math.ceil(wc.length/30));
+  const stepAll=Math.max(1,Math.ceil(all.length/30));
+  const sc=wc.filter((_,i)=>i%step===0);
+  const sa=all.filter((_,i)=>i%stepAll===0);
   const opts=(ex={})=>({responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:tc,font:{size:10},maxRotation:45,autoSkip:true,maxTicksLimit:8},grid:{color:gc}},y:{ticks:{color:tc,font:{size:11},...(ex.yt||{})},grid:{color:gc}}}});
   if(c1)c1.destroy();if(c2)c2.destroy();if(c3)c3.destroy();
   c1=new Chart(document.getElementById('chart1'),{type:'line',data:{labels:sc.map(r=>fmtShort(r.data)),datasets:[{data:sc.map(r=>+r.consumo.toFixed(2)),borderColor:'#1D9E75',backgroundColor:'rgba(29,158,117,.1)',tension:.3,fill:true,pointRadius:2}]},options:opts()});
@@ -811,33 +758,26 @@ function drawCharts(wc,all){
   c3=new Chart(document.getElementById('chart3'),{type:'line',data:{labels:sa.map(r=>fmtShort(r.data)),datasets:[{data:sa.map(r=>+r.preco.toFixed(2)),borderColor:'#378ADD',backgroundColor:'rgba(55,138,221,.1)',tension:.3,fill:true,pointRadius:2}]},options:opts({yt:{callback:v=>'R$'+v}})});
 }
 
-// ======= UTILS =======
 window.showTab=t=>{
-  const tabs=['novo','km','despesas','historico','stats'];
+  const tabs=['novo','km','despesas','historico','stats','veiculos'];
   document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',tabs[i]===t));
-  tabs.forEach(id=>document.getElementById('sec-'+id).style.display=id===t?'block':'none');
+  tabs.forEach(id=>{
+    const el=document.getElementById('sec-'+id);
+    if(el)el.style.display=id===t?'block':'none';
+  });
   if(t==='historico'){buildFilters();renderHist();}
   if(t==='stats')renderStats();
   if(t==='km')renderKmLista();
   if(t==='despesas')renderDespesas();
+  if(t==='veiculos')renderVeiculos();
 };
 
-// ======= DESPESAS =======
-let despesas=[];
-let mesDespesaAtual=new Date().toISOString().slice(0,7);
-let unsubDesp=null;
-
-function despRef(){return collection(db,'users',currentUser.uid,'despesas');}
-
 function iniciarDespesas(uid){
-  const ref=collection(db,'users',uid,'despesas');
-  unsubDesp=onSnapshot(query(ref,orderBy('data')),snap=>{
+  unsubDesp=onSnapshot(query(collection(db,'users',uid,'despesas'),orderBy('data')),snap=>{
     despesas=snap.docs.map(d=>({...d.data(),_docId:d.id}));
     if(document.getElementById('sec-despesas').style.display!=='none')renderDespesas();
   });
 }
-
-const NOMES_MES=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 
 window.mudarMesDespesa=dir=>{
   const[y,m]=mesDespesaAtual.split('-').map(Number);
@@ -862,11 +802,10 @@ function renderDespesas(){
       const[yy,mm,dd]=d.data.split('-');
       const temFoto=d.foto&&d.foto.length>100;
       return`<div class="desp-item">
-        ${temFoto?`<img src="${d.foto}" class="desp-thumb" onclick="verFoto('${d._docId}')" alt="comprovante">`:
-        `<div style="width:40px;height:40px;border-radius:6px;background:var(--bg);border:1px dashed var(--border2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;" onclick="abrirFotoExistente('${d._docId}')">📷</div>`}
+        ${temFoto?`<img src="${d.foto}" class="desp-thumb" onclick="verFoto('${d._docId}')" alt="comprovante">`:`<div style="width:40px;height:40px;border-radius:6px;background:var(--bg);border:1px dashed var(--border2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;cursor:pointer;" onclick="abrirFotoExistente('${d._docId}')">📷</div>`}
         <div class="desp-item-info">
           <div class="desp-item-data">${dd}/${mm}/${yy}</div>
-          <div class="desp-item-desc">${d.desc||'—'}</div>
+          <div class="desp-item-desc">${escapeHTML(d.desc||'—')}</div>
         </div>
         <div class="desp-item-val">R$ ${d.valor.toLocaleString('pt-BR',{minimumFractionDigits:2})}</div>
         <div class="desp-item-actions">
@@ -891,7 +830,7 @@ window.abrirFormDespesa=(cat,docId)=>{
       <div class="field"><label>Data</label><input type="date" id="d-data" value="${existing?existing.data:new Date().toISOString().split('T')[0]}"></div>
       <div class="field"><label>Valor (R$)</label><input type="number" id="d-valor" placeholder="0,00" step="0.01" min="0" inputmode="decimal" value="${existing?existing.valor:''}"></div>
     </div>
-    <div class="field"><label>${labelDesc[cat]}</label><input type="text" id="d-desc" placeholder="${cat==='pedagio'?'ex: São Paulo → Curitiba':'ex: Posto Shell'}" value="${existing?existing.desc||'':''}"></div>
+    <div class="field"><label>${labelDesc[cat]}</label><input type="text" id="d-desc" placeholder="${cat==='pedagio'?'ex: São Paulo → Curitiba':'ex: Posto Shell'}" value="${existing?escapeAttr(existing.desc||''):''}"></div>
     <div class="field"><label>Comprovante / Nota (opcional)</label>
       <div style="border:2px dashed var(--border2);border-radius:var(--rsm);padding:16px;text-align:center;cursor:pointer;" onclick="document.getElementById('d-foto-input').click()">
         <div style="font-size:24px;">📷</div>
@@ -931,7 +870,7 @@ window.salvarDespesa=async(cat,docId)=>{
   if(docId){
     await updateDoc(doc(db,'users',currentUser.uid,'despesas',docId),dados);
     showToast('✓ Despesa atualizada!');
-  } else {
+  }else{
     await addDoc(despRef(),dados);
     showToast('✓ Despesa salva!');
   }
@@ -968,13 +907,11 @@ window.exportarDespesasPDF=()=>{
   const[y,m]=mesDespesaAtual.split('-').map(Number);
   const nomeMes=NOMES_MES[m-1]+' '+y;
   const doMes=despesas.filter(d=>d.data&&d.data.startsWith(mesDespesaAtual));
-
   const cats=[
     {id:'pedagio',titulo:'GASTOS COM PEDÁGIO (REEMBOLSÁVEL)',cor:'#1a6e3c',label:'Destino',totalLabel:'TOTAL DE PEDÁGIOS'},
     {id:'corp',titulo:'GASTOS CARTÃO CORPORATIVO',cor:'#1a4a8a',label:'Local',totalLabel:'TOTAL CORPORATIVO'},
     {id:'part',titulo:'GASTOS CARTÃO PARTICULAR (REEMBOLSÁVEL)',cor:'#7a3a00',label:'Local',totalLabel:'TOTAL PARTICULAR'},
   ];
-
   let tabelasHTML='';
   cats.forEach(cat=>{
     const itens=doMes.filter(d=>d.cat===cat.id);
@@ -982,10 +919,9 @@ window.exportarDespesasPDF=()=>{
     const linhas=itens.map(d=>{
       const[yy,mm,dd]=d.data.split('-');
       const fotoHtml=d.foto?`<td style="text-align:center;padding:4px;"><img src="${d.foto}" style="width:60px;height:60px;object-fit:cover;border-radius:4px;border:1px solid #ddd;"></td>`:'<td></td>';
-      return`<tr><td>${dd}/${mm}</td><td>R$ ${d.valor.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td><td>${d.desc||'—'}</td>${fotoHtml}</tr>`;
+      return`<tr><td>${dd}/${mm}</td><td>R$ ${d.valor.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td><td>${escapeHTML(d.desc||'—')}</td>${fotoHtml}</tr>`;
     }).join('');
-    const vazias=Math.max(0,8-itens.length);
-    const linhasVazias=Array(vazias).fill('<tr><td>&nbsp;</td><td></td><td></td><td></td></tr>').join('');
+    const linhasVazias=Array(Math.max(0,8-itens.length)).fill('<tr><td>&nbsp;</td><td></td><td></td><td></td></tr>').join('');
     tabelasHTML+=`
       <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
         <thead>
@@ -997,9 +933,7 @@ window.exportarDespesasPDF=()=>{
             <th style="padding:6px 8px;text-align:center;font-size:11px;border:1px solid #aaa;">COMPROVANTE</th>
           </tr>
         </thead>
-        <tbody>
-          ${linhas}${linhasVazias}
-        </tbody>
+        <tbody>${linhas}${linhasVazias}</tbody>
         <tfoot>
           <tr>
             <td colspan="2" style="padding:6px 8px;font-weight:700;font-size:12px;border:1px solid #aaa;">${cat.totalLabel}</td>
@@ -1008,40 +942,153 @@ window.exportarDespesasPDF=()=>{
         </tfoot>
       </table>`;
   });
-
   const totalGeral=doMes.reduce((a,d)=>a+d.valor,0);
-  const html=`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
-  <title>Despesas ${nomeMes}</title>
-  <style>
-    body{font-family:Arial,sans-serif;font-size:11px;margin:20px;color:#111;}
-    h2{font-size:16px;margin-bottom:4px;}
-    .sub{color:#666;margin-bottom:20px;font-size:11px;}
-    table{width:100%;border-collapse:collapse;}
-    td{border:1px solid #ccc;padding:5px 8px;font-size:11px;}
-    th{border:1px solid #aaa;}
-    .total-geral{margin-top:16px;background:#e8f5e9;border:2px solid #1a6e3c;border-radius:6px;padding:10px 16px;display:flex;justify-content:space-between;font-size:14px;font-weight:700;}
-    @media print{button{display:none!important;}}
-  </style></head><body>
+  const html=`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Despesas ${nomeMes}</title><style>body{font-family:Arial,sans-serif;font-size:11px;margin:20px;color:#111;}h2{font-size:16px;margin-bottom:4px;}.sub{color:#666;margin-bottom:20px;font-size:11px;}table{width:100%;border-collapse:collapse;}td{border:1px solid #ccc;padding:5px 8px;font-size:11px;}th{border:1px solid #aaa;}.total-geral{margin-top:16px;background:#e8f5e9;border:2px solid #1a6e3c;border-radius:6px;padding:10px 16px;display:flex;justify-content:space-between;font-size:14px;font-weight:700;}@media print{button{display:none!important;}}</style></head><body>
   <h2>📋 Relatório de Despesas — ${nomeMes}</h2>
-  <div class="sub">${currentUser.displayName||''} · Gerado em ${new Date().toLocaleDateString('pt-BR')}</div>
+  <div class="sub">${escapeHTML(currentUser.displayName||'')} · Gerado em ${new Date().toLocaleDateString('pt-BR')}</div>
   ${tabelasHTML}
   <div class="total-geral"><span>TOTAL GERAL DE DESPESAS</span><span>R$ ${totalGeral.toLocaleString('pt-BR',{minimumFractionDigits:2})}</span></div>
-  <script>window.onload=()=>window.print();<\/script>
-  </body></html>`;
-
+  <script>window.onload=()=>window.print();<\/script></body></html>`;
   const blob=new Blob([html],{type:'text/html;charset=utf-8'});
   window.open(URL.createObjectURL(blob),'_blank');
 };
+
+function iniciarVeiculos(uid){
+  unsubVeic=onSnapshot(collection(db,'users',uid,'veiculos'),snap=>{
+    veiculos=snap.docs.map(d=>({...d.data(),_docId:d.id}));
+    atualizarSelectVeiculo();
+    if(document.getElementById('sec-veiculos').style.display!=='none')renderVeiculos();
+  });
+}
+
+function atualizarSelectVeiculo(){
+  const sel=document.getElementById('in-veiculo');
+  if(!sel)return;
+  const val=sel.value;
+  sel.innerHTML='<option value="">Selecione um veículo...</option>';
+  veiculos.forEach(v=>{
+    const op=document.createElement('option');
+    const vp=v.placa?String.fromCharCode(32,40)+v.placa+String.fromCharCode(41):'';
+    op.value=v.nome+vp;
+    op.textContent=(v.icone||'🚗')+' '+v.nome+(v.placa?' · '+v.placa:'');
+    sel.appendChild(op);
+  });
+  if(val)sel.value=val;
+}
+
+function renderVeiculos(){
+  const el=document.getElementById('lista-veiculos');
+  if(!veiculos.length){
+    el.innerHTML='<div class="empty">Nenhum veículo cadastrado.<br>Toque em + Adicionar veículo.</div>';
+    return;
+  }
+  el.innerHTML=veiculos.map(v=>`
+    <div class="veiculo-card">
+      <div class="veiculo-icon">${v.icone||'🚗'}</div>
+      <div class="veiculo-info">
+        <div class="veiculo-nome">${escapeHTML(v.nome)}</div>
+        <div class="veiculo-detalhe">${[v.placa,v.ano,v.combustivel].filter(Boolean).map(escapeHTML).join(' · ')}</div>
+      </div>
+      <div class="veiculo-actions">
+        <button onclick="editarVeiculo('${v._docId}')" style="background:none;border:0.5px solid var(--border2);border-radius:6px;padding:6px 10px;cursor:pointer;font-size:13px;color:var(--text2);">✏️</button>
+        <button onclick="delVeiculo('${v._docId}')" style="background:none;border:none;cursor:pointer;font-size:20px;color:var(--text3);">×</button>
+      </div>
+    </div>`).join('');
+}
+
+window.abrirFormVeiculo=docId=>{
+  const existing=docId?veiculos.find(v=>v._docId===docId):null;
+  const icones=['🚗','🚕','🚙','🚌','🚎','🏎️','🚓','🚑','🚒','🛻','🚐','🚚','🚛','🏍️','🛵'];
+  const overlay=document.createElement('div');
+  overlay.id='veic-overlay';
+  overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;display:flex;align-items:flex-end;';
+  overlay.innerHTML=`<div style="background:var(--surface);width:100%;border-radius:20px 20px 0 0;padding:20px;max-height:90vh;overflow-y:auto;">
+    <div style="font-size:16px;font-weight:700;margin-bottom:16px;">${existing?'✏️ Editar':'+ Novo'} veículo</div>
+    <div class="field"><label>Ícone</label>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px;">
+        ${icones.map(ic=>`<button onclick="selecionarIcone('${ic}')" class="icone-btn" style="font-size:22px;padding:8px;border-radius:8px;border:2px solid ${existing&&existing.icone===ic?'var(--green)':'var(--border)'};background:var(--bg);cursor:pointer;">${ic}</button>`).join('')}
+      </div>
+      <input type="hidden" id="v-icone" value="${existing?existing.icone||'🚗':'🚗'}">
+    </div>
+    <div class="field"><label>Nome / Modelo</label><input type="text" id="v-nome" placeholder="ex: L200 Triton" value="${existing?escapeAttr(existing.nome||''):''}"></div>
+    <div class="row2">
+      <div class="field"><label>Placa</label><input type="text" id="v-placa" placeholder="ex: SSF1I63" value="${existing?escapeAttr(existing.placa||''):''}" style="text-transform:uppercase;"></div>
+      <div class="field"><label>Ano</label><input type="number" id="v-ano" placeholder="ex: 2022" inputmode="numeric" value="${existing?escapeAttr(existing.ano||''):''}"></div>
+    </div>
+    <div class="field"><label>Combustível padrão</label>
+      <select id="v-comb">
+        ${['Diesel','Diesel S10','Gasolina','Etanol','GNV','Elétrico'].map(c=>`<option value="${c}" ${existing&&existing.combustivel===c?'selected':''}>${c}</option>`).join('')}
+      </select>
+    </div>
+    <button class="btn-primary" onclick="salvarVeiculo('${docId||''}')">✓ Salvar veículo</button>
+    <button class="btn-secondary" onclick="fecharVeicOverlay()">Cancelar</button>
+  </div>`;
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click',e=>{if(e.target===overlay)fecharVeicOverlay();});
+};
+
+window.selecionarVeiculoForm=val=>{
+  const v=veiculos.find(v=>{
+    const p=v.placa?String.fromCharCode(32,40)+v.placa+String.fromCharCode(41):'';
+    return v.nome+p===val;
+  });
+  if(v&&v.combustivel)document.getElementById('in-tipo').value=v.combustivel;
+};
+
+window.selecionarIcone=ic=>{
+  document.getElementById('v-icone').value=ic;
+  document.querySelectorAll('.icone-btn').forEach(b=>{
+    b.style.borderColor=b.textContent===ic?'var(--green)':'var(--border)';
+  });
+};
+
+window.fecharVeicOverlay=()=>{const o=document.getElementById('veic-overlay');if(o)o.remove();};
+
+window.salvarVeiculo=async docId=>{
+  const nome=document.getElementById('v-nome').value.trim();
+  if(!nome){showToast('⚠️ Informe o nome do veículo');return;}
+  const dados={
+    nome,
+    icone:document.getElementById('v-icone').value||'🚗',
+    placa:document.getElementById('v-placa').value.toUpperCase().trim(),
+    ano:document.getElementById('v-ano').value||'',
+    combustivel:document.getElementById('v-comb').value,
+    criadoEm:serverTimestamp()
+  };
+  if(docId){
+    await updateDoc(doc(db,'users',currentUser.uid,'veiculos',docId),dados);
+    showToast('✓ Veículo atualizado!');
+  }else{
+    await addDoc(veicRef(),dados);
+    showToast('✓ Veículo adicionado!');
+  }
+  fecharVeicOverlay();
+};
+
+window.editarVeiculo=id=>abrirFormVeiculo(id);
+
+window.delVeiculo=async id=>{
+  if(!confirm('Excluir este veículo?'))return;
+  await deleteDoc(doc(db,'users',currentUser.uid,'veiculos',id));
+  showToast('✓ Veículo removido');
+};
+
 function downloadCSV(csv,fname){
   const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
   const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');a.href=url;a.download=fname;a.style.display='none';
-  document.body.appendChild(a);a.click();
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=fname;
+  a.style.display='none';
+  document.body.appendChild(a);
+  a.click();
   setTimeout(()=>{document.body.removeChild(a);URL.revokeObjectURL(url);},1000);
 }
+
 function fmtDate(d){if(!d)return'';const[y,m,day]=d.split('-');return`${day}/${m}/${y}`;}
 function fmtShort(d){if(!d)return'';const[,m,day]=d.split('-');return`${day}/${m}`;}
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+function escapeHTML(v){return String(v).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+function escapeAttr(v){return escapeHTML(v);}
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
