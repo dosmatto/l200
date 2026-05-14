@@ -5,41 +5,68 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="L200">
-<title>L200 Triton</title>
+<meta name="apple-mobile-web-app-title" content="Abastecimento">
+<title>Controle de Abastecimento</title>
 <style>
-:root{--bg:#f5f5f5;--surface:#fff;--text:#1a1a1a;--text2:#666;--text3:#999;--border:rgba(0,0,0,0.1);--border2:rgba(0,0,0,0.18);--green:#1D9E75;--green-bg:#e1f5ee;--green-text:#0f6e56;--amber:#BA7517;--radius:12px;--rsm:8px;}
+:root{--bg:#f5f5f5;--surface:#fff;--text:#1a1a1a;--text2:#666;--text3:#999;--border:rgba(0,0,0,0.1);--border2:rgba(0,0,0,0.18);--green:#1D9E75;--green-bg:#e1f5ee;--green-text:#0f6e56;--radius:12px;--rsm:8px;}
 @media(prefers-color-scheme:dark){:root{--bg:#111;--surface:#1e1e1e;--text:#f0f0f0;--text2:#aaa;--text3:#666;--border:rgba(255,255,255,0.1);--border2:rgba(255,255,255,0.18);--green-bg:#04342c;--green-text:#5dcaa5;}}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:90px;}
+
+/* LOGIN */
+#login-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:32px;text-align:center;}
+.login-icon{font-size:64px;margin-bottom:16px;}
+.login-title{font-size:24px;font-weight:700;margin-bottom:8px;}
+.login-sub{font-size:14px;color:var(--text2);margin-bottom:40px;line-height:1.5;}
+.btn-google{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;max-width:320px;padding:16px;background:#fff;border:1.5px solid #ddd;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;color:#333;font-family:inherit;box-shadow:0 2px 8px rgba(0,0,0,.1);}
+.btn-google:active{opacity:.8;}
+.btn-google svg{width:22px;height:22px;flex-shrink:0;}
+.login-loading{margin-top:20px;color:var(--text2);font-size:14px;display:none;}
+
+/* APP */
+#app-screen{display:none;}
 .header{background:var(--surface);border-bottom:0.5px solid var(--border);padding:16px 16px 0;position:sticky;top:0;z-index:100;}
 .header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
-.header-title{font-size:18px;font-weight:600;}
-.header-sub{font-size:12px;color:var(--text2);}
+.header-title{font-size:17px;font-weight:600;}
+.header-sub{font-size:11px;color:var(--text2);}
+.header-right{display:flex;align-items:center;gap:10px;}
+.user-avatar{width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid var(--green);}
+.user-avatar-placeholder{width:32px;height:32px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700;}
+.btn-logout{background:none;border:none;color:var(--text3);font-size:12px;cursor:pointer;padding:4px 8px;border-radius:6px;font-family:inherit;}
 .tab-bar{display:flex;}
 .tab{flex:1;padding:10px 4px;text-align:center;font-size:12px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--text2);border-bottom:2.5px solid transparent;font-family:inherit;transition:all .2s;}
 .tab.active{color:var(--green);border-bottom-color:var(--green);}
 .content{padding:16px;max-width:480px;margin:0 auto;}
+
+/* LOADING */
+.app-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;color:var(--text2);font-size:14px;gap:12px;}
+.spinner{display:inline-block;width:24px;height:24px;border:2.5px solid var(--border2);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* FORMS */
 .field{margin-bottom:14px;}
 .field label{display:block;font-size:11px;color:var(--text2);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;}
 .field input,.field select{width:100%;padding:13px 14px;background:var(--surface);border:0.5px solid var(--border2);border-radius:var(--rsm);font-size:16px;color:var(--text);font-family:inherit;outline:none;-webkit-appearance:none;}
-.field input:focus,.field select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(29,158,117,.12);}
+.field input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(29,158,117,.12);}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .btn-primary{width:100%;padding:15px;background:var(--green);color:#fff;border:none;border-radius:var(--rsm);font-size:16px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:6px;}
 .btn-primary:active{opacity:.8;}
 .btn-secondary{width:100%;padding:13px;background:transparent;color:var(--green);border:1.5px solid var(--green);border-radius:var(--rsm);font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:8px;}
 .btn-secondary:active{opacity:.7;}
-.btn-danger{width:100%;padding:13px;background:transparent;color:#e24b4a;border:1.5px solid #e24b4a;border-radius:var(--rsm);font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:8px;}
 .section-label{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;}
+
+/* METRICS */
 .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
 .metric{background:var(--surface);border-radius:var(--rsm);padding:14px;border:0.5px solid var(--border);}
 .metric .mlabel{font-size:10px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;}
 .metric .mvalue{font-size:20px;font-weight:600;color:var(--text);line-height:1.1;}
 .metric .munit{font-size:11px;color:var(--text2);font-weight:400;}
+
+/* CARDS */
 .card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;}
 .card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
 .card-date{font-size:13px;font-weight:600;color:var(--text);}
-.card-km{font-size:12px;color:var(--text2);margin-top:2px;}
+.card-km-sub{font-size:12px;color:var(--text2);margin-top:2px;}
 .del-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:20px;padding:0 0 0 8px;line-height:1;flex-shrink:0;}
 .badge{display:inline-block;font-size:11px;padding:3px 9px;border-radius:99px;background:var(--green-bg);color:var(--green-text);font-weight:500;margin-bottom:10px;}
 .card-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--text2);padding:3px 0;border-bottom:0.5px solid var(--border);}
@@ -47,16 +74,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .card-row span:last-child{color:var(--text);font-weight:500;}
 .cons-good{color:var(--green)!important;}
 .cons-bad{color:#e24b4a!important;}
+
+/* FILTERS */
 .filter-row{display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;}
 .filter-row::-webkit-scrollbar{display:none;}
 .fbtn{flex-shrink:0;padding:6px 14px;border-radius:99px;font-size:13px;border:0.5px solid var(--border2);background:var(--surface);color:var(--text2);cursor:pointer;font-family:inherit;font-weight:500;}
 .fbtn.active{background:var(--green);color:#fff;border-color:var(--green);}
+
+/* CHARTS */
 .chart-wrap{position:relative;width:100%;height:180px;margin-bottom:20px;}
-.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a1a;color:#fff;padding:11px 22px;border-radius:99px;font-size:14px;font-weight:500;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;z-index:999;}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-.empty{text-align:center;padding:48px 20px;color:var(--text3);font-size:14px;}
-/* KM Diário */
-.km-box{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;}
+
+/* KM */
+.km-box{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;}
 .km-box-title{font-size:13px;font-weight:600;margin-bottom:12px;color:var(--text);}
 .km-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:0.5px solid var(--border);font-size:13px;}
 .km-row:last-child{border-bottom:none;}
@@ -64,422 +93,448 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .km-row-val{color:var(--text);font-weight:600;}
 .km-total{font-size:15px;font-weight:700;color:var(--green);}
 .photo-area{border:2px dashed var(--border2);border-radius:var(--rsm);padding:20px;text-align:center;cursor:pointer;margin-bottom:14px;background:var(--bg);}
-.photo-area:active{opacity:.7;}
 .photo-icon{font-size:32px;margin-bottom:8px;}
 .photo-label{font-size:14px;color:var(--text2);}
 .photo-sublabel{font-size:12px;color:var(--text3);margin-top:4px;}
 .ai-loading{display:none;text-align:center;padding:16px;color:var(--text2);font-size:14px;}
 .ai-loading.show{display:block;}
-.spinner{display:inline-block;width:20px;height:20px;border:2px solid var(--border2);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;margin-right:8px;vertical-align:middle;}
-@keyframes spin{to{transform:rotate(360deg);}}
-.km-preview{background:var(--green-bg);border-radius:var(--rsm);padding:12px 16px;margin-bottom:14px;display:none;}
-.km-preview.show{display:block;}
-.km-preview-label{font-size:12px;color:var(--green-text);margin-bottom:4px;}
-.km-preview-val{font-size:28px;font-weight:700;color:var(--green);}
-.tipo-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
-.tipo-btn{padding:12px;border-radius:var(--rsm);border:1.5px solid var(--border2);background:var(--surface);color:var(--text2);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;text-align:center;}
-.tipo-btn.active{border-color:var(--green);color:var(--green);background:var(--green-bg);}
-#km-input-manual{display:none;}
-#km-input-manual.show{display:block;}
 .km-confirm-box{background:var(--green-bg);border:2px solid var(--green);border-radius:var(--radius);padding:20px;text-align:center;margin-bottom:4px;}
 .km-confirm-label{font-size:12px;font-weight:600;color:var(--green-text);text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px;}
 .km-confirm-input{width:100%;font-size:36px;font-weight:700;color:var(--green);background:transparent;border:none;border-bottom:2px solid var(--green);text-align:center;outline:none;padding:4px 0;font-family:inherit;}
 .km-confirm-sub{font-size:11px;color:var(--green-text);margin-top:8px;opacity:.7;}
+.tipo-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.tipo-btn{padding:12px;border-radius:var(--rsm);border:1.5px solid var(--border2);background:var(--surface);color:var(--text2);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;text-align:center;}
+.tipo-btn.active{border-color:var(--green);color:var(--green);background:var(--green-bg);}
+
+/* TOAST */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a1a;color:#fff;padding:11px 22px;border-radius:99px;font-size:14px;font-weight:500;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;z-index:999;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.empty{text-align:center;padding:48px 20px;color:var(--text3);font-size:14px;}
+
+/* VEICULO TAG */
+.veiculo-tag{display:inline-flex;align-items:center;gap:6px;background:var(--green-bg);color:var(--green-text);font-size:12px;font-weight:600;padding:4px 10px;border-radius:99px;margin-bottom:4px;}
 </style>
 </head>
 <body>
-<div class="header">
-  <div class="header-top">
-    <div><div class="header-title">L200 Triton</div><div class="header-sub">SSF1I63 · Controle de frota</div></div>
-    <div style="font-size:24px;">🛻</div>
-  </div>
-  <div class="tab-bar">
-    <button class="tab active" onclick="showTab('novo')">Abastecer</button>
-    <button class="tab" onclick="showTab('km')">KM Diário</button>
-    <button class="tab" onclick="showTab('historico')">Histórico</button>
-    <button class="tab" onclick="showTab('stats')">Resumo</button>
-  </div>
+
+<!-- TELA DE LOGIN -->
+<div id="login-screen">
+  <div class="login-icon">🛻</div>
+  <div class="login-title">Controle de Frota</div>
+  <div class="login-sub">Registre seus abastecimentos e quilometragem.<br>Dados salvos na nuvem com segurança.</div>
+  <button class="btn-google" onclick="fazerLogin()">
+    <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+    Entrar com Google
+  </button>
+  <div class="login-loading" id="login-loading"><span class="spinner"></span> Entrando...</div>
 </div>
 
-<div class="content">
-
-<!-- ABA ABASTECER -->
-<div id="sec-novo" class="section">
-  <br>
-  <div class="row2">
-    <div class="field"><label>Data</label><input type="date" id="in-data"></div>
-    <div class="field"><label>Hora</label><input type="time" id="in-hora"></div>
-  </div>
-  <div class="row2">
-    <div class="field"><label>Litros</label><input type="number" id="in-litros" placeholder="56.00" step="0.01" min="0" inputmode="decimal"></div>
-    <div class="field"><label>Preço / litro (R$)</label><input type="number" id="in-preco" placeholder="7.79" step="0.01" min="0" inputmode="decimal"></div>
-  </div>
-  <div class="row2">
-    <div class="field"><label>KM atual</label><input type="number" id="in-km" placeholder="62633" min="0" inputmode="numeric"></div>
-    <div class="field"><label>Combustível</label><input type="text" id="in-tipo" value="Diesel"></div>
-  </div>
-  <div class="field"><label>Posto (opcional)</label><input type="text" id="in-posto" placeholder="ex: Frisia"></div>
-  <button class="btn-primary" onclick="salvarAbast()">✓ Registrar abastecimento</button>
-</div>
-
-<!-- ABA KM DIÁRIO -->
-<div id="sec-km" class="section" style="display:none">
-  <br>
-  <div class="row2">
-    <div class="field"><label>Data</label><input type="date" id="km-data"></div>
-    <div class="field"><label>Hora</label><input type="time" id="km-hora"></div>
-  </div>
-
-  <!-- PASSO 1: FOTO -->
-  <div id="km-step1">
-    <div class="photo-area" onclick="document.getElementById('foto-input').click()">
-      <div class="photo-icon">📷</div>
-      <div class="photo-label">Tirar foto do odômetro</div>
-      <div class="photo-sublabel">O app lê o KM automaticamente</div>
-    </div>
-    <input type="file" id="foto-input" accept="image/*" capture="environment" style="display:none" onchange="processarFoto(this)">
-    <div class="ai-loading" id="ai-loading"><span class="spinner"></span>Lendo odômetro...</div>
-    <button class="btn-secondary" onclick="toggleManual()" style="margin-top:0">✏️ Inserir KM manualmente</button>
-    <div id="km-input-manual" style="display:none;margin-top:12px;">
-      <div class="field">
-        <label>KM do odômetro</label>
-        <input type="number" id="km-manual" placeholder="ex: 62633" inputmode="numeric" min="0">
+<!-- APP PRINCIPAL -->
+<div id="app-screen">
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <div class="header-title">Controle de Frota</div>
+        <div class="header-sub" id="header-veiculo">Abastecimento · KM Diário</div>
       </div>
-      <button class="btn-primary" onclick="confirmarManual()" style="margin-top:0">→ Usar este KM</button>
+      <div class="header-right">
+        <img id="user-photo" class="user-avatar" src="" style="display:none" alt="foto">
+        <div id="user-initials" class="user-avatar-placeholder" style="display:none"></div>
+        <button class="btn-logout" onclick="fazerLogout()">Sair</button>
+      </div>
+    </div>
+    <div class="tab-bar">
+      <button class="tab active" onclick="showTab('novo')">Abastecer</button>
+      <button class="tab" onclick="showTab('km')">KM</button>
+      <button class="tab" onclick="showTab('historico')">Histórico</button>
+      <button class="tab" onclick="showTab('stats')">Resumo</button>
     </div>
   </div>
 
-  <!-- PASSO 2: CONFIRMAR (aparece após leitura) -->
-  <div id="km-step2" style="display:none">
-    <div class="km-confirm-box" id="km-confirm-box">
-      <div class="km-confirm-label">KM lido do odômetro</div>
-      <input type="number" id="km-confirmado" class="km-confirm-input" inputmode="numeric" min="0">
-      <div class="km-confirm-sub">Corrija se necessário</div>
+  <div class="content">
+
+    <!-- ABA ABASTECER -->
+    <div id="sec-novo" class="section">
+      <br>
+      <div class="row2">
+        <div class="field"><label>Data</label><input type="date" id="in-data"></div>
+        <div class="field"><label>Hora</label><input type="time" id="in-hora"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>Litros</label><input type="number" id="in-litros" placeholder="56.00" step="0.01" min="0" inputmode="decimal"></div>
+        <div class="field"><label>Preço / litro (R$)</label><input type="number" id="in-preco" placeholder="7.79" step="0.01" min="0" inputmode="decimal"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>KM atual</label><input type="number" id="in-km" placeholder="62633" min="0" inputmode="numeric"></div>
+        <div class="field"><label>Combustível</label><input type="text" id="in-tipo" value="Diesel"></div>
+      </div>
+      <div class="field"><label>Posto (opcional)</label><input type="text" id="in-posto" placeholder="ex: Frisia"></div>
+      <div class="field"><label>Veículo (opcional)</label><input type="text" id="in-veiculo" placeholder="ex: L200 SSF1I63"></div>
+      <button class="btn-primary" onclick="salvarAbast()">✓ Registrar abastecimento</button>
     </div>
-    <div class="field" style="margin-top:16px;"><label>Este KM é:</label></div>
-    <div class="tipo-btns">
-      <button class="tipo-btn active" id="btn-inicial" onclick="setTipo('inicial')">🌅 Inicial (saída)</button>
-      <button class="tipo-btn" id="btn-final" onclick="setTipo('final')">🌆 Final (chegada)</button>
+
+    <!-- ABA KM DIÁRIO -->
+    <div id="sec-km" class="section" style="display:none">
+      <br>
+      <div class="row2">
+        <div class="field"><label>Data</label><input type="date" id="km-data"></div>
+        <div class="field"><label>Hora</label><input type="time" id="km-hora"></div>
+      </div>
+      <div id="km-step1">
+        <div class="photo-area" onclick="document.getElementById('foto-input').click()">
+          <div class="photo-icon">📷</div>
+          <div class="photo-label">Tirar foto do odômetro</div>
+          <div class="photo-sublabel">O app lê o KM automaticamente</div>
+        </div>
+        <input type="file" id="foto-input" accept="image/*" capture="environment" style="display:none" onchange="processarFoto(this)">
+        <div class="ai-loading" id="ai-loading"><span class="spinner"></span> Lendo odômetro...</div>
+        <button class="btn-secondary" onclick="toggleManual()" style="margin-top:0">✏️ Inserir KM manualmente</button>
+        <div id="km-input-manual" style="display:none;margin-top:12px;">
+          <div class="field">
+            <label>KM do odômetro</label>
+            <input type="number" id="km-manual" placeholder="ex: 62633" inputmode="numeric" min="0">
+          </div>
+          <button class="btn-primary" onclick="confirmarManual()" style="margin-top:0">→ Usar este KM</button>
+        </div>
+      </div>
+      <div id="km-step2" style="display:none">
+        <div class="km-confirm-box">
+          <div class="km-confirm-label">KM lido do odômetro</div>
+          <input type="number" id="km-confirmado" class="km-confirm-input" inputmode="numeric" min="0">
+          <div class="km-confirm-sub">Corrija se necessário</div>
+        </div>
+        <div class="field" style="margin-top:16px;"><label>Este KM é:</label></div>
+        <div class="tipo-btns">
+          <button class="tipo-btn active" id="btn-inicial" onclick="setTipo('inicial')">🌅 Inicial (saída)</button>
+          <button class="tipo-btn" id="btn-final" onclick="setTipo('final')">🌆 Final (chegada)</button>
+        </div>
+        <button class="btn-primary" onclick="salvarKmDia()">✓ Confirmar e salvar</button>
+        <button class="btn-secondary" onclick="resetKmStep()" style="margin-top:8px;">↩ Nova leitura</button>
+      </div>
+      <br>
+      <div class="section-label">Registros do mês atual</div>
+      <div id="km-lista"><div class="app-loading"><div class="spinner"></div>Carregando...</div></div>
+      <button class="btn-secondary" onclick="exportarKmCSV()" style="margin-top:4px;">⬇ Exportar CSV KM</button>
     </div>
-    <button class="btn-primary" onclick="salvarKmDia()">✓ Confirmar e salvar</button>
-    <button class="btn-secondary" onclick="resetKmStep()" style="margin-top:8px;">↩ Tirar outra foto</button>
-  </div>
 
-  <br>
-  <div class="section-label">Registros do mês atual</div>
-  <div id="km-lista"></div>
-  <button class="btn-secondary" onclick="exportarKmExcel()" style="margin-top:4px;">⬇ Exportar Excel KM</button>
-</div>
+    <!-- ABA HISTÓRICO -->
+    <div id="sec-historico" class="section" style="display:none">
+      <br>
+      <div class="filter-row" id="filter-row"></div>
+      <div id="lista-hist"><div class="app-loading"><div class="spinner"></div>Carregando...</div></div>
+      <div style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <button class="btn-secondary" onclick="exportarCSV()">⬇ CSV</button>
+        <button class="btn-secondary" onclick="exportarPDF()">📄 PDF</button>
+      </div>
+    </div>
 
-<!-- ABA HISTÓRICO -->
-<div id="sec-historico" class="section" style="display:none">
-  <br>
-  <div class="filter-row" id="filter-row"></div>
-  <div id="lista-hist"></div>
-  <div style="margin-top:8px;"><button class="btn-secondary" onclick="exportarExcel()">⬇ Exportar Excel abastecimentos</button></div>
-</div>
+    <!-- ABA RESUMO -->
+    <div id="sec-stats" class="section" style="display:none">
+      <br>
+      <div class="metric-grid" id="metrics-grid"><div class="app-loading" style="grid-column:1/-1"><div class="spinner"></div>Carregando...</div></div>
+      <div id="chart-section" style="display:none">
+        <div class="section-label">Consumo (km/l)</div>
+        <div class="chart-wrap"><canvas id="chart1"></canvas></div>
+        <div class="section-label">Gasto por abastecimento (R$)</div>
+        <div class="chart-wrap"><canvas id="chart2"></canvas></div>
+        <div class="section-label">Preço do litro (R$)</div>
+        <div class="chart-wrap"><canvas id="chart3"></canvas></div>
+      </div>
+    </div>
 
-<!-- ABA RESUMO -->
-<div id="sec-stats" class="section" style="display:none">
-  <br>
-  <div class="metric-grid" id="metrics-grid"></div>
-  <div id="chart-section">
-    <div class="section-label">Consumo (km/l)</div>
-    <div class="chart-wrap"><canvas id="chart1" role="img" aria-label="Consumo km/l ao longo do tempo"></canvas></div>
-    <div class="section-label">Gasto por abastecimento (R$)</div>
-    <div class="chart-wrap"><canvas id="chart2" role="img" aria-label="Gasto em reais por abastecimento"></canvas></div>
-    <div class="section-label">Preço do litro (R$)</div>
-    <div class="chart-wrap"><canvas id="chart3" role="img" aria-label="Evolução do preço por litro"></canvas></div>
   </div>
 </div>
 
-</div>
 <div class="toast" id="toast"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script>
-const IMPORTED=[{"id":20240813911,"data":"2024-08-13","km":12911,"litros":54.99,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.907},{"id":20240816141,"data":"2024-08-16","km":13141,"litros":25.821,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":11.769},{"id":20240819620,"data":"2024-08-19","km":13620,"litros":40.701,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.314},{"id":20240822056,"data":"2024-08-22","km":14056,"litros":52.44,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":9.06},{"id":20240826407,"data":"2024-08-26","km":14407,"litros":38.74,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":9.379},{"id":20240828883,"data":"2024-08-28","km":14883,"litros":50.75,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":7.917},{"id":20240902359,"data":"2024-09-02","km":15359,"litros":60.12,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.336},{"id":20240908859,"data":"2024-09-08","km":15859,"litros":59.98,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":7.719},{"id":20240911168,"data":"2024-09-11","km":16168,"litros":40.03,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":9.104},{"id":20240913758,"data":"2024-09-13","km":16758,"litros":64.81,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.637},{"id":20240920278,"data":"2024-09-20","km":17278,"litros":60.206,"preco":5.59,"tipo":"Diesel","posto":"Auto Posto Guarani","consumo":7.818},{"id":20240923686,"data":"2024-09-23","km":17686,"litros":52.19,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.272},{"id":20240926067,"data":"2024-09-26","km":18067,"litros":46.06,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.465},{"id":20241002452,"data":"2024-10-02","km":18452,"litros":45.48,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.745},{"id":20241007896,"data":"2024-10-07","km":18896,"litros":50.77,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.179},{"id":20241014364,"data":"2024-10-14","km":19364,"litros":57.22,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.154},{"id":20241016743,"data":"2024-10-16","km":19743,"litros":46.48,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":7.393},{"id":20241023223,"data":"2024-10-23","km":20223,"litros":64.93,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":7.898},{"id":20241030710,"data":"2024-10-30","km":20710,"litros":61.66,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.455},{"id":20241103165,"data":"2024-11-03","km":21165,"litros":53.815,"preco":5.69,"tipo":"Diesel","posto":"Auto Posto Guarani","consumo":8.166},{"id":20241106581,"data":"2024-11-06","km":21581,"litros":50.94,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.654},{"id":20241111979,"data":"2024-11-11","km":21979,"litros":45.99,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.228},{"id":20241118397,"data":"2024-11-18","km":22397,"litros":50.8,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.158},{"id":20241122839,"data":"2024-11-22","km":22839,"litros":54.18,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":7.753},{"id":20241130288,"data":"2024-11-30","km":23288,"litros":57.91,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":7.753},{"id":20241203593,"data":"2024-12-03","km":23593,"litros":39.341,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.482},{"id":20241209015,"data":"2024-12-09","km":24015,"litros":49.75,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":7.436},{"id":20241211312,"data":"2024-12-11","km":24312,"litros":39.94,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":7.828},{"id":20241218792,"data":"2024-12-18","km":24792,"litros":61.32,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":7.889},{"id":20241223076,"data":"2024-12-23","km":25076,"litros":36.0,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":7.982},{"id":20241226400,"data":"2024-12-26","km":25400,"litros":40.591,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.469},{"id":20250104867,"data":"2025-01-04","km":25867,"litros":55.14,"preco":6.04,"tipo":"Diesel","posto":"Auto Posto Ravanello Ltda","consumo":7.478},{"id":20250108305,"data":"2025-01-08","km":26305,"litros":58.57,"preco":5.84,"tipo":"Diesel","posto":"Frisia","consumo":8.059},{"id":20250119790,"data":"2025-01-19","km":26790,"litros":60.18,"preco":5.95,"tipo":"Diesel","posto":"Frisia","consumo":8.036},{"id":20250130290,"data":"2025-01-30","km":27290,"litros":62.22,"preco":5.99,"tipo":"Diesel","posto":"Frisia","consumo":7.486},{"id":20250208678,"data":"2025-02-08","km":27678,"litros":51.83,"preco":6.3,"tipo":"Diesel","posto":"Frisia","consumo":7.72},{"id":20250214044,"data":"2025-02-14","km":28044,"litros":47.41,"preco":6.3,"tipo":"Diesel","posto":"Frisia","consumo":8.942},{"id":20250218605,"data":"2025-02-18","km":28605,"litros":62.74,"preco":6.3,"tipo":"Diesel","posto":"Frisia","consumo":8.589},{"id":20250224003,"data":"2025-02-24","km":29003,"litros":46.34,"preco":6.3,"tipo":"Diesel","posto":"Frisia","consumo":8.258},{"id":20250228450,"data":"2025-02-28","km":29450,"litros":54.13,"preco":6.3,"tipo":"Diesel","posto":"Frisia","consumo":7.957},{"id":20250307889,"data":"2025-03-07","km":29889,"litros":55.17,"preco":6.3,"tipo":"Diesel","posto":"Frisia","consumo":8.226},{"id":20250314375,"data":"2025-03-14","km":30375,"litros":59.08,"preco":6.3,"tipo":"Diesel","posto":"Frisia","consumo":7.587},{"id":20250324779,"data":"2025-03-24","km":30779,"litros":53.25,"preco":6.09,"tipo":"Diesel","posto":"Frisia","consumo":8.312},{"id":20250328076,"data":"2025-03-28","km":31076,"litros":35.73,"preco":6.09,"tipo":"Diesel","posto":"Frisia","consumo":9.809},{"id":20250330657,"data":"2025-03-30","km":31657,"litros":59.23,"preco":6.48,"tipo":"Diesel","posto":"Auto Posto Bogo","consumo":9.632},{"id":20250404175,"data":"2025-04-04","km":32175,"litros":53.781,"preco":6.48,"tipo":"Diesel","posto":"Frisia","consumo":8.316},{"id":20250409686,"data":"2025-04-09","km":32686,"litros":61.45,"preco":5.99,"tipo":"Diesel","posto":"Frisia","consumo":8.101},{"id":20250417090,"data":"2025-04-17","km":33090,"litros":49.87,"preco":5.794,"tipo":"Diesel","posto":"Frisia","consumo":null},{"id":20250428854,"data":"2025-04-28","km":33854,"litros":40.61,"preco":5.79,"tipo":"Diesel","posto":"Frisia","consumo":8.211},{"id":20250501317,"data":"2025-05-01","km":34317,"litros":56.388,"preco":6.29,"tipo":"Diesel","posto":"Posto Contorno III","consumo":9.022},{"id":20250505733,"data":"2025-05-05","km":34733,"litros":46.11,"preco":5.79,"tipo":"Diesel","posto":"Frisia","consumo":8.104},{"id":20250512098,"data":"2025-05-12","km":35098,"litros":45.04,"preco":5.79,"tipo":"Diesel","posto":"Frisia","consumo":8.354},{"id":20250519530,"data":"2025-05-19","km":35530,"litros":51.71,"preco":5.59,"tipo":"Diesel","posto":"Frisia","consumo":8.69},{"id":20250523015,"data":"2025-05-23","km":36015,"litros":55.81,"preco":5.59,"tipo":"Diesel","posto":"Frisia","consumo":8.209},{"id":20250529511,"data":"2025-05-29","km":36511,"litros":60.419,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":8.19},{"id":20250606986,"data":"2025-06-06","km":36986,"litros":58.0,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":7.926},{"id":20250611461,"data":"2025-06-11","km":37461,"litros":59.93,"preco":5.59,"tipo":"Diesel","posto":"Frisia","consumo":8.187},{"id":20250618926,"data":"2025-06-18","km":37926,"litros":56.8,"preco":5.59,"tipo":"Diesel","posto":"Frisia","consumo":8.342},{"id":20250623239,"data":"2025-06-23","km":38239,"litros":37.519,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":7.764},{"id":20250630657,"data":"2025-06-30","km":38657,"litros":53.84,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":7.867},{"id":20250705104,"data":"2025-07-05","km":39104,"litros":56.82,"preco":5.59,"tipo":"Diesel","posto":"Frisia","consumo":null},{"id":20250720834,"data":"2025-07-20","km":39834,"litros":44.649,"preco":5.59,"tipo":"Diesel","posto":"Frisia","consumo":8.499},{"id":20250721146,"data":"2025-07-21","km":40146,"litros":36.71,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":8.738},{"id":20250723484,"data":"2025-07-23","km":40484,"litros":38.68,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":8.053},{"id":20250730955,"data":"2025-07-30","km":40955,"litros":58.49,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":8.046},{"id":20250805420,"data":"2025-08-05","km":41420,"litros":57.79,"preco":5.97,"tipo":"Diesel","posto":"Frisia","consumo":9.231},{"id":20250811948,"data":"2025-08-11","km":41948,"litros":57.2,"preco":5.97,"tipo":"Diesel","posto":"Frisia","consumo":8.096},{"id":20250815348,"data":"2025-08-15","km":42348,"litros":49.41,"preco":5.79,"tipo":"Diesel","posto":"Frisia","consumo":8.302},{"id":20250822787,"data":"2025-08-22","km":42787,"litros":52.88,"preco":5.75,"tipo":"Diesel","posto":"Frisia","consumo":9.091},{"id":20250826364,"data":"2025-08-26","km":43364,"litros":63.47,"preco":5.75,"tipo":"Diesel","posto":"Frisia","consumo":8.146},{"id":20250829669,"data":"2025-08-29","km":43669,"litros":37.44,"preco":5.75,"tipo":"Diesel","posto":"Frisia","consumo":7.851},{"id":20250903102,"data":"2025-09-03","km":44102,"litros":55.15,"preco":5.75,"tipo":"Diesel","posto":"Frisia","consumo":9.168},{"id":20250915537,"data":"2025-09-15","km":44537,"litros":47.45,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":8.375},{"id":20250919955,"data":"2025-09-19","km":44955,"litros":49.91,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":8.339},{"id":20251001331,"data":"2025-10-01","km":45331,"litros":45.09,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":7.464},{"id":20251002792,"data":"2025-10-02","km":45792,"litros":61.76,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":7.55},{"id":20251008229,"data":"2025-10-08","km":46229,"litros":57.88,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":7.901},{"id":20251015660,"data":"2025-10-15","km":46660,"litros":54.55,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":8.418},{"id":20251018142,"data":"2025-10-18","km":47142,"litros":57.26,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":7.976},{"id":20251022523,"data":"2025-10-22","km":47523,"litros":47.77,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":8.119},{"id":20251024782,"data":"2025-10-24","km":47782,"litros":31.9,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":8.967},{"id":20251026370,"data":"2025-10-26","km":48370,"litros":65.577,"preco":5.49,"tipo":"Diesel","posto":"Auto Posto Guarani","consumo":8.827},{"id":20251029817,"data":"2025-10-29","km":48817,"litros":50.64,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":7.832},{"id":20251108295,"data":"2025-11-08","km":49295,"litros":61.03,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":7.89},{"id":20251110759,"data":"2025-11-10","km":49759,"litros":58.81,"preco":5.91,"tipo":"Diesel","posto":"Frisia","consumo":8.206},{"id":20251118294,"data":"2025-11-18","km":50294,"litros":65.2,"preco":5.75,"tipo":"Diesel","posto":"Frisia","consumo":8.364},{"id":20251123772,"data":"2025-11-23","km":50772,"litros":57.15,"preco":5.79,"tipo":"Diesel","posto":"Frisia","consumo":8.041},{"id":20251128281,"data":"2025-11-28","km":51281,"litros":63.3,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":7.787},{"id":20251203622,"data":"2025-12-03","km":51622,"litros":43.79,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":null},{"id":20251206088,"data":"2025-12-06","km":52088,"litros":39.87,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":null},{"id":20251208464,"data":"2025-12-08","km":52464,"litros":66.389,"preco":5.89,"tipo":"Diesel","posto":"Posto Contorno III","consumo":7.565},{"id":20251215803,"data":"2025-12-15","km":52803,"litros":44.81,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":8.696},{"id":20251219290,"data":"2025-12-19","km":53290,"litros":56.0,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":7.596},{"id":20251226701,"data":"2025-12-26","km":53701,"litros":54.11,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":7.383},{"id":20260105166,"data":"2026-01-05","km":54166,"litros":62.98,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":7.566},{"id":20260113604,"data":"2026-01-13","km":54604,"litros":57.89,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":9.072},{"id":20260119125,"data":"2026-01-19","km":55125,"litros":57.431,"preco":5.99,"tipo":"Diesel","posto":"Frisia","consumo":7.894},{"id":20260121616,"data":"2026-01-21","km":55616,"litros":62.2,"preco":5.59,"tipo":"Diesel","posto":"Frisia","consumo":7.477},{"id":20260130035,"data":"2026-01-30","km":56035,"litros":56.04,"preco":5.59,"tipo":"Diesel","posto":"Frisia","consumo":9.608},{"id":20260201594,"data":"2026-02-01","km":56594,"litros":58.182,"preco":6.53,"tipo":"Diesel","posto":"Frisia","consumo":7.712},{"id":20260209040,"data":"2026-02-09","km":57040,"litros":57.83,"preco":5.59,"tipo":"Diesel","posto":"Frisia","consumo":8.051},{"id":20260211370,"data":"2026-02-11","km":57370,"litros":40.99,"preco":5.59,"tipo":"Diesel","posto":"Frisia","consumo":8.809},{"id":20260220935,"data":"2026-02-20","km":57935,"litros":64.14,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":10.848},{"id":20260302435,"data":"2026-03-02","km":58435,"litros":46.09,"preco":5.69,"tipo":"Diesel","posto":"Frisia","consumo":5.376},{"id":20260308743,"data":"2026-03-08","km":58743,"litros":57.29,"preco":6.94,"tipo":"Diesel","posto":"Frisia","consumo":7.453},{"id":20260312091,"data":"2026-03-12","km":59091,"litros":46.69,"preco":7.69,"tipo":"Diesel","posto":"Frisia","consumo":7.99},{"id":20260319461,"data":"2026-03-19","km":59461,"litros":46.31,"preco":7.47,"tipo":"Diesel","posto":"Frisia","consumo":7.202},{"id":20260325852,"data":"2026-03-25","km":59852,"litros":54.29,"preco":7.6,"tipo":"Diesel","posto":"Frisia","consumo":6.81},{"id":20260330099,"data":"2026-03-30","km":60099,"litros":36.27,"preco":7.37,"tipo":"Diesel","posto":"Frisia","consumo":7.925},{"id":20260406545,"data":"2026-04-06","km":60545,"litros":56.28,"preco":7.37,"tipo":"Diesel","posto":"Frisia","consumo":7.574},{"id":20260411977,"data":"2026-04-11","km":60977,"litros":57.04,"preco":7.37,"tipo":"Diesel","posto":"Frisia","consumo":7.691},{"id":20260417425,"data":"2026-04-17","km":61425,"litros":58.251,"preco":6.99,"tipo":"Diesel","posto":"Frisia","consumo":7.821},{"id":20260427837,"data":"2026-04-27","km":61837,"litros":52.68,"preco":6.76,"tipo":"Diesel","posto":"Frisia","consumo":7.713},{"id":20260430160,"data":"2026-04-30","km":62160,"litros":41.88,"preco":6.76,"tipo":"Diesel","posto":"Frisia","consumo":8.442},{"id":20260503633,"data":"2026-05-03","km":62633,"litros":56.03,"preco":7.79,"tipo":"Diesel","posto":"Frisia","consumo":null}];
+<!-- Firebase SDK -->
+<script type="module">
+import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import{getFirestore,collection,doc,addDoc,setDoc,updateDoc,deleteDoc,getDocs,query,orderBy,onSnapshot,writeBatch,serverTimestamp}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
-let records=JSON.parse(localStorage.getItem('l200v1')||'null');
-if(!records){records=IMPORTED;localStorage.setItem('l200v1',JSON.stringify(records));}
-let kmRecords=JSON.parse(localStorage.getItem('l200km')||'[]');
+const firebaseConfig={
+  apiKey:"AIzaSyAbNZRwLwik2ZmWGE_KLgU5t5atIuUVzmU",
+  authDomain:"abastecimento-61a4f.firebaseapp.com",
+  projectId:"abastecimento-61a4f",
+  storageBucket:"abastecimento-61a4f.firebasestorage.app",
+  messagingSenderId:"486642766983",
+  appId:"1:486642766983:web:92e972c4a1d717b9dd5422"
+};
 
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+
+let currentUser=null;
+let records=[];
+let kmRecords=[];
 let activeFilter='Todos';
 let tipoKm='inicial';
 let kmLidoFoto=null;
 let c1=null,c2=null,c3=null;
+let unsubAbast=null,unsubKm=null;
 const AVG_CONS=8.2;
 
-const _n=new Date();
-const _hoje=_n.toISOString().split('T')[0];
-const _hora=_n.toTimeString().slice(0,5);
-document.getElementById('in-data').value=_hoje;
-document.getElementById('in-hora').value=_hora;
-document.getElementById('km-data').value=_hoje;
-document.getElementById('km-hora').value=_hora;
+const IMPORTED=[{"id":20240813911,"data":"2024-08-13","km":12911,"litros":54.99,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.907},{"id":20240816141,"data":"2024-08-16","km":13141,"litros":25.821,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":11.769},{"id":20240819620,"data":"2024-08-19","km":13620,"litros":40.701,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.314},{"id":20240822056,"data":"2024-08-22","km":14056,"litros":52.44,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":9.06},{"id":20240826407,"data":"2024-08-26","km":14407,"litros":38.74,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":9.379},{"id":20240828883,"data":"2024-08-28","km":14883,"litros":50.75,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.917},{"id":20240902359,"data":"2024-09-02","km":15359,"litros":60.12,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.336},{"id":20240908859,"data":"2024-09-08","km":15859,"litros":59.98,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.719},{"id":20240911168,"data":"2024-09-11","km":16168,"litros":40.03,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":9.104},{"id":20240913758,"data":"2024-09-13","km":16758,"litros":64.81,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.637},{"id":20240920278,"data":"2024-09-20","km":17278,"litros":60.206,"preco":5.59,"tipo":"Diesel","posto":"Auto Posto Guarani","veiculo":"L200 SSF1I63","consumo":7.818},{"id":20240923686,"data":"2024-09-23","km":17686,"litros":52.19,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.272},{"id":20240926067,"data":"2024-09-26","km":18067,"litros":46.06,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.465},{"id":20241002452,"data":"2024-10-02","km":18452,"litros":45.48,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.745},{"id":20241007896,"data":"2024-10-07","km":18896,"litros":50.77,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.179},{"id":20241014364,"data":"2024-10-14","km":19364,"litros":57.22,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.154},{"id":20241016743,"data":"2024-10-16","km":19743,"litros":46.48,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.393},{"id":20241023223,"data":"2024-10-23","km":20223,"litros":64.93,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.898},{"id":20241030710,"data":"2024-10-30","km":20710,"litros":61.66,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.455},{"id":20241103165,"data":"2024-11-03","km":21165,"litros":53.815,"preco":5.69,"tipo":"Diesel","posto":"Auto Posto Guarani","veiculo":"L200 SSF1I63","consumo":8.166},{"id":20241106581,"data":"2024-11-06","km":21581,"litros":50.94,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.654},{"id":20241111979,"data":"2024-11-11","km":21979,"litros":45.99,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.228},{"id":20241118397,"data":"2024-11-18","km":22397,"litros":50.8,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.158},{"id":20241122839,"data":"2024-11-22","km":22839,"litros":54.18,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.753},{"id":20241130288,"data":"2024-11-30","km":23288,"litros":57.91,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.753},{"id":20241203593,"data":"2024-12-03","km":23593,"litros":39.341,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.482},{"id":20241209015,"data":"2024-12-09","km":24015,"litros":49.75,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.436},{"id":20241211312,"data":"2024-12-11","km":24312,"litros":39.94,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.828},{"id":20241218792,"data":"2024-12-18","km":24792,"litros":61.32,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.889},{"id":20241223076,"data":"2024-12-23","km":25076,"litros":36.0,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.982},{"id":20241226400,"data":"2024-12-26","km":25400,"litros":40.591,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.469},{"id":20250104867,"data":"2025-01-04","km":25867,"litros":55.14,"preco":6.04,"tipo":"Diesel","posto":"Auto Posto Ravanello Ltda","veiculo":"L200 SSF1I63","consumo":7.478},{"id":20250108305,"data":"2025-01-08","km":26305,"litros":58.57,"preco":5.84,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.059},{"id":20250119790,"data":"2025-01-19","km":26790,"litros":60.18,"preco":5.95,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.036},{"id":20250130290,"data":"2025-01-30","km":27290,"litros":62.22,"preco":5.99,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.486},{"id":20250208678,"data":"2025-02-08","km":27678,"litros":51.83,"preco":6.3,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.72},{"id":20250214044,"data":"2025-02-14","km":28044,"litros":47.41,"preco":6.3,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.942},{"id":20250218605,"data":"2025-02-18","km":28605,"litros":62.74,"preco":6.3,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.589},{"id":20250224003,"data":"2025-02-24","km":29003,"litros":46.34,"preco":6.3,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.258},{"id":20250228450,"data":"2025-02-28","km":29450,"litros":54.13,"preco":6.3,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.957},{"id":20250307889,"data":"2025-03-07","km":29889,"litros":55.17,"preco":6.3,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.226},{"id":20250314375,"data":"2025-03-14","km":30375,"litros":59.08,"preco":6.3,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.587},{"id":20250324779,"data":"2025-03-24","km":30779,"litros":53.25,"preco":6.09,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.312},{"id":20250328076,"data":"2025-03-28","km":31076,"litros":35.73,"preco":6.09,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":9.809},{"id":20250330657,"data":"2025-03-30","km":31657,"litros":59.23,"preco":6.48,"tipo":"Diesel","posto":"Auto Posto Bogo","veiculo":"L200 SSF1I63","consumo":9.632},{"id":20250404175,"data":"2025-04-04","km":32175,"litros":53.781,"preco":6.48,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.316},{"id":20250409686,"data":"2025-04-09","km":32686,"litros":61.45,"preco":5.99,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.101},{"id":20250417090,"data":"2025-04-17","km":33090,"litros":49.87,"preco":5.794,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":null},{"id":20250428854,"data":"2025-04-28","km":33854,"litros":40.61,"preco":5.79,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.211},{"id":20250501317,"data":"2025-05-01","km":34317,"litros":56.388,"preco":6.29,"tipo":"Diesel","posto":"Posto Contorno III","veiculo":"L200 SSF1I63","consumo":9.022},{"id":20250505733,"data":"2025-05-05","km":34733,"litros":46.11,"preco":5.79,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.104},{"id":20250512098,"data":"2025-05-12","km":35098,"litros":45.04,"preco":5.79,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.354},{"id":20250519530,"data":"2025-05-19","km":35530,"litros":51.71,"preco":5.59,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.69},{"id":20250523015,"data":"2025-05-23","km":36015,"litros":55.81,"preco":5.59,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.209},{"id":20250529511,"data":"2025-05-29","km":36511,"litros":60.419,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.19},{"id":20250606986,"data":"2025-06-06","km":36986,"litros":58.0,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.926},{"id":20250611461,"data":"2025-06-11","km":37461,"litros":59.93,"preco":5.59,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.187},{"id":20250618926,"data":"2025-06-18","km":37926,"litros":56.8,"preco":5.59,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.342},{"id":20250623239,"data":"2025-06-23","km":38239,"litros":37.519,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.764},{"id":20250630657,"data":"2025-06-30","km":38657,"litros":53.84,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.867},{"id":20250705104,"data":"2025-07-05","km":39104,"litros":56.82,"preco":5.59,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":null},{"id":20250720834,"data":"2025-07-20","km":39834,"litros":44.649,"preco":5.59,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.499},{"id":20250721146,"data":"2025-07-21","km":40146,"litros":36.71,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.738},{"id":20250723484,"data":"2025-07-23","km":40484,"litros":38.68,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.053},{"id":20250730955,"data":"2025-07-30","km":40955,"litros":58.49,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.046},{"id":20250805420,"data":"2025-08-05","km":41420,"litros":57.79,"preco":5.97,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":9.231},{"id":20250811948,"data":"2025-08-11","km":41948,"litros":57.2,"preco":5.97,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.096},{"id":20250815348,"data":"2025-08-15","km":42348,"litros":49.41,"preco":5.79,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.302},{"id":20250822787,"data":"2025-08-22","km":42787,"litros":52.88,"preco":5.75,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":9.091},{"id":20250826364,"data":"2025-08-26","km":43364,"litros":63.47,"preco":5.75,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.146},{"id":20250829669,"data":"2025-08-29","km":43669,"litros":37.44,"preco":5.75,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.851},{"id":20250903102,"data":"2025-09-03","km":44102,"litros":55.15,"preco":5.75,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":9.168},{"id":20250915537,"data":"2025-09-15","km":44537,"litros":47.45,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.375},{"id":20250919955,"data":"2025-09-19","km":44955,"litros":49.91,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.339},{"id":20251001331,"data":"2025-10-01","km":45331,"litros":45.09,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.464},{"id":20251002792,"data":"2025-10-02","km":45792,"litros":61.76,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.55},{"id":20251008229,"data":"2025-10-08","km":46229,"litros":57.88,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.901},{"id":20251015660,"data":"2025-10-15","km":46660,"litros":54.55,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.418},{"id":20251018142,"data":"2025-10-18","km":47142,"litros":57.26,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.976},{"id":20251022523,"data":"2025-10-22","km":47523,"litros":47.77,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.119},{"id":20251024782,"data":"2025-10-24","km":47782,"litros":31.9,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.967},{"id":20251026370,"data":"2025-10-26","km":48370,"litros":65.577,"preco":5.49,"tipo":"Diesel","posto":"Auto Posto Guarani","veiculo":"L200 SSF1I63","consumo":8.827},{"id":20251029817,"data":"2025-10-29","km":48817,"litros":50.64,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.832},{"id":20251108295,"data":"2025-11-08","km":49295,"litros":61.03,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.89},{"id":20251110759,"data":"2025-11-10","km":49759,"litros":58.81,"preco":5.91,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.206},{"id":20251118294,"data":"2025-11-18","km":50294,"litros":65.2,"preco":5.75,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.364},{"id":20251123772,"data":"2025-11-23","km":50772,"litros":57.15,"preco":5.79,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.041},{"id":20251128281,"data":"2025-11-28","km":51281,"litros":63.3,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.787},{"id":20251203622,"data":"2025-12-03","km":51622,"litros":43.79,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":null},{"id":20251206088,"data":"2025-12-06","km":52088,"litros":39.87,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":null},{"id":20251208464,"data":"2025-12-08","km":52464,"litros":66.389,"preco":5.89,"tipo":"Diesel","posto":"Posto Contorno III","veiculo":"L200 SSF1I63","consumo":7.565},{"id":20251215803,"data":"2025-12-15","km":52803,"litros":44.81,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.696},{"id":20251219290,"data":"2025-12-19","km":53290,"litros":56.0,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.596},{"id":20251226701,"data":"2025-12-26","km":53701,"litros":54.11,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.383},{"id":20260105166,"data":"2026-01-05","km":54166,"litros":62.98,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.566},{"id":20260113604,"data":"2026-01-13","km":54604,"litros":57.89,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":9.072},{"id":20260119125,"data":"2026-01-19","km":55125,"litros":57.431,"preco":5.99,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.894},{"id":20260121616,"data":"2026-01-21","km":55616,"litros":62.2,"preco":5.59,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.477},{"id":20260130035,"data":"2026-01-30","km":56035,"litros":56.04,"preco":5.59,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":9.608},{"id":20260201594,"data":"2026-02-01","km":56594,"litros":58.182,"preco":6.53,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.712},{"id":20260209040,"data":"2026-02-09","km":57040,"litros":57.83,"preco":5.59,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.051},{"id":20260211370,"data":"2026-02-11","km":57370,"litros":40.99,"preco":5.59,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.809},{"id":20260220935,"data":"2026-02-20","km":57935,"litros":64.14,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":10.848},{"id":20260302435,"data":"2026-03-02","km":58435,"litros":46.09,"preco":5.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":5.376},{"id":20260308743,"data":"2026-03-08","km":58743,"litros":57.29,"preco":6.94,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.453},{"id":20260312091,"data":"2026-03-12","km":59091,"litros":46.69,"preco":7.69,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.99},{"id":20260319461,"data":"2026-03-19","km":59461,"litros":46.31,"preco":7.47,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.202},{"id":20260325852,"data":"2026-03-25","km":59852,"litros":54.29,"preco":7.6,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":6.81},{"id":20260330099,"data":"2026-03-30","km":60099,"litros":36.27,"preco":7.37,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.925},{"id":20260406545,"data":"2026-04-06","km":60545,"litros":56.28,"preco":7.37,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.574},{"id":20260411977,"data":"2026-04-11","km":60977,"litros":57.04,"preco":7.37,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.691},{"id":20260417425,"data":"2026-04-17","km":61425,"litros":58.251,"preco":6.99,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.821},{"id":20260427837,"data":"2026-04-27","km":61837,"litros":52.68,"preco":6.76,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":7.713},{"id":20260430160,"data":"2026-04-30","km":62160,"litros":41.88,"preco":6.76,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":8.442},{"id":20260503633,"data":"2026-05-03","km":62633,"litros":56.03,"preco":7.79,"tipo":"Diesel","posto":"Frisia","veiculo":"L200 SSF1I63","consumo":null}];
 
-function save(){localStorage.setItem('l200v1',JSON.stringify(records));}
-function saveKm(){localStorage.setItem('l200km',JSON.stringify(kmRecords));}
+// ======= AUTH =======
+window.fazerLogin=async()=>{
+  document.getElementById('login-loading').style.display='block';
+  try{
+    const provider=new GoogleAuthProvider();
+    await signInWithPopup(auth,provider);
+  }catch(e){
+    document.getElementById('login-loading').style.display='none';
+    showToast('⚠️ Erro ao entrar. Tente novamente.');
+  }
+};
 
-function showTab(t){
-  document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',['novo','km','historico','stats'][i]===t));
-  ['novo','km','historico','stats'].forEach(id=>document.getElementById('sec-'+id).style.display=id===t?'block':'none');
-  if(t==='historico'){buildFilters();renderHist();}
-  if(t==='stats')renderStats();
-  if(t==='km')renderKmLista();
+window.fazerLogout=async()=>{
+  if(!confirm('Deseja sair da conta?'))return;
+  if(unsubAbast)unsubAbast();
+  if(unsubKm)unsubKm();
+  await signOut(auth);
+};
+
+onAuthStateChanged(auth,async user=>{
+  if(user){
+    currentUser=user;
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app-screen').style.display='block';
+    // Avatar
+    if(user.photoURL){
+      document.getElementById('user-photo').src=user.photoURL;
+      document.getElementById('user-photo').style.display='block';
+    } else {
+      const ini=document.getElementById('user-initials');
+      ini.textContent=user.displayName?user.displayName[0].toUpperCase():'U';
+      ini.style.display='flex';
+    }
+    await iniciarApp(user);
+  } else {
+    currentUser=null;
+    document.getElementById('login-screen').style.display='flex';
+    document.getElementById('app-screen').style.display='none';
+  }
+});
+
+async function iniciarApp(user){
+  const uid=user.uid;
+  const now=new Date();
+  document.getElementById('in-data').value=now.toISOString().split('T')[0];
+  document.getElementById('in-hora').value=now.toTimeString().slice(0,5);
+  document.getElementById('km-data').value=now.toISOString().split('T')[0];
+  document.getElementById('km-hora').value=now.toTimeString().slice(0,5);
+
+  // Verifica se precisa importar dados
+  const abastRef=collection(db,'users',uid,'abastecimentos');
+  const snap=await getDocs(query(abastRef,orderBy('km')));
+  if(snap.empty){
+    showToast('Importando histórico...');
+    const batch=writeBatch(db);
+    IMPORTED.forEach(r=>{
+      const ref=doc(abastRef,String(r.id));
+      const {id,...data}=r;
+      batch.set(ref,{...data,importado:true,criadoEm:serverTimestamp()});
+    });
+    await batch.commit();
+    showToast('✓ 115 registros importados!');
+  }
+
+  // Listener tempo real — abastecimentos
+  unsubAbast=onSnapshot(query(abastRef,orderBy('km')),snap=>{
+    records=snap.docs.map(d=>({...d.data(),_docId:d.id}));
+    if(document.getElementById('sec-historico').style.display!=='none'){buildFilters();renderHist();}
+    if(document.getElementById('sec-stats').style.display!=='none')renderStats();
+  });
+
+  // Listener tempo real — km
+  const kmRef=collection(db,'users',uid,'kmdiario');
+  unsubKm=onSnapshot(query(kmRef,orderBy('data')),snap=>{
+    kmRecords=snap.docs.map(d=>({...d.data(),_docId:d.id}));
+    if(document.getElementById('sec-km').style.display!=='none')renderKmLista();
+  });
 }
 
+// ======= HELPERS FIRESTORE =======
+function abastRef(){return collection(db,'users',currentUser.uid,'abastecimentos');}
+function kmRef(){return collection(db,'users',currentUser.uid,'kmdiario');}
+
 // ======= ABASTECER =======
-function salvarAbast(){
+window.salvarAbast=async()=>{
   const data=document.getElementById('in-data').value;
-  const hora=document.getElementById('in-hora').value||_hora;
+  const hora=document.getElementById('in-hora').value||new Date().toTimeString().slice(0,5);
   const litros=parseFloat(document.getElementById('in-litros').value);
   const preco=parseFloat(document.getElementById('in-preco').value);
   const km=parseInt(document.getElementById('in-km').value);
   const tipo=document.getElementById('in-tipo').value||'Diesel';
   const posto=document.getElementById('in-posto').value;
+  const veiculo=document.getElementById('in-veiculo').value||'L200 SSF1I63';
   if(!data||isNaN(litros)||isNaN(preco)||isNaN(km)){showToast('⚠️ Preencha data, litros, preço e KM');return;}
-  const prev=[...records].sort((a,b)=>a.km-b.km).filter(r=>r.km<km).pop();
+  const prev=[...records].filter(r=>r.km<km).pop();
   const consumo=prev?(km-prev.km)/litros:null;
-  records.push({id:Date.now(),data,hora,litros,preco,km,tipo,posto,consumo});
-  records.sort((a,b)=>a.km-b.km);
-  save();
+  await addDoc(abastRef(),{data,hora,litros,preco,km,tipo,posto,veiculo,consumo,criadoEm:serverTimestamp()});
   showToast('✓ Abastecimento salvo!');
   ['in-litros','in-preco','in-km','in-posto'].forEach(id=>document.getElementById(id).value='');
   const nn=new Date();
   document.getElementById('in-data').value=nn.toISOString().split('T')[0];
   document.getElementById('in-hora').value=nn.toTimeString().slice(0,5);
-}
+};
 
 // ======= KM DIÁRIO =======
-function setTipo(t){
+window.setTipo=t=>{
   tipoKm=t;
   document.getElementById('btn-inicial').classList.toggle('active',t==='inicial');
   document.getElementById('btn-final').classList.toggle('active',t==='final');
-}
-
-function toggleManual(){
+};
+window.toggleManual=()=>{
   const el=document.getElementById('km-input-manual');
-  const visible=el.style.display!=='none';
-  el.style.display=visible?'none':'block';
-  if(!visible)document.getElementById('km-manual').focus();
-}
-
-function kmManualChanged(){} // não usado mais
-
-function confirmarManual(){
+  el.style.display=el.style.display==='none'?'block':'none';
+  if(el.style.display==='block')document.getElementById('km-manual').focus();
+};
+window.confirmarManual=()=>{
   const v=parseInt(document.getElementById('km-manual').value);
   if(!v||v<1000){showToast('⚠️ Digite um KM válido');return;}
   mostrarStep2(v);
-}
-
+};
 function mostrarStep2(km){
   kmLidoFoto=km;
   document.getElementById('km-confirmado').value=km;
   document.getElementById('km-step1').style.display='none';
   document.getElementById('km-step2').style.display='block';
 }
-
-function resetKmStep(){
+window.resetKmStep=()=>{
   kmLidoFoto=null;
   document.getElementById('km-step1').style.display='block';
   document.getElementById('km-step2').style.display='none';
   document.getElementById('km-manual').value='';
   document.getElementById('km-input-manual').style.display='none';
   document.getElementById('foto-input').value='';
-  document.getElementById('ai-loading').classList.remove('show');
-}
-
-async function processarFoto(input){
+};
+window.processarFoto=async input=>{
   if(!input.files||!input.files[0])return;
-  const file=input.files[0];
   document.getElementById('ai-loading').classList.add('show');
-  kmLidoFoto=null;
   try{
-    // Convert image to base64
-    const b64=await new Promise((res,rej)=>{
-      const r=new FileReader();
-      r.onload=()=>res(r.result.split(',')[1]);
-      r.onerror=rej;
-      r.readAsDataURL(file);
-    });
+    const file=input.files[0];
+    const b64=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(file);});
     const mtype=file.type||'image/jpeg';
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key': await getApiKey(),
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
-      body:JSON.stringify({
-        model:'claude-haiku-4-5-20251001',
-        max_tokens:100,
-        messages:[{role:'user',content:[
-          {type:'image',source:{type:'base64',media_type:mtype,data:b64}},
-          {type:'text',text:'Esta é uma foto do odômetro de um veículo. Leia o número de quilômetros exibido. Responda APENAS com o número inteiro sem pontos, vírgulas ou espaços. Exemplo: 62633'}
-        ]}]
-      })
-    });
+    let key=localStorage.getItem('l200apikey')||'';
+    if(!key){key=prompt('Informe sua chave API Anthropic (sk-ant-...):\n\nObtida em console.anthropic.com');if(key)localStorage.setItem('l200apikey',key);}
+    if(!key){document.getElementById('ai-loading').classList.remove('show');showToast('⚠️ Chave não informada');return;}
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:100,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mtype,data:b64}},{type:'text',text:'Leia o número do odômetro nesta foto. Responda APENAS com o número inteiro sem pontos ou espaços. Ex: 62633'}]}]})});
     const data=await resp.json();
-    const txt=data.content&&data.content[0]?data.content[0].text.trim():'';
-    const num=parseInt(txt.replace(/\D/g,''));
+    const num=parseInt((data.content&&data.content[0]?data.content[0].text:'').replace(/\D/g,''));
     document.getElementById('ai-loading').classList.remove('show');
-    if(!isNaN(num)&&num>1000){
-      mostrarStep2(num);
-      showToast('✓ KM lido: '+num.toLocaleString('pt-BR')+' — confirme abaixo');
-    } else {
-      showToast('⚠️ Não consegui ler. Insira manualmente.');
-      document.getElementById('km-input-manual').style.display='block';
-      document.getElementById('km-manual').focus();
-    }
-  }catch(err){
-    document.getElementById('ai-loading').classList.remove('show');
-    showToast('⚠️ Erro na leitura. Insira manualmente.');
-    document.getElementById('km-input-manual').style.display='block';
-  }
-}
-
-let _apiKey=localStorage.getItem('l200apikey')||'';
-async function getApiKey(){
-  if(_apiKey)return _apiKey;
-  const k=prompt('Para ler o odômetro pela foto, informe sua chave da API Anthropic (começa com sk-ant-).\n\nObtendo em: console.anthropic.com\n\nA chave fica salva apenas no seu dispositivo.');
-  if(k&&k.startsWith('sk-')){_apiKey=k;localStorage.setItem('l200apikey',k);}
-  return _apiKey||'';
-}
-
-function salvarKmDia(){
+    if(!isNaN(num)&&num>1000){mostrarStep2(num);showToast('✓ KM lido: '+num.toLocaleString('pt-BR'));}
+    else{showToast('⚠️ Não consegui ler. Insira manualmente.');document.getElementById('km-input-manual').style.display='block';}
+  }catch(e){document.getElementById('ai-loading').classList.remove('show');showToast('⚠️ Erro. Insira manualmente.');document.getElementById('km-input-manual').style.display='block';}
+};
+window.salvarKmDia=async()=>{
   const data=document.getElementById('km-data').value;
   const hora=document.getElementById('km-hora').value||new Date().toTimeString().slice(0,5);
-  // Pega o valor da caixa de confirmação (pode ter sido editado)
-  const kmFinal=parseInt(document.getElementById('km-confirmado').value||'0');
-  if(!data||!kmFinal||kmFinal<1000){showToast('⚠️ Informe o KM');return;}
-  kmRecords=kmRecords.filter(r=>!(r.data===data&&r.tipo===tipoKm));
-  kmRecords.push({id:Date.now(),data,hora,km:kmFinal,tipo:tipoKm});
-  kmRecords.sort((a,b)=>a.data.localeCompare(b.data)||a.tipo.localeCompare(b.tipo));
-  saveKm();
-  showToast('✓ KM '+tipoKm+' salvo: '+kmFinal.toLocaleString('pt-BR'));
+  const km=parseInt(document.getElementById('km-confirmado').value||'0');
+  if(!data||!km||km<1000){showToast('⚠️ Informe o KM');return;}
+  // remove duplicata do mesmo dia+tipo
+  const existente=kmRecords.find(r=>r.data===data&&r.tipo===tipoKm);
+  if(existente)await deleteDoc(doc(db,'users',currentUser.uid,'kmdiario',existente._docId));
+  await addDoc(kmRef(),{data,hora,km,tipo:tipoKm,criadoEm:serverTimestamp()});
+  showToast('✓ KM '+tipoKm+' salvo: '+km.toLocaleString('pt-BR'));
   resetKmStep();
   const nn=new Date();
   document.getElementById('km-data').value=nn.toISOString().split('T')[0];
   document.getElementById('km-hora').value=nn.toTimeString().slice(0,5);
   setTipo('inicial');
-  renderKmLista();
-}
+};
 
 function renderKmLista(){
   const el=document.getElementById('km-lista');
   const mesAtual=new Date().toISOString().slice(0,7);
-  // Agrupar por data
-  const doMes=kmRecords.filter(r=>r.data.startsWith(mesAtual));
+  const doMes=kmRecords.filter(r=>r.data&&r.data.startsWith(mesAtual));
   const byDay={};
-  doMes.forEach(r=>{if(!byDay[r.data])byDay[r.data]={};byDay[r.data][r.tipo]=r.km;});
+  doMes.forEach(r=>{if(!byDay[r.data])byDay[r.data]={};byDay[r.data][r.tipo]=r;});
   const dias=Object.keys(byDay).sort();
   if(!dias.length){el.innerHTML='<div class="empty">Nenhum KM registrado este mês.</div>';return;}
-  let totalRodado=0;
-  let html='';
-  dias.forEach((d,i)=>{
+  let total=0;
+  el.innerHTML=dias.map(d=>{
     const ini=byDay[d].inicial||null;
     const fin=byDay[d].final||null;
-    const rod=(ini&&fin)?fin-ini:null;
-    if(rod)totalRodado+=rod;
-    const [y,m,day]=d.split('-');
-    html+=`<div class="km-box">
+    const rod=(ini&&fin)?fin.km-ini.km:null;
+    if(rod)total+=rod;
+    const[y,m,day]=d.split('-');
+    return `<div class="km-box">
       <div class="km-box-title">${day}/${m}/${y}</div>
       <div class="km-row">
         <span class="km-row-label">KM Inicial</span>
         <span style="display:flex;align-items:center;gap:8px;">
-          <span class="km-row-val">${ini?ini.toLocaleString('pt-BR'):'—'}</span>
-          <button onclick="editarKm('${d}','inicial',${ini||0})" style="font-size:12px;padding:3px 8px;border-radius:6px;border:0.5px solid var(--border2);background:var(--surface);color:var(--text2);cursor:pointer;">✏️</button>
+          <span class="km-row-val">${ini?ini.km.toLocaleString('pt-BR'):'—'}</span>
+          <button onclick="editarKmDia('${d}','inicial',${ini?ini.km:0})" style="font-size:12px;padding:3px 8px;border-radius:6px;border:0.5px solid var(--border2);background:var(--surface);color:var(--text2);cursor:pointer;">✏️</button>
         </span>
       </div>
       <div class="km-row">
         <span class="km-row-label">KM Final</span>
         <span style="display:flex;align-items:center;gap:8px;">
-          <span class="km-row-val">${fin?fin.toLocaleString('pt-BR'):'—'}</span>
-          <button onclick="editarKm('${d}','final',${fin||0})" style="font-size:12px;padding:3px 8px;border-radius:6px;border:0.5px solid var(--border2);background:var(--surface);color:var(--text2);cursor:pointer;">✏️</button>
+          <span class="km-row-val">${fin?fin.km.toLocaleString('pt-BR'):'—'}</span>
+          <button onclick="editarKmDia('${d}','final',${fin?fin.km:0})" style="font-size:12px;padding:3px 8px;border-radius:6px;border:0.5px solid var(--border2);background:var(--surface);color:var(--text2);cursor:pointer;">✏️</button>
         </span>
       </div>
       <div class="km-row"><span class="km-row-label">Rodados</span><span class="km-row-val ${rod?'cons-good':''}">${rod?rod+' km':'—'}</span></div>
-      <button class="del-btn" style="margin-top:8px;font-size:13px;color:var(--text3);" onclick="delKmDia('${d}')">× excluir dia</button>
+      <button onclick="delKmDia('${d}')" style="margin-top:8px;font-size:12px;color:var(--text3);background:none;border:none;cursor:pointer;">× excluir dia</button>
     </div>`;
-  });
-  html+=`<div class="km-box" style="border-color:var(--green);">
-    <div class="km-row"><span class="km-row-label" style="font-weight:700;">TOTAL KM RODADOS NO MÊS</span><span class="km-row-val km-total">${totalRodado.toLocaleString('pt-BR')} km</span></div>
+  }).join('')+`<div class="km-box" style="border-color:var(--green);">
+    <div class="km-row"><span class="km-row-label" style="font-weight:700;">TOTAL KM RODADOS NO MÊS</span><span class="km-row-val km-total">${total.toLocaleString('pt-BR')} km</span></div>
   </div>`;
-  el.innerHTML=html;
 }
 
-function delKmDia(data){
-  if(!confirm('Excluir registros de KM do dia '+data+'?'))return;
-  kmRecords=kmRecords.filter(r=>r.data!==data);
-  saveKm();renderKmLista();
-}
-
-function editarKm(data,tipo,valorAtual){
-  const novo=prompt('Editar KM '+tipo+' de '+data+':\nValor atual: '+(valorAtual||'não registrado')+'\n\nDigite o novo KM:',valorAtual||'');
+window.editarKmDia=async(data,tipo,valorAtual)=>{
+  const novo=prompt('Editar KM '+tipo+' de '+data+':\nAtual: '+(valorAtual||'não registrado')+'\nNovo KM:',valorAtual||'');
   if(novo===null)return;
   const v=parseInt(novo);
   if(!v||v<1000){showToast('⚠️ KM inválido');return;}
-  // remove entrada existente e insere nova
-  kmRecords=kmRecords.filter(r=>!(r.data===data&&r.tipo===tipo));
-  kmRecords.push({id:Date.now(),data,hora:new Date().toTimeString().slice(0,5),km:v,tipo});
-  kmRecords.sort((a,b)=>a.data.localeCompare(b.data)||a.tipo.localeCompare(b.tipo));
-  saveKm();
-  showToast('✓ KM '+tipo+' atualizado: '+v.toLocaleString('pt-BR'));
-  renderKmLista();
-}
+  const existente=kmRecords.find(r=>r.data===data&&r.tipo===tipo);
+  if(existente){await updateDoc(doc(db,'users',currentUser.uid,'kmdiario',existente._docId),{km:v});}
+  else{await addDoc(kmRef(),{data,hora:new Date().toTimeString().slice(0,5),km:v,tipo,criadoEm:serverTimestamp()});}
+  showToast('✓ KM atualizado');
+};
+window.delKmDia=async data=>{
+  if(!confirm('Excluir registros de KM do dia '+data+'?'))return;
+  const doMes=kmRecords.filter(r=>r.data===data);
+  for(const r of doMes)await deleteDoc(doc(db,'users',currentUser.uid,'kmdiario',r._docId));
+};
 
-function exportarKmExcel(){
+window.exportarKmCSV=()=>{
   const mesAtual=new Date().toISOString().slice(0,7);
-  const doMes=kmRecords.filter(r=>r.data.startsWith(mesAtual));
+  const doMes=kmRecords.filter(r=>r.data&&r.data.startsWith(mesAtual));
   const byDay={};
   doMes.forEach(r=>{if(!byDay[r.data])byDay[r.data]={};byDay[r.data][r.tipo]=r.km;});
   const dias=Object.keys(byDay).sort();
   if(!dias.length){showToast('Nenhum KM para exportar');return;}
-
-  const [ano,mes]=mesAtual.split('-');
-  const nomesMes={'01':'Janeiro','02':'Fevereiro','03':'Março','04':'Abril','05':'Maio','06':'Junho','07':'Julho','08':'Agosto','09':'Setembro','10':'Outubro','11':'Novembro','12':'Dezembro'};
-  const nomeMes=(nomesMes[mes]||mes)+'/'+ano;
-
-  const aoa=[];
-  aoa.push(['','','KM','','']);
-  aoa.push(['DATA','INICIAL','FINAL','RODADOS']);
   let total=0;
+  let csv='DATA;KM INICIAL;KM FINAL;KM RODADOS\n';
   dias.forEach(d=>{
-    const ini=byDay[d].inicial||null;
-    const fin=byDay[d].final||null;
-    const rod=(ini&&fin)?fin-ini:null;
+    const ini=byDay[d].inicial||'';const fin=byDay[d].final||'';
+    const rod=(byDay[d].inicial&&byDay[d].final)?byDay[d].final-byDay[d].inicial:0;
     if(rod)total+=rod;
-    const [y,m,day]=d.split('-');
-    aoa.push([day+'/'+m+'/'+y, ini||'', fin||'', rod||0]);
+    const[y,m,day]=d.split('-');
+    csv+=`${day}/${m}/${y};${ini};${fin};${rod||''}\n`;
   });
-  // linhas em branco até 20
-  for(let i=dias.length;i<15;i++)aoa.push(['','','',0]);
-  aoa.push([]);
-  aoa.push(['TOTAL DE KM RODADOS:','','',total]);
-
-  const ws=XLSX.utils.aoa_to_sheet(aoa);
-  ws['!cols']=[{wch:14},{wch:12},{wch:12},{wch:12}];
-  const wb=XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb,ws,nomeMes);
-  downloadExcel(wb,'KM_L200_'+mesAtual+'.xlsx');
-  showToast('Excel KM gerado!');
-}
+  csv+=`\nTOTAL;;;${total}\n`;
+  downloadCSV(csv,'KM_'+mesAtual+'.csv');
+};
 
 // ======= HISTÓRICO =======
 function buildFilters(){
-  const years=[...new Set(records.map(r=>r.data.slice(0,4)))].sort().reverse();
+  const years=[...new Set(records.map(r=>r.data&&r.data.slice(0,4)).filter(Boolean))].sort().reverse();
   document.getElementById('filter-row').innerHTML=['Todos',...years].map(y=>
     `<button class="fbtn${activeFilter===y?' active':''}" onclick="setFilter('${y}')">${y}</button>`
   ).join('');
 }
-function setFilter(y){activeFilter=y;buildFilters();renderHist();}
+window.setFilter=y=>{activeFilter=y;buildFilters();renderHist();};
+
 function renderHist(){
   const el=document.getElementById('lista-hist');
   const sorted=[...records].sort((a,b)=>b.km-a.km);
-  const filtered=activeFilter==='Todos'?sorted:sorted.filter(r=>r.data.startsWith(activeFilter));
+  const filtered=activeFilter==='Todos'?sorted:sorted.filter(r=>r.data&&r.data.startsWith(activeFilter));
   if(!filtered.length){el.innerHTML='<div class="empty">Nenhum registro.</div>';return;}
   el.innerHTML=filtered.map(r=>{
     const total=(r.litros*r.preco).toFixed(2);
@@ -488,8 +543,11 @@ function renderHist(){
     const cc=r.consumo?(r.consumo>=AVG_CONS?'cons-good':'cons-bad'):'';
     return `<div class="card">
       <div class="card-header">
-        <div><div class="card-date">${fmtDate(r.data)}${r.hora?' · '+r.hora:''}</div><div class="card-km">${r.km.toLocaleString('pt-BR')} km</div></div>
-        <button class="del-btn" onclick="delAbast(${r.id})">×</button>
+        <div><div class="card-date">${fmtDate(r.data)}${r.hora?' · '+r.hora:''}</div><div class="card-km-sub">${r.km.toLocaleString('pt-BR')} km${r.veiculo?' · '+r.veiculo:''}</div></div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <button onclick="editAbast('${r._docId}')" style="font-size:12px;padding:4px 10px;border-radius:6px;border:0.5px solid var(--border2);background:var(--surface);color:var(--text2);cursor:pointer;">✏️</button>
+          <button class="del-btn" onclick="delAbast('${r._docId}')">×</button>
+        </div>
       </div>
       <span class="badge">${r.tipo}${r.posto?' · '+r.posto:''}</span>
       <div class="card-row"><span>Litros</span><span>${r.litros.toFixed(2)} l</span></div>
@@ -500,81 +558,126 @@ function renderHist(){
     </div>`;
   }).join('');
 }
-function delAbast(id){
-  if(!confirm('Excluir este abastecimento?'))return;
-  records=records.filter(r=>r.id!==id);
-  save();buildFilters();renderHist();
-}
 
-// ======= EXPORT ABASTECIMENTO =======
-function exportarExcel(){
+window.delAbast=async docId=>{
+  if(!confirm('Excluir este abastecimento?'))return;
+  await deleteDoc(doc(db,'users',currentUser.uid,'abastecimentos',docId));
+};
+
+window.editAbast=id=>{
+  const r=records.find(r=>r._docId===id);
+  if(!r)return;
+  const overlay=document.createElement('div');
+  overlay.id='edit-overlay';
+  overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;display:flex;align-items:flex-end;';
+  overlay.innerHTML=`<div style="background:var(--surface);width:100%;border-radius:20px 20px 0 0;padding:20px;max-height:90vh;overflow-y:auto;">
+    <div style="font-size:16px;font-weight:700;margin-bottom:16px;">✏️ Editar abastecimento</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div class="field"><label>Data</label><input type="date" id="e-data" value="${r.data}"></div>
+      <div class="field"><label>Hora</label><input type="time" id="e-hora" value="${r.hora||''}"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div class="field"><label>Litros</label><input type="number" id="e-litros" value="${r.litros}" step="0.01" inputmode="decimal"></div>
+      <div class="field"><label>Preço/litro</label><input type="number" id="e-preco" value="${r.preco}" step="0.01" inputmode="decimal"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div class="field"><label>KM</label><input type="number" id="e-km" value="${r.km}" inputmode="numeric"></div>
+      <div class="field"><label>Combustível</label><input type="text" id="e-tipo" value="${r.tipo||'Diesel'}"></div>
+    </div>
+    <div class="field"><label>Posto</label><input type="text" id="e-posto" value="${r.posto||''}"></div>
+    <div class="field"><label>Veículo</label><input type="text" id="e-veiculo" value="${r.veiculo||'L200 SSF1I63'}"></div>
+    <button class="btn-primary" onclick="salvarEdicao('${id}')" style="margin-top:4px;">✓ Salvar</button>
+    <button class="btn-secondary" onclick="fecharEdit()" style="margin-top:8px;">Cancelar</button>
+  </div>`;
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click',e=>{if(e.target===overlay)fecharEdit();});
+};
+window.fecharEdit=()=>{const o=document.getElementById('edit-overlay');if(o)o.remove();};
+window.salvarEdicao=async docId=>{
+  const data=document.getElementById('e-data').value;
+  const hora=document.getElementById('e-hora').value;
+  const litros=parseFloat(document.getElementById('e-litros').value);
+  const preco=parseFloat(document.getElementById('e-preco').value);
+  const km=parseInt(document.getElementById('e-km').value);
+  const tipo=document.getElementById('e-tipo').value||'Diesel';
+  const posto=document.getElementById('e-posto').value;
+  const veiculo=document.getElementById('e-veiculo').value||'L200 SSF1I63';
+  if(!data||isNaN(litros)||isNaN(preco)||isNaN(km)){showToast('⚠️ Preencha todos os campos');return;}
+  const prev=[...records].filter(r=>r.km<km&&r._docId!==docId).pop();
+  const consumo=prev?(km-prev.km)/litros:null;
+  await updateDoc(doc(db,'users',currentUser.uid,'abastecimentos',docId),{data,hora,litros,preco,km,tipo,posto,veiculo,consumo});
+  fecharEdit();showToast('✓ Atualizado!');
+};
+
+window.exportarCSV=()=>{
   const sorted=[...records].sort((a,b)=>a.km-b.km);
-  const filtered=activeFilter==='Todos'?sorted:sorted.filter(r=>r.data.startsWith(activeFilter));
-  if(!filtered.length){showToast('Nenhum registro para exportar');return;}
-  const periodo=activeFilter==='Todos'?'Completo':activeFilter;
-  const meses={'01':'Janeiro','02':'Fevereiro','03':'Março','04':'Abril','05':'Maio','06':'Junho','07':'Julho','08':'Agosto','09':'Setembro','10':'Outubro','11':'Novembro','12':'Dezembro'};
-  const wb=XLSX.utils.book_new();
-  const byMonth={};
-  filtered.forEach(r=>{const k=r.data.slice(0,7);if(!byMonth[k])byMonth[k]=[];byMonth[k].push(r);});
-  Object.keys(byMonth).sort().forEach(mesKey=>{
-    const[ano,mes]=mesKey.split('-');
-    const nomeMes=(meses[mes]||mes)+' '+ano;
-    const rows=byMonth[mesKey];
-    const totalValor=rows.reduce((a,r)=>a+r.litros*r.preco,0);
-    const totalLitros=rows.reduce((a,r)=>a+r.litros,0);
-    const kmInicio=rows[0].km;
-    const kmFim=rows[rows.length-1].km;
-    const aoa=[];
-    aoa.push(['ABASTECIMENTOS']);
-    aoa.push([nomeMes+' — L200 Triton SSF1I63']);
-    aoa.push([]);
-    aoa.push(['DATA','VALOR','','LITROS','R$/L','','KM','KM/L','L/km']);
-    aoa.push(['','','','','','',kmInicio,'','']);
-    rows.forEach(r=>{
-      const[y,m,d]=r.data.split('-');
-      const kml=r.consumo?parseFloat(r.consumo.toFixed(2)):null;
-      const lkm=r.consumo?parseFloat((1/r.consumo).toFixed(2)):null;
-      aoa.push([d+'/'+m,'R$',parseFloat((r.litros*r.preco).toFixed(2)),parseFloat(r.litros.toFixed(3)),'R$',parseFloat(r.preco.toFixed(2)),r.km,kml,lkm]);
-    });
-    aoa.push([]);
-    aoa.push(['TOTAL','R$',parseFloat(totalValor.toFixed(2)),parseFloat(totalLitros.toFixed(2)),'','',kmFim,'','']);
-    aoa.push(['KM rodados','','','','','',kmFim-kmInicio,'','']);
-    const ws=XLSX.utils.aoa_to_sheet(aoa);
-    ws['!cols']=[{wch:10},{wch:5},{wch:10},{wch:10},{wch:5},{wch:8},{wch:10},{wch:8},{wch:8}];
-    XLSX.utils.book_append_sheet(wb,ws,nomeMes.slice(0,31));
+  const filtered=activeFilter==='Todos'?sorted:sorted.filter(r=>r.data&&r.data.startsWith(activeFilter));
+  if(!filtered.length){showToast('Nenhum registro');return;}
+  let csv='DATA;VALOR (R$);LITROS;PRECO/L;KM;KM/L;L/KM;POSTO;VEICULO\n';
+  filtered.forEach(r=>{
+    const[y,m,d]=r.data.split('-');
+    csv+=`${d}/${m}/${y};${(r.litros*r.preco).toFixed(2)};${r.litros.toFixed(3)};${r.preco.toFixed(2)};${r.km};${r.consumo?r.consumo.toFixed(2):''};${r.consumo?(1/r.consumo).toFixed(3):''};${r.posto||''};${r.veiculo||''}\n`;
   });
-  downloadExcel(wb,'Abastecimento_L200_'+periodo+'.xlsx');
-  showToast('Excel gerado!');
-}
+  const tG=filtered.reduce((a,r)=>a+r.litros*r.preco,0);
+  const tL=filtered.reduce((a,r)=>a+r.litros,0);
+  csv+=`\nTOTAL;${tG.toFixed(2)};${tL.toFixed(2)}\n`;
+  downloadCSV(csv,'Abastecimento_'+(activeFilter==='Todos'?'Completo':activeFilter)+'.csv');
+};
+
+window.exportarPDF=()=>{
+  const sorted=[...records].sort((a,b)=>a.km-b.km);
+  const filtered=activeFilter==='Todos'?sorted:sorted.filter(r=>r.data&&r.data.startsWith(activeFilter));
+  if(!filtered.length){showToast('Nenhum registro');return;}
+  const tG=filtered.reduce((a,r)=>a+r.litros*r.preco,0);
+  const tL=filtered.reduce((a,r)=>a+r.litros,0);
+  const wC=filtered.filter(r=>r.consumo&&r.consumo<15);
+  const avg=wC.length?wC.reduce((a,r)=>a+r.consumo,0)/wC.length:0;
+  const periodo=activeFilter==='Todos'?'Histórico completo':activeFilter;
+  const linhas=filtered.map(r=>{const[y,m,d]=r.data.split('-');return`<tr><td>${d}/${m}/${y}</td><td>R$ ${(r.litros*r.preco).toFixed(2)}</td><td>${r.litros.toFixed(2)} l</td><td>R$ ${r.preco.toFixed(2)}</td><td>${r.km.toLocaleString('pt-BR')}</td><td>${r.consumo?r.consumo.toFixed(2):'—'}</td><td>${r.posto||'—'}</td><td>${r.veiculo||'—'}</td></tr>`;}).join('');
+  const html=`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Abastecimentos</title><style>body{font-family:Arial,sans-serif;font-size:11px;margin:20px;}h2{font-size:15px;margin-bottom:4px;}.sub{color:#666;font-size:11px;margin-bottom:16px;}table{width:100%;border-collapse:collapse;margin-bottom:16px;}th{background:#1D9E75;color:#fff;padding:6px 8px;text-align:left;font-size:10px;}td{padding:5px 8px;border-bottom:0.5px solid #ddd;}tr:nth-child(even) td{background:#f9f9f9;}.totais{display:flex;gap:24px;background:#f0f9f5;border:1px solid #c0e8d8;border-radius:8px;padding:12px 16px;margin-bottom:20px;}.tot-item .label{font-size:10px;color:#666;text-transform:uppercase;}.tot-item .val{font-size:15px;font-weight:700;color:#1D9E75;}@media print{button{display:none!important;}}</style></head><body>
+  <h2>🛻 Controle de Frota — ${currentUser.displayName||''}</h2>
+  <div class="sub">Abastecimentos · ${periodo} · ${new Date().toLocaleDateString('pt-BR')}</div>
+  <div class="totais">
+    <div class="tot-item"><div class="label">Total gasto</div><div class="val">R$ ${tG.toLocaleString('pt-BR',{minimumFractionDigits:2})}</div></div>
+    <div class="tot-item"><div class="label">Total litros</div><div class="val">${tL.toFixed(1)} l</div></div>
+    <div class="tot-item"><div class="label">Média consumo</div><div class="val">${avg.toFixed(2)} km/l</div></div>
+    <div class="tot-item"><div class="label">Registros</div><div class="val">${filtered.length}</div></div>
+  </div>
+  <table><thead><tr><th>Data</th><th>Valor</th><th>Litros</th><th>R$/L</th><th>KM</th><th>KM/L</th><th>Posto</th><th>Veículo</th></tr></thead><tbody>${linhas}</tbody></table>
+  <script>window.onload=()=>window.print();<\/script></body></html>`;
+  const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  window.open(URL.createObjectURL(blob),'_blank');
+};
 
 // ======= RESUMO =======
 function renderStats(){
   const grid=document.getElementById('metrics-grid');
-  const withCons=records.filter(r=>r.consumo!==null&&r.consumo<15);
-  if(records.length<2){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:32px;color:var(--text3);font-size:14px;">Poucos registros.</div>';return;}
-  const totalL=records.reduce((a,r)=>a+r.litros,0);
-  const totalGasto=records.reduce((a,r)=>a+r.litros*r.preco,0);
-  const avgPreco=records.reduce((a,r)=>a+r.preco,0)/records.length;
-  const avgCons=withCons.reduce((a,r)=>a+r.consumo,0)/withCons.length;
+  const chartSec=document.getElementById('chart-section');
+  const wC=records.filter(r=>r.consumo&&r.consumo<15);
+  if(records.length<2){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:32px;color:var(--text3);font-size:14px;">Poucos registros.</div>';chartSec.style.display='none';return;}
+  chartSec.style.display='block';
+  const tL=records.reduce((a,r)=>a+r.litros,0);
+  const tG=records.reduce((a,r)=>a+r.litros*r.preco,0);
+  const aP=records.reduce((a,r)=>a+r.preco,0)/records.length;
+  const aC=wC.reduce((a,r)=>a+r.consumo,0)/wC.length;
   const kmMax=Math.max(...records.map(r=>r.km));
   const kmMin=Math.min(...records.map(r=>r.km));
-  const kmTotal=kmMax-kmMin;
+  const kmT=kmMax-kmMin;
   const dates=records.map(r=>new Date(r.data)).sort((a,b)=>a-b);
-  const meses=(dates[dates.length-1]-dates[0])/(1000*60*60*24*30.44)||1;
-  const kmMes=Math.round(kmTotal/meses);
-  const gastoMes=totalGasto/meses;
+  const mes=(dates[dates.length-1]-dates[0])/(1000*60*60*24*30.44)||1;
   grid.innerHTML=`
-    <div class="metric"><div class="mlabel">Média consumo</div><div class="mvalue">${avgCons.toFixed(2)}<span class="munit"> km/l</span></div></div>
-    <div class="metric"><div class="mlabel">Litros por km</div><div class="mvalue">${(1/avgCons).toFixed(3)}<span class="munit"> l/km</span></div></div>
-    <div class="metric"><div class="mlabel">Total gasto</div><div class="mvalue" style="font-size:16px">R$ ${totalGasto.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}</div></div>
-    <div class="metric"><div class="mlabel">Preço médio/l</div><div class="mvalue">R$ ${avgPreco.toFixed(2)}</div></div>
-    <div class="metric"><div class="mlabel">Total litros</div><div class="mvalue">${totalL.toFixed(0)}<span class="munit"> l</span></div></div>
-    <div class="metric"><div class="mlabel">KM rodados</div><div class="mvalue">${kmTotal.toLocaleString('pt-BR')}<span class="munit"> km</span></div></div>
-    <div class="metric"><div class="mlabel">Média km/mês</div><div class="mvalue">${kmMes.toLocaleString('pt-BR')}<span class="munit"> km</span></div></div>
-    <div class="metric"><div class="mlabel">Gasto/mês</div><div class="mvalue" style="font-size:16px">R$ ${gastoMes.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}</div></div>
+    <div class="metric"><div class="mlabel">Média consumo</div><div class="mvalue">${aC.toFixed(2)}<span class="munit"> km/l</span></div></div>
+    <div class="metric"><div class="mlabel">Litros por km</div><div class="mvalue">${(1/aC).toFixed(3)}<span class="munit"> l/km</span></div></div>
+    <div class="metric"><div class="mlabel">Total gasto</div><div class="mvalue" style="font-size:16px">R$ ${tG.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}</div></div>
+    <div class="metric"><div class="mlabel">Preço médio/l</div><div class="mvalue">R$ ${aP.toFixed(2)}</div></div>
+    <div class="metric"><div class="mlabel">Total litros</div><div class="mvalue">${tL.toFixed(0)}<span class="munit"> l</span></div></div>
+    <div class="metric"><div class="mlabel">KM rodados</div><div class="mvalue">${kmT.toLocaleString('pt-BR')}<span class="munit"> km</span></div></div>
+    <div class="metric"><div class="mlabel">Média km/mês</div><div class="mvalue">${Math.round(kmT/mes).toLocaleString('pt-BR')}<span class="munit"> km</span></div></div>
+    <div class="metric"><div class="mlabel">Gasto/mês</div><div class="mvalue" style="font-size:16px">R$ ${(tG/mes).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}</div></div>
   `;
-  drawCharts(withCons,records);
+  drawCharts(wC,records);
 }
+
 function drawCharts(wc,all){
   const isDark=matchMedia('(prefers-color-scheme:dark)').matches;
   const tc=isDark?'#888':'#999';const gc=isDark?'rgba(255,255,255,.07)':'rgba(0,0,0,.06)';
@@ -582,32 +685,31 @@ function drawCharts(wc,all){
   const sc=wc.filter((_,i)=>i%step===0);const sa=all.filter((_,i)=>i%step===0);
   const opts=(ex={})=>({responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:tc,font:{size:10},maxRotation:45,autoSkip:true,maxTicksLimit:8},grid:{color:gc}},y:{ticks:{color:tc,font:{size:11},...(ex.yt||{})},grid:{color:gc}}}});
   if(c1)c1.destroy();if(c2)c2.destroy();if(c3)c3.destroy();
-  c1=new Chart(document.getElementById('chart1'),{type:'line',data:{labels:sc.map(r=>fmtShort(r.data)),datasets:[{data:sc.map(r=>+r.consumo.toFixed(2)),borderColor:'#1D9E75',backgroundColor:'rgba(29,158,117,.1)',tension:.3,fill:true,pointRadius:2,pointBackgroundColor:'#1D9E75'}]},options:opts()});
+  c1=new Chart(document.getElementById('chart1'),{type:'line',data:{labels:sc.map(r=>fmtShort(r.data)),datasets:[{data:sc.map(r=>+r.consumo.toFixed(2)),borderColor:'#1D9E75',backgroundColor:'rgba(29,158,117,.1)',tension:.3,fill:true,pointRadius:2}]},options:opts()});
   c2=new Chart(document.getElementById('chart2'),{type:'bar',data:{labels:sc.map(r=>fmtShort(r.data)),datasets:[{data:sc.map(r=>+(r.litros*r.preco).toFixed(2)),backgroundColor:'rgba(186,117,23,.7)',borderRadius:3}]},options:opts({yt:{callback:v=>'R$'+v}})});
-  c3=new Chart(document.getElementById('chart3'),{type:'line',data:{labels:sa.map(r=>fmtShort(r.data)),datasets:[{data:sa.map(r=>+r.preco.toFixed(2)),borderColor:'#378ADD',backgroundColor:'rgba(55,138,221,.1)',tension:.3,fill:true,pointRadius:2,pointBackgroundColor:'#378ADD'}]},options:opts({yt:{callback:v=>'R$'+v}})});
+  c3=new Chart(document.getElementById('chart3'),{type:'line',data:{labels:sa.map(r=>fmtShort(r.data)),datasets:[{data:sa.map(r=>+r.preco.toFixed(2)),borderColor:'#378ADD',backgroundColor:'rgba(55,138,221,.1)',tension:.3,fill:true,pointRadius:2}]},options:opts({yt:{callback:v=>'R$'+v}})});
 }
 
-function downloadExcel(wb,fname){
-  // Detect Safari iOS - XLSX.writeFile silently fails on Safari, must use blob
-  const isSafari=/^((?!chrome|android).)*safari/i.test(navigator.userAgent)||
-    (/iPad|iPhone|iPod/.test(navigator.userAgent)&&!window.MSStream);
-  if(isSafari){
-    const wbout=XLSX.write(wb,{bookType:'xlsx',type:'base64'});
-    const url='data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,'+wbout;
-    const a=document.createElement('a');
-    a.href=url;
-    a.download=fname;
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(()=>document.body.removeChild(a),500);
-  } else {
-    XLSX.writeFile(wb,fname);
-  }
+// ======= UTILS =======
+window.showTab=t=>{
+  document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',['novo','km','historico','stats'][i]===t));
+  ['novo','km','historico','stats'].forEach(id=>document.getElementById('sec-'+id).style.display=id===t?'block':'none');
+  if(t==='historico'){buildFilters();renderHist();}
+  if(t==='stats')renderStats();
+  if(t==='km')renderKmLista();
+};
+function downloadCSV(csv,fname){
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=fname;a.style.display='none';
+  document.body.appendChild(a);a.click();
+  setTimeout(()=>{document.body.removeChild(a);URL.revokeObjectURL(url);},1000);
 }
-
 function fmtDate(d){if(!d)return'';const[y,m,day]=d.split('-');return`${day}/${m}/${y}`;}
 function fmtShort(d){if(!d)return'';const[,m,day]=d.split('-');return`${day}/${m}`;}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 </body>
 </html>
