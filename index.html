@@ -113,6 +113,28 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 /* VEICULO TAG */
 .veiculo-tag{display:inline-flex;align-items:center;gap:6px;background:var(--green-bg);color:var(--green-text);font-size:12px;font-weight:600;padding:4px 10px;border-radius:99px;margin-bottom:4px;}
+
+/* DESPESAS */
+.desp-cat{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);margin-bottom:16px;overflow:hidden;}
+.desp-cat-header{background:#1a6e3c;color:#fff;padding:10px 14px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;display:flex;justify-content:space-between;align-items:center;}
+.desp-cat-header.corp{background:#1a4a8a;}
+.desp-cat-header.part{background:#7a3a00;}
+.desp-item{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:0.5px solid var(--border);gap:8px;}
+.desp-item:last-child{border-bottom:none;}
+.desp-item-info{flex:1;min-width:0;}
+.desp-item-data{font-size:11px;color:var(--text3);}
+.desp-item-desc{font-size:13px;color:var(--text);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.desp-item-val{font-size:14px;font-weight:700;color:var(--text);flex-shrink:0;}
+.desp-item-actions{display:flex;gap:6px;flex-shrink:0;}
+.desp-thumb{width:40px;height:40px;border-radius:6px;object-fit:cover;cursor:pointer;flex-shrink:0;border:1px solid var(--border);}
+.desp-add-btn{width:100%;padding:11px;background:transparent;border:1px dashed var(--border2);border-radius:var(--rsm);color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;margin-top:2px;}
+.desp-total{padding:10px 14px;font-size:13px;font-weight:700;color:var(--text2);display:flex;justify-content:space-between;background:var(--bg);}
+.desp-total span:last-child{color:var(--text);}
+.mes-selector{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;background:var(--surface);border-radius:var(--rsm);padding:10px 14px;border:0.5px solid var(--border);}
+.mes-selector button{background:none;border:none;font-size:20px;cursor:pointer;color:var(--text2);padding:0 8px;}
+.mes-selector span{font-size:15px;font-weight:600;color:var(--text);}
+.foto-preview{width:100%;max-height:200px;object-fit:cover;border-radius:var(--rsm);margin-top:8px;display:none;}
+.foto-preview.show{display:block;}
 </style>
 </head>
 <body>
@@ -146,6 +168,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="tab-bar">
       <button class="tab active" onclick="showTab('novo')">Abastecer</button>
       <button class="tab" onclick="showTab('km')">KM</button>
+      <button class="tab" onclick="showTab('despesas')">Despesas</button>
       <button class="tab" onclick="showTab('historico')">Histórico</button>
       <button class="tab" onclick="showTab('stats')">Resumo</button>
     </div>
@@ -156,11 +179,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <!-- ABA ABASTECER -->
     <div id="sec-novo" class="section">
       <br>
-      <div id="reimport-banner" style="background:var(--green-bg);border:1.5px solid var(--green);border-radius:var(--rsm);padding:14px;margin-bottom:16px;text-align:center;">
-        <div style="font-size:14px;font-weight:600;color:var(--green-text);margin-bottom:8px;">📦 Restaurar histórico</div>
-        <div style="font-size:12px;color:var(--green-text);margin-bottom:10px;">Toque para importar os 117 registros do Drivvo para o Firebase</div>
-        <button onclick="reimportarHistorico()" style="width:100%;padding:12px;background:var(--green);color:#fff;border:none;border-radius:6px;font-size:15px;font-weight:700;cursor:pointer;">↩ Importar histórico agora</button>
-      </div>
       <div class="row2">
         <div class="field"><label>Data</label><input type="date" id="in-data"></div>
         <div class="field"><label>Hora</label><input type="time" id="in-hora"></div>
@@ -222,13 +240,45 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <button class="btn-secondary" onclick="exportarKmCSV()" style="margin-top:4px;">⬇ Exportar CSV KM</button>
     </div>
 
+    <!-- ABA DESPESAS -->
+    <div id="sec-despesas" class="section" style="display:none">
+      <br>
+      <div class="mes-selector">
+        <button onclick="mudarMesDespesa(-1)">‹</button>
+        <span id="despesa-mes-label">—</span>
+        <button onclick="mudarMesDespesa(1)">›</button>
+      </div>
+
+      <!-- PEDÁGIOS -->
+      <div class="desp-cat">
+        <div class="desp-cat-header">🚧 Gastos com Pedágio (Reembolsável)<span id="total-pedagio">R$ 0,00</span></div>
+        <div id="lista-pedagio"></div>
+        <button class="desp-add-btn" onclick="abrirFormDespesa('pedagio')">+ Adicionar pedágio</button>
+        <div class="desp-total"><span>TOTAL DE PEDÁGIOS</span><span id="total-pedagio-footer">R$ 0,00</span></div>
+      </div>
+
+      <!-- CARTÃO CORPORATIVO -->
+      <div class="desp-cat">
+        <div class="desp-cat-header corp">💳 Gastos Cartão Corporativo<span id="total-corp">R$ 0,00</span></div>
+        <div id="lista-corp"></div>
+        <button class="desp-add-btn" onclick="abrirFormDespesa('corp')">+ Adicionar gasto corporativo</button>
+        <div class="desp-total"><span>TOTAL CORPORATIVO</span><span id="total-corp-footer">R$ 0,00</span></div>
+      </div>
+
+      <!-- CARTÃO PARTICULAR -->
+      <div class="desp-cat">
+        <div class="desp-cat-header part">💳 Gastos Cartão Particular (Reembolsável)<span id="total-part">R$ 0,00</span></div>
+        <div id="lista-part"></div>
+        <button class="desp-add-btn" onclick="abrirFormDespesa('part')">+ Adicionar gasto particular</button>
+        <div class="desp-total"><span>TOTAL PARTICULAR</span><span id="total-part-footer">R$ 0,00</span></div>
+      </div>
+
+      <button class="btn-secondary" onclick="exportarDespesasPDF()" style="margin-top:4px;">📄 Exportar Relatório PDF</button>
+    </div>
+
     <!-- ABA HISTÓRICO -->
     <div id="sec-historico" class="section" style="display:none">
       <br>
-      <div id="reimport-banner" style="background:var(--green-bg);border:1px solid var(--green);border-radius:var(--rsm);padding:12px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;">
-        <span style="font-size:13px;color:var(--green-text);">Histórico vazio? Restaure os dados do Drivvo.</span>
-        <button onclick="reimportarHistorico()" style="flex-shrink:0;padding:8px 14px;background:var(--green);color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;">↩ Reimportar</button>
-      </div>
       <div class="filter-row" id="filter-row"></div>
       <div id="lista-hist"><div class="app-loading"><div class="spinner"></div>Carregando...</div></div>
       <div style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:8px;">
@@ -248,10 +298,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <div class="chart-wrap"><canvas id="chart2"></canvas></div>
         <div class="section-label">Preço do litro (R$)</div>
         <div class="chart-wrap"><canvas id="chart3"></canvas></div>
-      </div>
-      <div style="margin-top:16px;padding-top:16px;border-top:0.5px solid var(--border);">
-        <div class="section-label">Manutenção</div>
-        <button class="btn-secondary" onclick="reimportarHistorico()" style="margin-top:0;font-size:13px;">↩ Reimportar histórico do Drivvo</button>
       </div>
     </div>
 
@@ -376,6 +422,9 @@ async function iniciarApp(user){
     kmRecords=snap.docs.map(d=>({...d.data(),_docId:d.id}));
     if(document.getElementById('sec-km').style.display!=='none')renderKmLista();
   });
+
+  // Inicia despesas
+  iniciarDespesas(uid);
 }
 
 async function importarHistorico(uid){
@@ -745,11 +794,224 @@ function drawCharts(wc,all){
 
 // ======= UTILS =======
 window.showTab=t=>{
-  document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',['novo','km','historico','stats'][i]===t));
-  ['novo','km','historico','stats'].forEach(id=>document.getElementById('sec-'+id).style.display=id===t?'block':'none');
+  const tabs=['novo','km','despesas','historico','stats'];
+  document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',tabs[i]===t));
+  tabs.forEach(id=>document.getElementById('sec-'+id).style.display=id===t?'block':'none');
   if(t==='historico'){buildFilters();renderHist();}
   if(t==='stats')renderStats();
   if(t==='km')renderKmLista();
+  if(t==='despesas')renderDespesas();
+};
+
+// ======= DESPESAS =======
+let despesas=[];
+let mesDespesaAtual=new Date().toISOString().slice(0,7);
+let unsubDesp=null;
+
+function despRef(){return collection(db,'users',currentUser.uid,'despesas');}
+
+function iniciarDespesas(uid){
+  const ref=collection(db,'users',uid,'despesas');
+  unsubDesp=onSnapshot(query(ref,orderBy('data')),snap=>{
+    despesas=snap.docs.map(d=>({...d.data(),_docId:d.id}));
+    if(document.getElementById('sec-despesas').style.display!=='none')renderDespesas();
+  });
+}
+
+const NOMES_MES=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+
+window.mudarMesDespesa=dir=>{
+  const[y,m]=mesDespesaAtual.split('-').map(Number);
+  const d=new Date(y,m-1+dir,1);
+  mesDespesaAtual=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+  renderDespesas();
+};
+
+function renderDespesas(){
+  const[y,m]=mesDespesaAtual.split('-').map(Number);
+  document.getElementById('despesa-mes-label').textContent=NOMES_MES[m-1]+' '+y;
+  const doMes=despesas.filter(d=>d.data&&d.data.startsWith(mesDespesaAtual));
+  ['pedagio','corp','part'].forEach(cat=>{
+    const itens=doMes.filter(d=>d.cat===cat);
+    const total=itens.reduce((a,d)=>a+d.valor,0);
+    const fmtTotal='R$ '+total.toLocaleString('pt-BR',{minimumFractionDigits:2});
+    document.getElementById('total-'+cat).textContent=fmtTotal;
+    document.getElementById('total-'+cat+'-footer').textContent=fmtTotal;
+    const el=document.getElementById('lista-'+cat);
+    if(!itens.length){el.innerHTML='';return;}
+    el.innerHTML=itens.map(d=>{
+      const[yy,mm,dd]=d.data.split('-');
+      const temFoto=d.foto&&d.foto.length>100;
+      return`<div class="desp-item">
+        ${temFoto?`<img src="${d.foto}" class="desp-thumb" onclick="verFoto('${d._docId}')" alt="comprovante">`:
+        `<div style="width:40px;height:40px;border-radius:6px;background:var(--bg);border:1px dashed var(--border2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;" onclick="abrirFotoExistente('${d._docId}')">📷</div>`}
+        <div class="desp-item-info">
+          <div class="desp-item-data">${dd}/${mm}/${yy}</div>
+          <div class="desp-item-desc">${d.desc||'—'}</div>
+        </div>
+        <div class="desp-item-val">R$ ${d.valor.toLocaleString('pt-BR',{minimumFractionDigits:2})}</div>
+        <div class="desp-item-actions">
+          <button onclick="editarDespesa('${d._docId}')" style="background:none;border:0.5px solid var(--border2);border-radius:6px;padding:4px 8px;cursor:pointer;font-size:12px;color:var(--text2);">✏️</button>
+          <button onclick="delDespesa('${d._docId}')" style="background:none;border:none;cursor:pointer;font-size:18px;color:var(--text3);padding:0 4px;">×</button>
+        </div>
+      </div>`;
+    }).join('');
+  });
+}
+
+window.abrirFormDespesa=(cat,docId)=>{
+  const existing=docId?despesas.find(d=>d._docId===docId):null;
+  const titulos={pedagio:'Pedágio (Reembolsável)',corp:'Cartão Corporativo',part:'Cartão Particular (Reembolsável)'};
+  const labelDesc={pedagio:'Destino',corp:'Local',part:'Local'};
+  const overlay=document.createElement('div');
+  overlay.id='desp-overlay';
+  overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;display:flex;align-items:flex-end;';
+  overlay.innerHTML=`<div style="background:var(--surface);width:100%;border-radius:20px 20px 0 0;padding:20px;max-height:92vh;overflow-y:auto;">
+    <div style="font-size:16px;font-weight:700;margin-bottom:16px;">${existing?'✏️ Editar':'+ Adicionar'} — ${titulos[cat]}</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div class="field"><label>Data</label><input type="date" id="d-data" value="${existing?existing.data:new Date().toISOString().split('T')[0]}"></div>
+      <div class="field"><label>Valor (R$)</label><input type="number" id="d-valor" placeholder="0,00" step="0.01" min="0" inputmode="decimal" value="${existing?existing.valor:''}"></div>
+    </div>
+    <div class="field"><label>${labelDesc[cat]}</label><input type="text" id="d-desc" placeholder="${cat==='pedagio'?'ex: São Paulo → Curitiba':'ex: Posto Shell'}" value="${existing?existing.desc||'':''}"></div>
+    <div class="field"><label>Comprovante / Nota (opcional)</label>
+      <div style="border:2px dashed var(--border2);border-radius:var(--rsm);padding:16px;text-align:center;cursor:pointer;" onclick="document.getElementById('d-foto-input').click()">
+        <div style="font-size:24px;">📷</div>
+        <div style="font-size:13px;color:var(--text2);margin-top:4px;">Tirar foto ou escolher da galeria</div>
+      </div>
+      <input type="file" id="d-foto-input" accept="image/*" style="display:none" onchange="previewFotoDespesa(this)">
+      <img id="d-foto-preview" class="foto-preview ${existing&&existing.foto?'show':''}" src="${existing&&existing.foto?existing.foto:''}" alt="preview">
+    </div>
+    <button class="btn-primary" onclick="salvarDespesa('${cat}','${docId||''}')">✓ Salvar</button>
+    <button class="btn-secondary" onclick="fecharDespOverlay()">Cancelar</button>
+  </div>`;
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click',e=>{if(e.target===overlay)fecharDespOverlay();});
+};
+
+window.previewFotoDespesa=input=>{
+  if(!input.files||!input.files[0])return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=document.getElementById('d-foto-preview');
+    img.src=e.target.result;
+    img.classList.add('show');
+  };
+  reader.readAsDataURL(input.files[0]);
+};
+
+window.fecharDespOverlay=()=>{const o=document.getElementById('desp-overlay');if(o)o.remove();};
+
+window.salvarDespesa=async(cat,docId)=>{
+  const data=document.getElementById('d-data').value;
+  const valor=parseFloat(document.getElementById('d-valor').value);
+  const desc=document.getElementById('d-desc').value;
+  if(!data||isNaN(valor)||valor<=0){showToast('⚠️ Preencha data e valor');return;}
+  const fotoImg=document.getElementById('d-foto-preview');
+  const foto=fotoImg&&fotoImg.classList.contains('show')&&fotoImg.src?fotoImg.src:'';
+  const dados={data,valor,desc,cat,foto,criadoEm:serverTimestamp()};
+  if(docId){
+    await updateDoc(doc(db,'users',currentUser.uid,'despesas',docId),dados);
+    showToast('✓ Despesa atualizada!');
+  } else {
+    await addDoc(despRef(),dados);
+    showToast('✓ Despesa salva!');
+  }
+  fecharDespOverlay();
+};
+
+window.editarDespesa=id=>{
+  const d=despesas.find(d=>d._docId===id);
+  if(d)abrirFormDespesa(d.cat,id);
+};
+
+window.delDespesa=async id=>{
+  if(!confirm('Excluir esta despesa?'))return;
+  await deleteDoc(doc(db,'users',currentUser.uid,'despesas',id));
+  showToast('✓ Excluído');
+};
+
+window.verFoto=id=>{
+  const d=despesas.find(d=>d._docId===id);
+  if(!d||!d.foto)return;
+  const o=document.createElement('div');
+  o.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:999;display:flex;align-items:center;justify-content:center;';
+  o.innerHTML=`<img src="${d.foto}" style="max-width:95vw;max-height:90vh;border-radius:8px;object-fit:contain;">`;
+  o.addEventListener('click',()=>o.remove());
+  document.body.appendChild(o);
+};
+
+window.abrirFotoExistente=id=>{
+  const d=despesas.find(d=>d._docId===id);
+  if(d)abrirFormDespesa(d.cat,id);
+};
+
+window.exportarDespesasPDF=()=>{
+  const[y,m]=mesDespesaAtual.split('-').map(Number);
+  const nomeMes=NOMES_MES[m-1]+' '+y;
+  const doMes=despesas.filter(d=>d.data&&d.data.startsWith(mesDespesaAtual));
+
+  const cats=[
+    {id:'pedagio',titulo:'GASTOS COM PEDÁGIO (REEMBOLSÁVEL)',cor:'#1a6e3c',label:'Destino',totalLabel:'TOTAL DE PEDÁGIOS'},
+    {id:'corp',titulo:'GASTOS CARTÃO CORPORATIVO',cor:'#1a4a8a',label:'Local',totalLabel:'TOTAL CORPORATIVO'},
+    {id:'part',titulo:'GASTOS CARTÃO PARTICULAR (REEMBOLSÁVEL)',cor:'#7a3a00',label:'Local',totalLabel:'TOTAL PARTICULAR'},
+  ];
+
+  let tabelasHTML='';
+  cats.forEach(cat=>{
+    const itens=doMes.filter(d=>d.cat===cat.id);
+    const total=itens.reduce((a,d)=>a+d.valor,0);
+    const linhas=itens.map(d=>{
+      const[yy,mm,dd]=d.data.split('-');
+      const fotoHtml=d.foto?`<td style="text-align:center;padding:4px;"><img src="${d.foto}" style="width:60px;height:60px;object-fit:cover;border-radius:4px;border:1px solid #ddd;"></td>`:'<td></td>';
+      return`<tr><td>${dd}/${mm}</td><td>R$ ${d.valor.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td><td>${d.desc||'—'}</td>${fotoHtml}</tr>`;
+    }).join('');
+    const vazias=Math.max(0,8-itens.length);
+    const linhasVazias=Array(vazias).fill('<tr><td>&nbsp;</td><td></td><td></td><td></td></tr>').join('');
+    tabelasHTML+=`
+      <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
+        <thead>
+          <tr><th colspan="4" style="background:${cat.cor};color:#fff;padding:8px 10px;text-align:center;font-size:12px;">${cat.titulo}</th></tr>
+          <tr style="background:#c8e6c9;">
+            <th style="padding:6px 8px;text-align:left;font-size:11px;border:1px solid #aaa;">DATA</th>
+            <th style="padding:6px 8px;text-align:left;font-size:11px;border:1px solid #aaa;">VALOR</th>
+            <th style="padding:6px 8px;text-align:left;font-size:11px;border:1px solid #aaa;">${cat.label}</th>
+            <th style="padding:6px 8px;text-align:center;font-size:11px;border:1px solid #aaa;">COMPROVANTE</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${linhas}${linhasVazias}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2" style="padding:6px 8px;font-weight:700;font-size:12px;border:1px solid #aaa;">${cat.totalLabel}</td>
+            <td colspan="2" style="padding:6px 8px;font-weight:700;background:#FFD600;border:1px solid #aaa;">R$ ${total.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td>
+          </tr>
+        </tfoot>
+      </table>`;
+  });
+
+  const totalGeral=doMes.reduce((a,d)=>a+d.valor,0);
+  const html=`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+  <title>Despesas ${nomeMes}</title>
+  <style>
+    body{font-family:Arial,sans-serif;font-size:11px;margin:20px;color:#111;}
+    h2{font-size:16px;margin-bottom:4px;}
+    .sub{color:#666;margin-bottom:20px;font-size:11px;}
+    table{width:100%;border-collapse:collapse;}
+    td{border:1px solid #ccc;padding:5px 8px;font-size:11px;}
+    th{border:1px solid #aaa;}
+    .total-geral{margin-top:16px;background:#e8f5e9;border:2px solid #1a6e3c;border-radius:6px;padding:10px 16px;display:flex;justify-content:space-between;font-size:14px;font-weight:700;}
+    @media print{button{display:none!important;}}
+  </style></head><body>
+  <h2>📋 Relatório de Despesas — ${nomeMes}</h2>
+  <div class="sub">${currentUser.displayName||''} · Gerado em ${new Date().toLocaleDateString('pt-BR')}</div>
+  ${tabelasHTML}
+  <div class="total-geral"><span>TOTAL GERAL DE DESPESAS</span><span>R$ ${totalGeral.toLocaleString('pt-BR',{minimumFractionDigits:2})}</span></div>
+  <script>window.onload=()=>window.print();<\/script>
+  </body></html>`;
+
+  const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  window.open(URL.createObjectURL(blob),'_blank');
 };
 function downloadCSV(csv,fname){
   const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
